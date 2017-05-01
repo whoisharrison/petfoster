@@ -11,9 +11,9 @@
 		<h1>Pet Foster ABQ</h1>
 		<h2>Purpose, Audience, Goal</h2>
 
-		<strong>Purpose:</strong> Professional and well developed webpage that easily navigates a user to either adopt or put their pet up for adoption
-		<strong>Audience:</strong> General population
-		<strong>Goal:</strong> To be the #1 web page that users go to got their pet adoption needs.
+		<p><strong>Purpose:</strong> Professional and well developed webpage that easily navigates a user to either adopt or put their pet up for adoption</p>
+		<p><strong>Audience:</strong> General population</p>
+		<p><strong>Goal:</strong> To be the #1 web page that users go to got their pet adoption needs.</p>
 
 		<h2>PERSONA</h2>
 		<p><strong>Name:</strong> Juan Carlos Garcia</p>
