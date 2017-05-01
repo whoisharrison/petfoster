@@ -11,21 +11,20 @@
 		<h1>Pet Foster ABQ</h1>
 		<h2>Purpose, Audience, Goal</h2>
 
-		<strong>Purpose:</strong>
-		<strong>Audience:</strong>
-		<strong>Goal:</strong>
+		<p></p><strong>Purpose:</strong></p>
+		<p><strong>Audience:</strong></p>
+		<p><strong>Goal:</strong></p>
 
 		<h2>PERSONA</h2>
-		<strong>Name:</strong> Animal Humane
-		<strong>Age:</strong>
-		<strong>Profession:</strong>
+		<p><strong>Name:</strong> Animal Humane</p>
+		<p><strong>Age:</strong></p>
+		<p><strong>Profession:</strong></p>
 
-		<strong>Technology: </strong>
+		<p><strong>Technology: </strong></p>
 
-		<strong>Attitudes and Behaviors: </strong>
+		<p><strong>Attitudes and Behaviors: </strong></p>
 
-		<strong>Frustrations and Needs:</strong><p></p>
+		<p><strong>Frustrations and Needs:</strong></p>
 
-		<Strong>Goals:</Strong> <p></p>
-		<p></p>
+		<p><Strong>Goals:</Strong> <p></p>
 	</body>
