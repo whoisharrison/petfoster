@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Pet Foster ABQ</title>
+		<title>Pet Foster ABQ - Persona-A</title>
 		<style></style>
 	</head>
 	<body>
@@ -26,11 +26,9 @@
 		<p>Attitudes and Behaviors: Single parent of three children, puts in 50+ hours in of work a week, always busy and always on the go, never a set schedule. Wants things done as easily and as fast as possible. Prefers shopping online over in stores. Wants to spend the least amount of time possible on a website for his needs</p>
 
 		<strong>Frustrations and Needs:</strong>
-		<p>Adopting a pet: databases not up to date, can not trust where the dog came from, good
+		<p>Fostering a pet: databases not up to date, can not trust where the dog came from, good
 			search engine, notification if pet is available, no time to go to every shelter and/or every
 			shelters web page</p>
-		<p>Putting a pet up for adoption: can not trust the people adopting, notification someone
-			wants their pet.</p>
 
 		<Strong>Goals:</Strong>
 		<p>Adopting a pet: To have a database with up to date and accurate information on pets in the surrounding area that are up for adoption, that will quickly notify users of the pets availability.</p>
