@@ -34,5 +34,5 @@
 
 		<Strong>Goals:</Strong>
 		<p>Adopting a pet: To have a database with up to date and accurate information on pets in the surrounding area that are up for adoption, that will quickly notify users of the pets availability.</p>
-		<p>Putting a pet up for audition: To give a user an easy and quick experience in adding their pet to our database and notifying them when a trusted foster parent has interest</p>
+		<p>Putting a pet up for audition: To give a user an easy and quick experience in adding their pet to our database and notifying them when a trusted foster parent has interest.</p>
 	</body>
