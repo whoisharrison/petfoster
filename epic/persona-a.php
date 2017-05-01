@@ -30,7 +30,7 @@
 			search engine, notification if pet is available, no time to go to every shelter and/or every
 			shelters web page</p>
 		<p>Putting a pet up for adoption: can not trust the people adopting, notification someone
-			wants their pet</p>
+			wants their pet.</p>
 
 		<Strong>Goals:</Strong>
 		<p>Adopting a pet: To have a database with up to date and accurate information on pets in the surrounding area that are up for adoption, that will quickly notify users of the pets availability.</p>
