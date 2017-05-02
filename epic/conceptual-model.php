@@ -5,32 +5,25 @@
 <body>
 	<main>
 		<h2>Entities and Attributes</h2>
-		<p><strong>User Profile</strong></p>
+		<p><strong>Profile</strong></p>
 		<ul>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
+			<li>profileId</li>
+			<li>profileAtHandle</li>
+			<li>profileEmail</li>
+			<li>profilePhone</li>
 		</ul>
-		<p>Pet Profile</p>
+		<p><strong>Pet Profile</strong></p>
 		<ul>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
+			<li>petId</li>
+			<li>petProfileId</li>
+			<li>petDescription</li>
+			<li>petType</li>
+			<li>petBreed</li>
+			<li>PetLocation</li>
 		</ul>
-		<p><strong>Favorite</strong></p>
+		<p><strong>images</strong></p>
 		<ul>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
-			<li></li>
+			<li>petProfileImage</li>
 		</ul>
 		<p><strong>Relations</strong></p>
 		<ul>
