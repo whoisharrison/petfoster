@@ -21,7 +21,7 @@
 			<li>User goes to Pet Foster and clicks ADOPT A PET.</li>
 			<li>Page Loads landing page.</li>
 			<li>User is prompted to sign in but decides to just browse available pets in area.</li>
-			<li>Pages prompts user to select <em>post</em> or <em>search</em>.</li>
+			<li>Page prompts user to select <em>post</em> or <em>search</em>.</li>
 			<li>User enters information in form page such as animal size and breed.</li>
 			<li>Page returns pets located in users area based on search results.</li>
 			<li>User broadens search results by clicking <em>all of Bernalillo county</em>.</li>
@@ -30,7 +30,7 @@
 			<li>User decides they want the animal.</li>
 			<li>Page prompts user to sign in or create an account.</li>
 			<li>User creates an account and verifies using email.</li>
-			<li>page returns to user back to searched pet.</li>
+			<li>Page returns to user back to searched pet.</li>
 			<li>User contacts pet owner for adoption.</li>
 		</ol</body>
 
