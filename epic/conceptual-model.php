@@ -54,7 +54,6 @@
 			<li>imageType</li>
 		</ul>
 
-
 		<p><strong>Relations</strong></p>
 		<ul>
 			<li>One <strong>Profile </strong>favorites products - (m to n)</li>
