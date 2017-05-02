@@ -8,7 +8,7 @@
 		<style></style>
 	</head>
 	<body>
-		<h1>Pet Foster ABQ</h1>
+		<h1>Pet Foster ABQ - I think this is what we will call it</h1>
 		<h2>Purpose, Audience, Goal</h2>
 
 		<p></p><strong>Purpose:</strong> The purpose of this website is to post animals for adoption.</p>
