@@ -22,6 +22,5 @@
 			<li>Page prompts user to enter a picture of pet</li>
 			<li>User uploads pet image and submits</li>
 			<li>Page delivers confirmation and lets user know they will be contacted via email when an adopter is found.</li>
-		</ol</body>
-
+		</ol>
 	</body>
