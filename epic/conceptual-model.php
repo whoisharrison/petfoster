@@ -21,6 +21,7 @@
 			<li>petBreed</li>
 			<li>PetLocation</li>
 		</ul>
+
 		<p><strong>images</strong></p>
 		<ul>
 			<li>petProfileImage</li>
