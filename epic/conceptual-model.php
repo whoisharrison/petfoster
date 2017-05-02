@@ -28,7 +28,7 @@
 			<li>userHash</li>
 		</ul>
 
-		<p><strong>Post</strong></p>
+		<p><strong>post</strong></p>
 		<ul>
 			<li>orgPostId</li>
 			<li>postId</li>
@@ -38,7 +38,7 @@
 			<li>petDescription</li>
 		</ul>
 
-		<p><strong>Image</strong></p>
+		<p><strong>image</strong></p>
 		<ul>
 			<li>messageId</li>
 			<li>messageDate</li>
@@ -48,7 +48,7 @@
 			<li>messageSubject</li>
 		</ul>
 
-		<p><strong>Message</strong></p>
+		<p><strong>message</strong></p>
 		<ul>
 			<li>imageId</li>
 			<li>imagePostId</li>
