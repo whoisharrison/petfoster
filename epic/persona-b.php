@@ -26,8 +26,5 @@
 
 		<p><strong>Frustrations and Needs:</strong> Last month Chloe found a small dog along the side of the road while walking home from school.  She brought the dog home and has been taking care of him.  Her father recently told her that she would have to find another home for the stray as they didn't have the time for life long placement. Chloe is frustrated as she hasn't been able to use the internet effectively to solve her issue.  She needs a simple site to place the stray on so that she can insure his safety.</p>
 
-		<p><Strong>Goals:</Strong> <p></p>
 	</body>
 
-
-	Use Case:
