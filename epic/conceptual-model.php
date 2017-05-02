@@ -5,27 +5,55 @@
 <body>
 	<main>
 		<h2>Entities and Attributes</h2>
-		<p><strong>Profile</strong></p>
+		<p><strong>Org Profile</strong></p>
 		<ul>
-			<li>profileId</li>
-			<li>profileAtHandle</li>
-			<li>profileEmail</li>
-			<li>profilePhone</li>
-		</ul>
-		<p><strong>Pet Profile</strong></p>
-		<ul>
-			<li>petId</li>
-			<li>petProfileId</li>
-			<li>petDescription</li>
-			<li>petType</li>
-			<li>petBreed</li>
-			<li>PetLocation</li>
+			<li>orgId</li>
+			<li>orgAuthToken</li>
+			<li>orgName</li>
+			<li>orgEmail</li>
+			<li>orgPhone</li>
+			<li>orgLicence</li>
+			<li>orgOwnerProfileId</li>
 		</ul>
 
-		<p><strong>images</strong></p>
+		<p><strong>User Profile</strong></p>
 		<ul>
-			<li>petProfileImage</li>
+			<li>userId</li>
+			<li>userAuthToken</li>
+			<li>userName</li>
+			<li>userEmail</li>
+			<li>userAtHandle</li>
+			<li>userSalt</li>
+			<li>userHash</li>
 		</ul>
+
+		<p><strong>Post</strong></p>
+		<ul>
+			<li>orgPostId</li>
+			<li>postId</li>
+			<li>petType</li>
+			<li>petSex</li>
+			<li>petBreed</li>
+			<li>petDescription</li>
+		</ul>
+
+		<p><strong>Image</strong></p>
+		<ul>
+			<li>messageId</li>
+			<li>messagedate</li>
+			<li>messageOrgId</li>
+			<li>messageUserId</li>
+			<li>messageContent</li>
+			<li>messageSubject</li>
+		</ul>
+
+		<p><strong>Message</strong></p>
+		<ul>
+			<li>imageId</li>
+			<li>imagePostId</li>
+			<li>imageType</li>
+		</ul>
+
 		<p><strong>Relations</strong></p>
 		<ul>
 			<li>One <strong>Profile </strong>favorites products - (m to n)</li>
