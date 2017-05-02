@@ -11,7 +11,7 @@
 
 		<h2>Use Case-Ellen</h2>
 
-		<p></p><strong>Use Case:</strong> It is 9:30 am on a Wednesday at the Department of Animal Welfare (City of Albuquerque). Ellen just received word that three dogs and one cat that were rescued from a hoarding case over the weekend are ready to be placed up for adoption.  Since the shelter took in 14 cats and dogs from the rescue, the shelter is at capacity with some animals sharing a kennel designed for single occupancy. Ellen would like to get these animals adopted into their forever homes as soon as possible.</p> <br>
+		<p><strong>Use Case:</strong> It is 9:30 am on a Wednesday at the Department of Animal Welfare (City of Albuquerque). Ellen just received word that three dogs and one cat that were rescued from a hoarding case over the weekend are ready to be placed up for adoption.  Since the shelter took in 14 cats and dogs from the rescue, the shelter is at capacity with some animals sharing a kennel designed for single occupancy. Ellen would like to get these animals adopted into their forever homes as soon as possible.</p>
 		<p>In addition to adding these pets to the Department of Animal Welfare (City of Albuquerque) website, Ellen discovers the Pet Foster ABQ website, which will allow her to reach a broader audience.</p>
 
 		<h2>Interaction flow for Ellen Nicol</h2>
