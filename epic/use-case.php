@@ -34,6 +34,3 @@
 			<li>User contacts pet owner for adoption.</li>
 		</ol</body>
 
-
-
-
