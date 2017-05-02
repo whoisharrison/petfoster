@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Pet Foster</title>
+		<title>Pet Adoption</title>
 		<style></style>
 	</head>
 	<body>
