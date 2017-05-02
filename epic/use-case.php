@@ -1,37 +1,39 @@
-Use Case: Its 1:00 PM on a Sunday and Juan Carlos is enjoying his only day off with his three kids. He already has two
-older dogs (ages 8+) and is looking to add a younger puppy to his family for his kids. Also, he has recently moved to a bigger house and wants a bigger guard dog.
-Due to lack of time with his schedule, on his days off he wants to just spend the day with daily errands, friends, and family. He does not have the time nor want
-to check every website or check every pound for a dog in the Albuquerque area.
+<!DOCTYPE html>
+<html lang="en">
 
-His perfect dog is going to be a rottweiler puppy. But those dogs are in high demand and do not stay up for foster for too long.
-Juan Carlos has wasted too much time looking on web pages that are not up to date and going to pounds where the dog has already been adopted
-for weeks now. He is fed up with all his time wasted, he just wants to be able to able to enter the information and get some type of
-notification when the puppy he wants is available.
+	<head>
+		<meta charset="utf-8">
 
-Juan Carlos stumbles upon Rainy Day Adoption...
+		<title>Pet Foster</title>
+		<style></style>
+	</head>
+	<body>
+		<h1>Use Case</h1>
 
+		<h2>Purpose, Audience & Goal</h2>
 
+		<p><strong>Use Case:</strong> It's 1:00 PM on a Sunday and Juan Carlos is enjoying his only day off with his three kids. He already has two older dogs (ages 8+) and is looking to add a younger puppy to his family for his kids. Also, he has recently moved to a bigger house and wants a bigger guard dog. Due to lack of time with his schedule, on his days off he wants to just spend the day with daily errands, friends, and family. He does not have the time nor want to check every website or check every pound for a dog in the Albuquerque area.</p>
 
-FLOW
+		<p>His perfect dog is going to be a rottweiler puppy. But those dogs are in high demand and do not stay up for foster for too long. Juan Carlos has wasted too much time looking on web pages that are not up to date and going to pounds where the dog has already been adopted for weeks now. He is fed up with all his time wasted, he just wants to be able to able to enter the information and get some type of notification when the puppy he wants is available.</p>
+		<strong>Interaction Flow: </strong>
+		<ol>
 
-Juan Carlos googles #1 pet adoption service
-User clicks top link on page Rainy Day Pet Adoption
-Webpage opens up and user clicks ADOPT A PET
-User navigated to a form page to create a profile as a new user
-User enters all necessary and/or optional information to create a profile and clicks enter (email and/or phone #)
-User is sent a token to confirm creation of new profile
-User enters activation code and is sent to the ADOPT A PET page
-User enters information in form page such as type of animal, type of breed, age, sex, etc...
-Information is searched through the database and user is sent to a page with results that best fits users inputs
+			<l1>User goes to Pet Foster and clicks ADOPT A PET.</l1>
+			<li>Page Loads landing page.</li>
+			<li>User is prompted to sign in but decides to just browse available pets in area.</li>
+			<li>Pages prompts user to select <em>post</em> or <em>search</em>.</li>
+			<l1>User enters information in form page such as animal size and breed.</l1>
+			<li>Page returns pets located in users area based on search results.</li>
+			<l1>User broadens search results by clicking <em>all of Bernalillo county</em>.</l1>
+			<l1>Information is searched through the database and user is sent to a page with results that best fits users inputs.</l1>
+			<l1>User clicks an animal image that they want or interested in page opens up with more information about the animal, including contact information on the current owner.</l1>
+			<l1>User decides they want the animal.</l1>
+			<li>Page prompts user to sign in or create an account.</li>
+			<li>User creates an account and verifies using email.</li>
+			<li>page returns to user back to searched pet.</li>
+			<li>User contacts pet owner for adoption.</li>
+		</ol</body>
 
-User then clicks an animal image that they want or interested in
-	Page opens up with more information about the animal, including contact information on the current owner
-	User will decide they want the animal and contact the current owner or go back to previous search results
-
-or
-
-Clicks the "contact me when animal is available" option
-	User is then sent to another page that says "Thanks we will contact you as soon as a better option becomes available"
 
 
 
