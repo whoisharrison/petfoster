@@ -5,6 +5,7 @@
 <body>
 	<main>
 		<h2>Entities and Attributes</h2>
+
 		<p><strong>Org Profile</strong></p>
 		<ul>
 			<li>orgId</li>
@@ -40,7 +41,7 @@
 		<p><strong>Image</strong></p>
 		<ul>
 			<li>messageId</li>
-			<li>messagedate</li>
+			<li>messageDate</li>
 			<li>messageOrgId</li>
 			<li>messageUserId</li>
 			<li>messageContent</li>
@@ -56,8 +57,12 @@
 
 		<p><strong>Relations</strong></p>
 		<ul>
-			<li>One <strong>Profile </strong>favorites products - (m to n)</li>
+			<li>Many <strong>orgProfile </strong>to many posts (m to n)</li>
+			<li>Many <strong>orgProfile </strong>to many messages (m to n)</li>
+			<li>Many <strong>usersProfile </strong>message many orgProfile - (m to n)</li>
+			<li>One <strong>post </strong>to many Images - (1 to n)</li>
 		</ul>
+		<img src="#"
 		<br>
 	</main>
 </body>
