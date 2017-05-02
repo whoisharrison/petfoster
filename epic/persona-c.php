@@ -11,9 +11,9 @@
 		<h1>Pet Foster ABQ</h1>
 		<h2>Purpose, Audience, Goal</h2>
 
-		<p></p><strong>Purpose:</strong> The purpose of this website is to facilitate the fostering or adoption of a pet.</p>
-		<p><strong>Audience:</strong>The target audience for this website are people who would like to adopt or foster a pet. In addition, the website is for individuals who can no longer care for a pet and would like to place them up for adoption. In addition, agencies that would like to put a pet up for adoption or foster care can do so via this website. </p>
-		<p><strong>Goal:</strong>The primary goal of this website is to allow users search and find animals that are up for fostering or adoption that match their search criteria. If an animal is not found, the search criteria will be saved and you will be notified once an animal satisfying the criteria has been found in the database. In addition, the site allows for a user to post an animal that is up for adoption or foster care.</p>
+		<p></p><strong>Purpose:</strong> The purpose of this website is to post animals for adoption.</p>
+		<p><strong>Audience:</strong>The target audience for this website are agencies that would like to put a pet up for adoption.  </p>
+		<p><strong>Goal:</strong>The primary goal of this website is to allow a user to post an animal or animals up for adoption.</p>
 
 		<h2>PERSONA</h2>
 		<p><strong>Name:</strong> Ellen Nicol</p>
