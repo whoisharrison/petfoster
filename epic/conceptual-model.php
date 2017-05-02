@@ -31,6 +31,5 @@
 			<li>One <strong>Profile </strong>favorites products - (m to n)</li>
 		</ul>
 		<br>
-		<img src="https://bootcamp-coders.cnm.edu/~mharrison13/data-design/public_html/images/erd-data-design.svg">
 	</main>
 </body>
