@@ -16,18 +16,18 @@
 
 		<p>His perfect dog is going to be a rottweiler puppy. But those dogs are in high demand and do not stay up for foster for too long. Juan Carlos has wasted too much time looking on web pages that are not up to date and going to pounds where the dog has already been adopted for weeks now. He is fed up with all his time wasted, he just wants to be able to able to enter the information and get some type of notification when the puppy he wants is available.</p>
 		<strong>Interaction Flow: </strong>
-		<ol>
 
-			<l1>User goes to Pet Foster and clicks ADOPT A PET.</l1>
+		<ol>
+			<li>User goes to Pet Foster and clicks ADOPT A PET.</li>
 			<li>Page Loads landing page.</li>
 			<li>User is prompted to sign in but decides to just browse available pets in area.</li>
 			<li>Pages prompts user to select <em>post</em> or <em>search</em>.</li>
-			<l1>User enters information in form page such as animal size and breed.</l1>
+			<li>User enters information in form page such as animal size and breed.</li>
 			<li>Page returns pets located in users area based on search results.</li>
-			<l1>User broadens search results by clicking <em>all of Bernalillo county</em>.</l1>
-			<l1>Information is searched through the database and user is sent to a page with results that best fits users inputs.</l1>
-			<l1>User clicks an animal image that they want or interested in page opens up with more information about the animal, including contact information on the current owner.</l1>
-			<l1>User decides they want the animal.</l1>
+			<li>User broadens search results by clicking <em>all of Bernalillo county</em>.</li>
+			<li>Information is searched through the database and user is sent to a page with results that best fits users inputs.</li>
+			<li>User clicks an animal image that they want or interested in page opens up with more information about the animal, including contact information on the current owner.</li>
+			<li>User decides they want the animal.</li>
 			<li>Page prompts user to sign in or create an account.</li>
 			<li>User creates an account and verifies using email.</li>
 			<li>page returns to user back to searched pet.</li>
