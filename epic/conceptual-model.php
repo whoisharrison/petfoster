@@ -61,8 +61,8 @@
 			<li>Many <strong>orgProfile </strong>to many messages (m to n)</li>
 			<li>Many <strong>usersProfile </strong>message many orgProfile - (m to n)</li>
 			<li>One <strong>post </strong>to many Images - (1 to n)</li>
-		</ul>
-		<h2>ERD Model</h2>
+		</ul><br>
+		<h2>ERD Model:</h2>
 		<img src="https://bootcamp-coders.cnm.edu/~mharrison13/petfoster/public_html/images/erd-pet.svg">
 		<br>
 	</main>
