@@ -32,10 +32,10 @@
 		<ul>
 			<li>orgPostId</li>
 			<li>postId</li>
-			<li>petType</li>
-			<li>petSex</li>
-			<li>petBreed</li>
-			<li>petDescription</li>
+			<li>postType</li>
+			<li>postSex</li>
+			<li>postBreed</li>
+			<li>postDescription</li>
 		</ul>
 
 		<p><strong>image</strong></p>
