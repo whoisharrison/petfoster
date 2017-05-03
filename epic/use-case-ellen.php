@@ -18,10 +18,17 @@
 		<ul>
 			<li>User goes to "Pet Foster ABQ".</li>
 			<li>Site loads to signup <em>or</em> signin page.</li>
-			<li>User creates and verifies a profile on the website </li>
-			<li>Site thanks her for creating a profile and returns her to landing page.</li>
-			<li>User selects <em>post pets</em></li>
-			<li>User enters in all the information for the first dog with the option to add more animals and continues to enter 3 more. clicks <em>submit</em></li>
-			<li>The site posts the information to the adoptable pets section of the website.</li>
+			<li>User signs up under <em>Organization<em> link</li>
+			<li>Site sends verification via email</li>
+			<li>User verifies email</li>
+			<li>Site sends info to admins for <em>organization admin approval</em> and thanks Ellen for signing up</li>
+			<li>User signs in using username and password</li>
+			<li>Site loads landing page</li>
+			<li>User selects <em>post pet or pets</em></li>
+			<li>Site loads text field for first pet</li>
+			<li>User enters in all the information for the first dog</li>
+			<li>Site offers option to enter more pets</li>
+			<li>User continues to enter two more pets and clicks <em>submit</em></li>
+			<li>The site confirms posts and enters the information to the adoptable pets section of the website.</li>
 		</ul>
 	</body>

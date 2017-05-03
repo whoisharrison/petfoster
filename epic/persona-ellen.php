@@ -4,14 +4,14 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Pet Foster ABQ - Persona-C</title>
+		<title>Pet Foster ABQ - Persona Ellen</title>
 		<style></style>
 	</head>
 	<body>
 		<h1>Pet Foster ABQ</h1>
 		<h2>Purpose, Audience, Goal</h2>
 
-		<p></p><strong>Purpose:</strong> The purpose of this website is to post animals for adoption.</p>
+		<p></p><strong>Purpose:</strong> The purpose of this website is to post critical need animals for adoption.</p>
 		<p><strong>Audience:</strong>The target audience for this website are agencies that would like to put a pet up for adoption.  </p>
 		<p><strong>Goal:</strong>The primary goal of this website is to allow a user to post an animal or animals up for adoption.</p>
 
@@ -26,8 +26,5 @@
 
 		<p><strong>Frustrations and Needs:</strong>The shelter is near capacity and many animals are ready for adoption or foster care. She would like to get the animals adopted as soon as possilble. The Department of Animal Welfare's website is outdated and doesn't get much traffic since a former employee who took care of the website left three years ago. </p>
 
-		<p><Strong>Goals:</Strong> <p> Ellen would like to advertise that animals are ready for adoption on a website that reaches a broader audience.</p>
-
-<!--		Comment: Delete the below text. For testing only!-->
-		<p>Extra text to test the rebase effect.</p>
-		<	</body>
+		<p><Strong>Goals:</Strong> Ellen would like to advertise that animals are ready for adoption on a website that reaches a broader audience.</p>
+	</body>
