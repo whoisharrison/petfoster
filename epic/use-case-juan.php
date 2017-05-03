@@ -29,7 +29,7 @@
 			<li>User clicks an animal image that they want or interested in</li>
 			<li>Site opens up with more information about the animal, including contact information on the current owner.</li>
 			<li>User clicks adopt pet</li>
-			<li>Site prompts user to sign <em>in</em> or create an account.</li>
+			<li>Site prompts user to sign in <em>or</em> create an account.</li>
 			<li>User creates an account</li>
 			<li>Site sends verification via email</li>
 			<li>User verifies email</li>
