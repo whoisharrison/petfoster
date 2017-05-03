@@ -19,18 +19,21 @@
 
 		<ol>
 			<li>User goes to Pet Foster and clicks ADOPT A PET.</li>
-			<li>Page Loads landing page.</li>
+			<li>Site Loads landing page.</li>
 			<li>User is prompted to sign in but decides to just browse available pets in area.</li>
-			<li>Page prompts user to select <em>post</em> or <em>search</em>.</li>
+			<li>Site prompts user to select <em>post</em> or <em>search</em>.</li>
 			<li>User enters information in form page such as animal size and breed.</li>
-			<li>Page returns pets located in users area based on search results.</li>
+			<li>Site returns pets located in users area based on search results.</li>
 			<li>User broadens search results by clicking <em>all of Bernalillo county</em>.</li>
-			<li>Information is searched through the database and user is sent to a page with results that best fits users inputs.</li>
-			<li>User clicks an animal image that they want or interested in page opens up with more information about the animal, including contact information on the current owner.</li>
-			<li>User decides they want the animal.</li>
-			<li>Page prompts user to sign in or create an account.</li>
-			<li>User creates an account and verifies using email.</li>
-			<li>Page returns to user back to searched pet.</li>
-			<li>User contacts pet owner for adoption.</li>
+			<li>Site searched database and loads page with results that best fits users inputs.</li>
+			<li>User clicks an animal image that they want or interested in</li>
+			<li>Site opens up with more information about the animal, including contact information on the current owner.</li>
+			<li>User clicks adopt pet</li>
+			<li>Site prompts user to sign <em>in</em> or create an account.</li>
+			<li>User creates an account</li>
+			<li>Site sends verification via email</li>
+			<li>User verifies email</li>
+			<li>Site thanks user for creating account and returns user to pet results</li>
+			<li>User contacts organization for adoption.</li>
 		</ol</body>
 
