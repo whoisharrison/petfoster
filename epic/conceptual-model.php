@@ -10,28 +10,30 @@
 		<ul>
 			<li>profileId</li>
 			<li>profileAtHandle</li>
-			<li>profileAuthToken</li>
+			<li>profileActivationToken (for account verification)</li>
 			<li>profileEmail</li>
-			<li>profileHash</li>
+			<li>profileHash (for account password)</li>
 			<li>profileName</li>
-			<li>profileSalt</li>
+			<li>profileSalt (for account password</li>
 		</ul>
 
 		<p><strong>Organization Profile</strong></p>
 		<ul>
-			<li>organizationId</li>
-			<li>organizationAuthToken</li>
+			<li>organizationId (primary key)</li>
+			<li>organizationActivationToken (for account verification</li>
 			<li>organizationEmail</li>
+			<li>organizationHash (for account password)</li>
 			<li>organizationLicence</li>
 			<li>organizationName</li>
 			<li>organizationPhone</li>
 			<li>organizationProfileId</li>
+			<li>organizationSalt (for account password</li>
 		</ul>
 
 		<p><strong>Post</strong></p>
 		<ul>
-			<li>postId</li>
-			<li>OrganizationId</li>
+			<li>postId (primary key)</li>
+			<li>OrganizationId (foreign key)</li>
 			<li>postBreed</li>
 			<li>postDescription</li>
 			<li>postSex</li>
@@ -40,28 +42,28 @@
 
 		<p><strong>Message</strong></p>
 		<ul>
-			<li>messageId</li>
+			<li>messageId (primary key)</li>
+			<li>messageProfileId (foreign key)</li>
+			<li>messageOrganizationId (foreign key)</li>
 			<li>messageDateTime</li>
-			<li>messageOrganizationId</li>
-			<li>messageProfileId</li>
 			<li>messageContent</li>
 			<li>messageSubject</li>
 		</ul>
 
 		<p><strong>Image</strong></p>
 		<ul>
-			<li>imageId</li>
-			<li>imagePostId</li>
+			<li>imageId (primary key)</li>
+			<li>imagePostId (foreign key)</li>
+			<li>imageCloudinaryId</li>
 			<li>imageType</li>
-			<li>imageCloudinaryrId</li>
 		</ul>
 
 		<p><strong>Relations</strong></p>
 		<ul>
 
-			<li>one organization to many posts</li>
-			<li>many organizations/messages to many messages</li>
-			<li>one post to many images</li>
+			<li>one <strong>organization</strong> to many <strong>posts</strong></li>
+			<li>many <strong>organizations/messages</strong> to many <strong>messages</strong></li>
+			<li>one <strong>post</strong> to many <strong>images</strong></li>
 
 		</ul><br>
 		<h2>ERD Model:</h2>
