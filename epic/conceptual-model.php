@@ -48,7 +48,7 @@
 			<li>messageSubject</li>
 		</ul>
 
-		<p><strong>image</strong></p>
+		<p><strong>Image</strong></p>
 		<ul>
 			<li>imageId</li>
 			<li>imagePostId</li>
@@ -58,10 +58,11 @@
 
 		<p><strong>Relations</strong></p>
 		<ul>
-			<li>Many <strong>orgProfile </strong>to many posts (m to n)</li>
-			<li>Many <strong>orgProfile </strong>to many messages (m to n)</li>
-			<li>Many <strong>usersProfile </strong>message many orgProfile - (m to n)</li>
-			<li>One <strong>post </strong>to many Images - (1 to n)</li>
+
+			<li>one organization to many posts</li>
+			<li>many organizations/messages to many messages</li>
+			<li>one post to many images</li>
+
 		</ul><br>
 		<h2>ERD Model:</h2>
 		<img src="https://bootcamp-coders.cnm.edu/~mharrison13/petfoster/public_html/images/erd-pet.svg">
