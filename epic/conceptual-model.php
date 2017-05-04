@@ -9,40 +9,40 @@
 		<p><strong>Profile</strong></p>
 		<ul>
 			<li>profileId</li>
-			<li>profileAuthToken</li>
-			<li>profileName</li>
-			<li>profileEmail</li>
 			<li>profileAtHandle</li>
-			<li>profileSalt</li>
+			<li>profileAuthToken</li>
+			<li>profileEmail</li>
 			<li>profileHash</li>
+			<li>profileName</li>
+			<li>profileSalt</li>
 		</ul>
 
 		<p><strong>Organization Profile</strong></p>
 		<ul>
 			<li>organizationId</li>
 			<li>organizationAuthToken</li>
-			<li>organizationName</li>
 			<li>organizationEmail</li>
-			<li>organizationPhone</li>
 			<li>organizationLicence</li>
+			<li>organizationName</li>
+			<li>organizationPhone</li>
 			<li>organizationProfileId</li>
 		</ul>
 
 		<p><strong>Post</strong></p>
 		<ul>
-			<li>postOrganizationId</li>
 			<li>postId</li>
-			<li>postType</li>
-			<li>postSex</li>
+			<li>OrganizationId</li>
 			<li>postBreed</li>
 			<li>postDescription</li>
+			<li>postSex</li>
+			<li>postType</li>
 		</ul>
 
 		<p><strong>Message</strong></p>
 		<ul>
 			<li>messageId</li>
 			<li>messageDateTime</li>
-			<li>messageOrgId</li>
+			<li>messageOrganizationId</li>
 			<li>messageProfileId</li>
 			<li>messageContent</li>
 			<li>messageSubject</li>
