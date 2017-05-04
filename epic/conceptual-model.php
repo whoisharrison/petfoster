@@ -8,13 +8,13 @@
 
 		<p><strong>Profile</strong></p>
 		<ul>
-			<li>ProfileId</li>
-			<li>ProfileAuthToken</li>
-			<li>ProfileName</li>
-			<li>ProfileEmail</li>
-			<li>ProfileAtHandle</li>
-			<li>ProfileSalt</li>
-			<li>ProfileHash</li>
+			<li>profileId</li>
+			<li>profileAuthToken</li>
+			<li>profileName</li>
+			<li>profileEmail</li>
+			<li>profileAtHandle</li>
+			<li>profileSalt</li>
+			<li>profileHash</li>
 		</ul>
 
 		<p><strong>Organization Profile</strong></p>
@@ -28,9 +28,9 @@
 			<li>organizationProfileId</li>
 		</ul>
 
-		<p><strong>post</strong></p>
+		<p><strong>Post</strong></p>
 		<ul>
-			<li>organizationPostId</li>
+			<li>postOrganizationId</li>
 			<li>postId</li>
 			<li>postType</li>
 			<li>postSex</li>
@@ -38,12 +38,12 @@
 			<li>postDescription</li>
 		</ul>
 
-		<p><strong>message</strong></p>
+		<p><strong>Message</strong></p>
 		<ul>
 			<li>messageId</li>
-			<li>messageDate</li>
+			<li>messageDateTime</li>
 			<li>messageOrgId</li>
-			<li>messageUserId</li>
+			<li>messageProfileId</li>
 			<li>messageContent</li>
 			<li>messageSubject</li>
 		</ul>
