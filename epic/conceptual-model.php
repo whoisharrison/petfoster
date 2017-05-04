@@ -8,13 +8,13 @@
 
 		<p><strong>Profile</strong></p>
 		<ul>
-			<li>profileId</li>
+			<li>profileId (primary key)</li>
 			<li>profileAtHandle</li>
 			<li>profileActivationToken (for account verification)</li>
 			<li>profileEmail</li>
 			<li>profileHash (for account password)</li>
 			<li>profileName</li>
-			<li>profileSalt (for account password</li>
+			<li>profileSalt (for account password)</li>
 		</ul>
 
 		<p><strong>Organization Profile</strong></p>
@@ -27,13 +27,13 @@
 			<li>organizationName</li>
 			<li>organizationPhone</li>
 			<li>organizationProfileId</li>
-			<li>organizationSalt (for account password</li>
+			<li>organizationSalt (for account password)</li>
 		</ul>
 
 		<p><strong>Post</strong></p>
 		<ul>
 			<li>postId (primary key)</li>
-			<li>OrganizationId (foreign key)</li>
+			<li>postOrganizationId (foreign key)</li>
 			<li>postBreed</li>
 			<li>postDescription</li>
 			<li>postSex</li>
@@ -43,10 +43,10 @@
 		<p><strong>Message</strong></p>
 		<ul>
 			<li>messageId (primary key)</li>
-			<li>messageProfileId (foreign key)</li>
 			<li>messageOrganizationId (foreign key)</li>
-			<li>messageDateTime</li>
+			<li>messageProfileId (foreign key)</li>
 			<li>messageContent</li>
+			<li>messageDateTime</li>
 			<li>messageSubject</li>
 		</ul>
 
@@ -54,7 +54,7 @@
 		<ul>
 			<li>imageId (primary key)</li>
 			<li>imagePostId (foreign key)</li>
-			<li>imageCloudinaryId</li>
+			<li>imageCloudinaryId (foreign key)</li>
 			<li>imageType</li>
 		</ul>
 
