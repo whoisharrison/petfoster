@@ -17,16 +17,16 @@
 			<li>profileSalt (for account password)</li>
 		</ul>
 
-		<p><strong>Organization Profile</strong></p>
+		<p><strong>Organization</strong></p>
 		<ul>
 			<li>organizationId (primary key)</li>
-			<li>organizationActivationToken (for account verification</li>
+			<li>organizationProfileId (foreign key)</li>
+			<li>organizationActivationToken (for account verification)</li>
 			<li>organizationEmail</li>
 			<li>organizationHash (for account password)</li>
 			<li>organizationLicence</li>
 			<li>organizationName</li>
 			<li>organizationPhone</li>
-			<li>organizationProfileId</li>
 			<li>organizationSalt (for account password)</li>
 		</ul>
 
@@ -54,7 +54,7 @@
 		<ul>
 			<li>imageId (primary key)</li>
 			<li>imagePostId (foreign key)</li>
-			<li>imageCloudinaryId (foreign key)</li>
+			<li>imageCloudinaryId (public key)</li>
 			<li>imageType</li>
 		</ul>
 
