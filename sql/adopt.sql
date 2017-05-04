@@ -22,6 +22,7 @@ CREATE TABLE orgProfile (
 	orgSalt CHAR(64) NOT NULL,
 	orgActivationToken CHAR (32),
 	OrgName VARCHAR(64),
+	INDEX(orgId),
 	UNIQUE(orgEmail),
 	UNIQUE(orgAtHandle),
 	PRIMARY KEY(orgId)
@@ -36,6 +37,7 @@ CREATE TABLE userProfile (
 	UserHash CHAR(128) NOT NULL,
 	userSalt CHAR(64) NOT NULL,
 	userActivationToken CHAR (32),
+	INDEX(userId),
 	PRIMARY KEY(userId)
 );
 
