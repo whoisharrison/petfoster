@@ -6,31 +6,31 @@
 	<main>
 		<h2>Entities and Attributes</h2>
 
-		<p><strong>Org Profile</strong></p>
+		<p><strong>Profile</strong></p>
 		<ul>
-			<li>orgId</li>
-			<li>orgAuthToken</li>
-			<li>orgName</li>
-			<li>orgEmail</li>
-			<li>orgPhone</li>
-			<li>orgLicence</li>
-			<li>orgOwnerProfileId</li>
+			<li>ProfileId</li>
+			<li>ProfileAuthToken</li>
+			<li>ProfileName</li>
+			<li>ProfileEmail</li>
+			<li>ProfileAtHandle</li>
+			<li>ProfileSalt</li>
+			<li>ProfileHash</li>
 		</ul>
 
-		<p><strong>User Profile</strong></p>
+		<p><strong>Organization Profile</strong></p>
 		<ul>
-			<li>userId</li>
-			<li>userAuthToken</li>
-			<li>userName</li>
-			<li>userEmail</li>
-			<li>userAtHandle</li>
-			<li>userSalt</li>
-			<li>userHash</li>
+			<li>organizationId</li>
+			<li>organizationAuthToken</li>
+			<li>organizationName</li>
+			<li>organizationEmail</li>
+			<li>organizationPhone</li>
+			<li>organizationLicence</li>
+			<li>organizationProfileId</li>
 		</ul>
 
 		<p><strong>post</strong></p>
 		<ul>
-			<li>orgPostId</li>
+			<li>organizationPostId</li>
 			<li>postId</li>
 			<li>postType</li>
 			<li>postSex</li>
@@ -38,7 +38,7 @@
 			<li>postDescription</li>
 		</ul>
 
-		<p><strong>image</strong></p>
+		<p><strong>message</strong></p>
 		<ul>
 			<li>messageId</li>
 			<li>messageDate</li>
@@ -48,11 +48,12 @@
 			<li>messageSubject</li>
 		</ul>
 
-		<p><strong>message</strong></p>
+		<p><strong>image</strong></p>
 		<ul>
 			<li>imageId</li>
 			<li>imagePostId</li>
 			<li>imageType</li>
+			<li>imageCloudinaryrId</li>
 		</ul>
 
 		<p><strong>Relations</strong></p>
