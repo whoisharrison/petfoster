@@ -62,7 +62,7 @@
 		<ul>
 
 			<li>one <strong>organization</strong> to many <strong>posts</strong></li>
-			<li>many <strong>organizations/messages</strong> to many <strong>messages</strong></li>
+			<li>many <strong>organizations/profiles</strong> to many <strong>messages</strong></li>
 			<li>one <strong>post</strong> to many <strong>images</strong></li>
 
 		</ul><br>
