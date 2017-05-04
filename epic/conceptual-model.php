@@ -67,4 +67,5 @@
 		<img src="https://bootcamp-coders.cnm.edu/~mharrison13/petfoster/public_html/images/erd-pet.svg">
 		<br>
 	</main>
+
 </body>
