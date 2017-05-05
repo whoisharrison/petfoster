@@ -51,8 +51,8 @@ CREATE TABLE message (
 	messageSubject VARCHAR (64),
 	INDEX(messageOrganizationId),
 	INDEX(messageProfileId),
-	FOREIGN KEY (messageOrganizationId),
-	FOREIGN KEY (messageProfileId),
+	FOREIGN KEY (messageOrganizationId) REFERENCES organization(organizationId),
+	FOREIGN KEY (messageProfileId) REFERENCES profile(profileId),
 	PRIMARY KEY(messageId)
 );
 
@@ -61,11 +61,11 @@ CREATE TABLE post (
 	postId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	postOrganizationId VARCHAR(128) NOT NULL,
 	postBreed VARCHAR(32) NOT NULL,
-	PostSex VARCHAR(2) NOT NULL,
-	PostType VARCHAR(32) NOT NULL,
+	postSex VARCHAR(2) NOT NULL,
+	postType VARCHAR(32) NOT NULL,
 	postDescription VARCHAR(254) NOT NULL,
 	INDEX(postOrganizationId),
-	FOREIGN KEY (postOrganizationId),
+	FOREIGN KEY (postOrganizationId) REFERENCES organization(organizationId),
 	PRIMARY KEY(postId)
 );
 
@@ -76,7 +76,7 @@ CREATE TABLE image (
 	imageCloudinaryId VARCHAR(32) NOT NULL,
 	imageType VARCHAR(2) NOT NULL,
 	INDEX(postOrganizationId),
-	FOREIGN KEY (postOrganizationId),
+	FOREIGN KEY (postOrganizationId) REFERENCES organization(organizationId),
 	PRIMARY KEY(postId)
 );
 
