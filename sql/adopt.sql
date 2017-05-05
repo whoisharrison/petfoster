@@ -42,8 +42,8 @@ DROP TABLE IF EXISTS post;
 -- create message entity
 CREATE TABLE message (
 	messageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	messageProfileId INT UNSIGNED NOT NULL,
 	messageOrganizationId INT UNSIGNED NOT NULL,
+	messageProfileId INT UNSIGNED NOT NULL,
 	messageContent VARCHAR(256),
 	messageDateTime DATETIME NOT NULL,
 	messageSubject VARCHAR (64),
@@ -59,9 +59,9 @@ CREATE TABLE post (
 	postId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	postOrganizationId VARCHAR(128) NOT NULL,
 	postBreed VARCHAR(32) NOT NULL,
+	postDescription VARCHAR(254) NOT NULL,
 	postSex VARCHAR(2) NOT NULL,
 	postType VARCHAR(32) NOT NULL,
-	postDescription VARCHAR(254) NOT NULL,
 	INDEX(postOrganizationId),
 	FOREIGN KEY (postOrganizationId) REFERENCES organization(organizationId),
 	PRIMARY KEY(postId)
