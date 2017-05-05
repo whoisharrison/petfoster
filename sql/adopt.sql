@@ -1,10 +1,10 @@
 -- this is the ABQ-Adopt SQL
 
-DROP TABLE IF EXISTS organization;
-DROP TABLE IF EXISTS profile;
-DROP TABLE IF EXISTS message;
 DROP TABLE IF EXISTS image;
 DROP TABLE IF EXISTS post;
+DROP TABLE IF EXISTS message;
+DROP TABLE IF EXISTS organization;
+DROP TABLE IF EXISTS profile;
 
 -- create user profile entity
 	CREATE TABLE profile (
