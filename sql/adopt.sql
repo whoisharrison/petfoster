@@ -6,40 +6,38 @@ DROP TABLE IF EXISTS message;
 DROP TABLE IF EXISTS image;
 DROP TABLE IF EXISTS post;
 
+-- create user profile entity
+	CREATE TABLE profile (
+	profileId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	profileActivationToken CHAR (32),
+	profileAtHandle VARCHAR(32) NOT NULL,
+	profileEmail VARCHAR(128) NOT NULL,
+	profileHash CHAR(128) NOT NULL,
+	profileName VARCHAR(32) NOT NULL,
+	profileSalt CHAR(64) NOT NULL,
+	INDEX(profileId),
+	PRIMARY KEY(profileId)
+);
+
 -- create org profile entity
-CREATE TABLE organization (
+	CREATE TABLE organization (
 	organizationId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	organizationEmail VARCHAR(128) NOT NULL,
-	organizationAtHandle VARCHAR(32) NOT NULL,
-	organizationPhone VARCHAR(32) NOT NULL,
-	organizationLicense VARCHAR(32) NOT NULL,
-	organizationCity VARCHAR(32) NOT NULL,
-	organizationZip CHAR(9) NOT NULL,
-	organizationState CHAR(2) NOT NULL,
-	organizationAddress1 VARCHAR(64) NOT NULL,
-	organizationAddress2 VARCHAR(64) NOT NULL,
-	organizationHash CHAR(128) NOT NULL,
-	organizationSalt CHAR(64) NOT NULL,
 	organizationActivationToken CHAR (32),
+	organizationAddress1 VARCHAR(64) NOT NULL,
+	organizationAddress2 VARCHAR(64) NULL,
+	organizationCity VARCHAR(32) NOT NULL,
+	organizationEmail VARCHAR(128) NOT NULL,
+	organizationLicense VARCHAR(32) NOT NULL,
 	organizationName VARCHAR(64),
+	organizationPhone VARCHAR(32) NOT NULL,
+	organizationState CHAR(2) NOT NULL,
+	organizationZip CHAR(10) NOT NULL,
 	INDEX(organizationId),
 	UNIQUE(organizationEmail),
 	UNIQUE(organizationAtHandle),
 	PRIMARY KEY(organizationId)
 );
 
--- create user profile entity
-CREATE TABLE profile (
-	profileId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	profileEmail VARCHAR(128) NOT NULL,
-	profileAtHandle VARCHAR(32) NOT NULL,
-	profileName VARCHAR(32) NOT NULL,
-	profileHash CHAR(128) NOT NULL,
-	profileSalt CHAR(64) NOT NULL,
-	profileActivationToken CHAR (32),
-	INDEX(profileId),
-	PRIMARY KEY(profileId)
-);
 
 -- create message entity
 CREATE TABLE message (
