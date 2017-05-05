@@ -64,6 +64,7 @@ CREATE TABLE Post entity (
 	PostSex VARCHAR(2) NOT NULL,
 	PostType VARCHAR(32) NOT NULL,
 	postDescription VARCHAR(254) NOT NULL,
-INDEX(postOrganizationId),
-PRIMARY KEY(userId)
+	INDEX(postOrganizationId),
+	FOREIGN KEY (postOrganizationId),
+	PRIMARY KEY(postId)
 );
