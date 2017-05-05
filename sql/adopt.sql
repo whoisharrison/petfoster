@@ -45,7 +45,7 @@ CREATE TABLE message (
 	messageOrganizationId INT UNSIGNED NOT NULL,
 	messageProfileId INT UNSIGNED NOT NULL,
 	messageContent VARCHAR(256),
-	messageDateTime DATETIME NOT NULL,
+	messageDateTime DATETIME (6) NOT NULL,
 	messageSubject VARCHAR (64),
 	INDEX(messageOrganizationId),
 	INDEX(messageProfileId),
