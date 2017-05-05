@@ -1,13 +1,13 @@
 -- this is the ABQ-Adopt SQL
 
-DROP TABLE IF EXISTS orgProfile;
-DROP TABLE IF EXISTS userProfile;
+DROP TABLE IF EXISTS Organization;
+DROP TABLE IF EXISTS Profile;
 DROP TABLE IF EXISTS 'message';
 DROP TABLE IF EXISTS image;
 DROP TABLE IF EXISTS post;
 
 -- create org profile entity
-CREATE TABLE orgProfile (
+CREATE TABLE Organization entity (
 	organizationId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	organizationEmail VARCHAR(128) NOT NULL,
 	organizationATHandle VARCHAR(32) NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE orgProfile (
 );
 
 -- create user profile entity
-CREATE TABLE userProfile (
+CREATE TABLE Profile entity (
 	profileId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	profileEmail VARCHAR(128) NOT NULL,
 	profileATHandle VARCHAR(32) NOT NULL,
@@ -37,12 +37,31 @@ CREATE TABLE userProfile (
 	profileHash CHAR(128) NOT NULL,
 	profileSalt CHAR(64) NOT NULL,
 	profileActivationToken CHAR (32),
-	INDEX(userId),
+	INDEX(profileId),
 	PRIMARY KEY(userId)
 );
 
 -- create message entity
-CREATE TABLE 'message entity (
-	msgID INT UNSIGNED AUTO_INCREMENT NOT NULL,
+CREATE TABLE 'message' entity (
+	messageID INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	messageProfileId INT UNSIGNED NOT NULL,
+	messageOrganizationId INT UNSIGNED NOT NULL,
+	messageContent VARCHAR(254),
+	messageDateTime DATETIME NOT NULL,
+	messageSubject VARCHAR (64)
+	INDEX(messageOrganizationId)
+	INDEX(messageProfileId),
+	FOREIGN KEY (messageOrganizationId),
+	FOREIGN KEY (messageProfileId),
+	PRIMARY KEY(messageId)
+);
 
-)
+-- create post entity
+CREATE TABLE Post entity (
+	postId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	postOrganizationId VARCHAR(128) NOT NULL,
+	postATHandle VARCHAR(32) NOT NULL,
+	postName VARCHAR(32) NOT NULL,
+INDEX(profileId),
+PRIMARY KEY(userId)
+);
