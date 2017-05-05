@@ -38,7 +38,7 @@ CREATE TABLE profile (
 	profileSalt CHAR(64) NOT NULL,
 	profileActivationToken CHAR (32),
 	INDEX(profileId),
-	PRIMARY KEY(userId)
+	PRIMARY KEY(profileId)
 );
 
 -- create message entity
@@ -75,7 +75,8 @@ CREATE TABLE image (
 	imagePostId VARCHAR(128) NOT NULL,
 	imageCloudinaryId VARCHAR(32) NOT NULL,
 	imageType VARCHAR(2) NOT NULL,
-INDEX(postOrganizationId),
-FOREIGN KEY (postOrganizationId),
-PRIMARY KEY(postId)
+	INDEX(postOrganizationId),
+	FOREIGN KEY (postOrganizationId),
+	PRIMARY KEY(postId)
 );
+
