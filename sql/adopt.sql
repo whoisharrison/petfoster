@@ -1,13 +1,13 @@
 -- this is the ABQ-Adopt SQL
 
-DROP TABLE IF EXISTS Organization;
-DROP TABLE IF EXISTS Profile;
-DROP TABLE IF EXISTS 'message';
+DROP TABLE IF EXISTS organization;
+DROP TABLE IF EXISTS profile;
+DROP TABLE IF EXISTS message;
 DROP TABLE IF EXISTS image;
 DROP TABLE IF EXISTS post;
 
 -- create org profile entity
-CREATE TABLE Organization entity (
+CREATE TABLE organization (
 	organizationId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	organizationEmail VARCHAR(128) NOT NULL,
 	organizationATHandle VARCHAR(32) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE Organization entity (
 	organizationHash CHAR(128) NOT NULL,
 	organizationSalt CHAR(64) NOT NULL,
 	organizationActivationToken CHAR (32),
-	OrganizationName VARCHAR(64),
+	organizationName VARCHAR(64),
 	INDEX(organizationId),
 	UNIQUE(organizationEmail),
 	UNIQUE(organizationAtHandle),
@@ -29,7 +29,7 @@ CREATE TABLE Organization entity (
 );
 
 -- create user profile entity
-CREATE TABLE Profile entity (
+CREATE TABLE profile (
 	profileId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	profileEmail VARCHAR(128) NOT NULL,
 	profileATHandle VARCHAR(32) NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE Profile entity (
 );
 
 -- create message entity
-CREATE TABLE 'message' entity (
+CREATE TABLE message (
 	messageID INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	messageProfileId INT UNSIGNED NOT NULL,
 	messageOrganizationId INT UNSIGNED NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE 'message' entity (
 );
 
 -- create post entity
-CREATE TABLE Post entity (
+CREATE TABLE post (
 	postId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	postOrganizationId VARCHAR(128) NOT NULL,
 	postBreed VARCHAR(32) NOT NULL,
@@ -67,4 +67,15 @@ CREATE TABLE Post entity (
 	INDEX(postOrganizationId),
 	FOREIGN KEY (postOrganizationId),
 	PRIMARY KEY(postId)
+);
+
+-- create post entity
+CREATE TABLE image (
+	imageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	imagePostId VARCHAR(128) NOT NULL,
+	imageCloudinaryId VARCHAR(32) NOT NULL,
+	imageType VARCHAR(2) NOT NULL,
+INDEX(postOrganizationId),
+FOREIGN KEY (postOrganizationId),
+PRIMARY KEY(postId)
 );
