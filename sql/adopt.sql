@@ -34,7 +34,6 @@ DROP TABLE IF EXISTS post;
 	organizationZip CHAR(10) NOT NULL,
 	INDEX(organizationId),
 	UNIQUE(organizationEmail),
-	UNIQUE(organizationAtHandle),
 	PRIMARY KEY(organizationId)
 );
 
