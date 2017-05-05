@@ -69,7 +69,7 @@ CREATE TABLE post (
 	PRIMARY KEY(postId)
 );
 
--- create post entity
+-- create image entity
 CREATE TABLE image (
 	imageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	imagePostId VARCHAR(128) NOT NULL,
