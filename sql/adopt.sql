@@ -46,7 +46,7 @@ CREATE TABLE 'message' entity (
 	messageID INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	messageProfileId INT UNSIGNED NOT NULL,
 	messageOrganizationId INT UNSIGNED NOT NULL,
-	messageContent VARCHAR(254),
+	messageContent VARCHAR(256),
 	messageDateTime DATETIME NOT NULL,
 	messageSubject VARCHAR (64)
 	INDEX(messageOrganizationId)
@@ -60,8 +60,10 @@ CREATE TABLE 'message' entity (
 CREATE TABLE Post entity (
 	postId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	postOrganizationId VARCHAR(128) NOT NULL,
-	postATHandle VARCHAR(32) NOT NULL,
-	postName VARCHAR(32) NOT NULL,
-INDEX(profileId),
+	postBreed VARCHAR(32) NOT NULL,
+	PostSex VARCHAR(2) NOT NULL,
+	PostType VARCHAR(32) NOT NULL,
+	postDescription VARCHAR(254) NOT NULL,
+INDEX(postOrganizationId),
 PRIMARY KEY(userId)
 );
