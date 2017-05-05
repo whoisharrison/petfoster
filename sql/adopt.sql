@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS post;
 CREATE TABLE organization (
 	organizationId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	organizationEmail VARCHAR(128) NOT NULL,
-	organizationATHandle VARCHAR(32) NOT NULL,
+	organizationAtHandle VARCHAR(32) NOT NULL,
 	organizationPhone VARCHAR(32) NOT NULL,
 	organizationLicense VARCHAR(32) NOT NULL,
 	organizationCity VARCHAR(32) NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE organization (
 CREATE TABLE profile (
 	profileId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	profileEmail VARCHAR(128) NOT NULL,
-	profileATHandle VARCHAR(32) NOT NULL,
+	profileAtHandle VARCHAR(32) NOT NULL,
 	profileName VARCHAR(32) NOT NULL,
 	profileHash CHAR(128) NOT NULL,
 	profileSalt CHAR(64) NOT NULL,
