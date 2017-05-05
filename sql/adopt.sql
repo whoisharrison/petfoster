@@ -37,7 +37,6 @@ DROP TABLE IF EXISTS post;
 	PRIMARY KEY(organizationId)
 );
 
-
 -- create message entity
 CREATE TABLE message (
 	messageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
