@@ -43,13 +43,13 @@ CREATE TABLE profile (
 
 -- create message entity
 CREATE TABLE message (
-	messageID INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	messageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	messageProfileId INT UNSIGNED NOT NULL,
 	messageOrganizationId INT UNSIGNED NOT NULL,
 	messageContent VARCHAR(256),
 	messageDateTime DATETIME NOT NULL,
-	messageSubject VARCHAR (64)
-	INDEX(messageOrganizationId)
+	messageSubject VARCHAR (64),
+	INDEX(messageOrganizationId),
 	INDEX(messageProfileId),
 	FOREIGN KEY (messageOrganizationId),
 	FOREIGN KEY (messageProfileId),
