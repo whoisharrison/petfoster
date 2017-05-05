@@ -74,9 +74,8 @@ CREATE TABLE image (
 	imageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	imagePostId VARCHAR(128) NOT NULL,
 	imageCloudinaryId VARCHAR(32) NOT NULL,
-	imageType VARCHAR(2) NOT NULL,
-	INDEX(postOrganizationId),
-	FOREIGN KEY (postOrganizationId) REFERENCES organization(organizationId),
+	INDEX(imagePostId),
+	FOREIGN KEY (imagePostId) REFERENCES organization(organizationId),
 	PRIMARY KEY(postId)
 );
 
