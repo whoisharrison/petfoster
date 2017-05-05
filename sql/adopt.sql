@@ -8,24 +8,24 @@ DROP TABLE IF EXISTS post;
 
 -- create org profile entity
 CREATE TABLE orgProfile (
-	organizaionId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	organizaionEmail VARCHAR(128) NOT NULL,
-	organizaionATHandle VARCHAR(32) NOT NULL,
-	organizaionPhone VARCHAR(32) NOT NULL,
-	organizaionLicense VARCHAR(32) NOT NULL,
-	organizaionCity VARCHAR(32) NOT NULL,
-	organizaionZip CHAR(9) NOT NULL,
-	organizaionState CHAR(2) NOT NULL,
-	organizaionAddress1 VARCHAR(64) NOT NULL,
-	organizaionAddress2 VARCHAR(64) NOT NULL,
-	organizaionHash CHAR(128) NOT NULL,
-	organizaionSalt CHAR(64) NOT NULL,
-	organizaionActivationToken CHAR (32),
-	OrganizaionName VARCHAR(64),
-	INDEX(organizaionId),
-	UNIQUE(organizaionEmail),
-	UNIQUE(organizaionAtHandle),
-	PRIMARY KEY(organizaionId)
+	organizationId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	organizationEmail VARCHAR(128) NOT NULL,
+	organizationATHandle VARCHAR(32) NOT NULL,
+	organizationPhone VARCHAR(32) NOT NULL,
+	organizationLicense VARCHAR(32) NOT NULL,
+	organizationCity VARCHAR(32) NOT NULL,
+	organizationZip CHAR(9) NOT NULL,
+	organizationState CHAR(2) NOT NULL,
+	organizationAddress1 VARCHAR(64) NOT NULL,
+	organizationAddress2 VARCHAR(64) NOT NULL,
+	organizationHash CHAR(128) NOT NULL,
+	organizationSalt CHAR(64) NOT NULL,
+	organizationActivationToken CHAR (32),
+	OrganizationName VARCHAR(64),
+	INDEX(organizationId),
+	UNIQUE(organizationEmail),
+	UNIQUE(organizationAtHandle),
+	PRIMARY KEY(organizationId)
 );
 
 -- create user profile entity
