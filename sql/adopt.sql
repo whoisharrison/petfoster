@@ -15,7 +15,7 @@ DROP TABLE IF EXISTS profile;
 	profileHash CHAR(128) NOT NULL,
 	profileName VARCHAR(32) NOT NULL,
 	profileSalt CHAR(64) NOT NULL,
-	INDEX(profileId),
+	UNIQUE(profileEmail),
 	PRIMARY KEY(profileId)
 );
 
