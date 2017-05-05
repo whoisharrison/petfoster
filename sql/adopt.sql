@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS profile;
 -- create org profile entity
 	CREATE TABLE organization (
 	organizationId INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	organizationProfileId INT UNSIGNED NOT NULL,
 	organizationActivationToken CHAR (32),
 	organizationAddress1 VARCHAR(64) NOT NULL,
 	organizationAddress2 VARCHAR(64) NULL,
@@ -32,8 +33,9 @@ DROP TABLE IF EXISTS profile;
 	organizationPhone VARCHAR(32) NOT NULL,
 	organizationState CHAR(2) NOT NULL,
 	organizationZip CHAR(10) NOT NULL,
-	INDEX(organizationId),
+	INDEX(organizationProfileId),
 	UNIQUE(organizationEmail),
+	FOREIGN KEY (organizationProfileId) REFERENCES profile(profileId),
 	PRIMARY KEY(organizationId)
 );
 
