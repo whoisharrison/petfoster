@@ -76,6 +76,6 @@ CREATE TABLE image (
 	imageCloudinaryId VARCHAR(32) NOT NULL,
 	INDEX(imagePostId),
 	FOREIGN KEY (imagePostId) REFERENCES organization(organizationId),
-	PRIMARY KEY(postId)
+	PRIMARY KEY(imageId)
 );
 
