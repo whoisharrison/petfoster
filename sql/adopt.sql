@@ -60,8 +60,8 @@ CREATE TABLE post (
 	postOrganizationId VARCHAR(128) NOT NULL,
 	postBreed VARCHAR(32) NOT NULL,
 	postDescription VARCHAR(255) NOT NULL,
-	postSex VARCHAR(1) NOT NULL,
-	postType VARCHAR(32) NOT NULL,
+	postSex CHAR(1) NOT NULL,
+	postType CHAR(1) NOT NULL,
 	INDEX(postOrganizationId),
 	FOREIGN KEY (postOrganizationId) REFERENCES organization(organizationId),
 	PRIMARY KEY(postId)
