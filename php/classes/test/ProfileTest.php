@@ -56,8 +56,47 @@ class ProfileTest extends PetRescueAbqTest {
 	/**
 	 * valid salt to use
 	 * @var string $VALID_SALT
-	 */
+	 **/
 	protected $VALID_SALT;
+
+	/**
+	 * run default setup to operation to create salt and hash
+	 **/
+	public final function setUp() : VOID {
+		parent::setUp();
+
+		//
+		$password = "123456";
+		$this->VALID_SALT = bin2hex(random_bytes(32));
+		$this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 262144);
+		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
+	}
+
+	/**
+	 * test inserting a valid Profile and the mySQL data matches
+	 **/
+	public function testInsertValidProfile() : void {
+		// count the number of rows and save for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+
+		// create a new Profile and insert in mySQL
+		$profile = new Profile(null, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->Valid_Email, $this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT);
+
+		//var_dump($profile);
+
+		$profile->insert($this->getPDO());
+
+		//grab the data from mySQL and enforce the fields match our expectations
+		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
+		$this->assertSame($numRows + 1, $this->getConnecion()->getPDO(), $profile->getProfileID());
+		$this->assertSame($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertSame($pdoProfile->getProfileAtHandle(), $this->VALID_ATHANDLE);
+		$this->assertSame($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
+		$this->assertSame($pdoProfile->getProfileHash(), $this->VALID_HASH);
+		$this->assertSame($pdoProfile->getProfileName(), $this->VALID_NAME);
+		$this->assertSame($pdoProfile->getProfileSale(), $this->VALID_SALT);
+	}
+
 
 
 }
