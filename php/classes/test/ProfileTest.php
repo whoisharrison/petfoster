@@ -60,7 +60,6 @@ class ProfileTest extends PetRescueAbqTest {
 	protected $VALID_SALT;
 
 
-
 }
 
 
