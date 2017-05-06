@@ -134,6 +134,79 @@ class ProfileTest extends PetRescueAbqTest {
 		$this->assertSame($pdoProfile->getProfileSale(), $this->VALID_SALT);
 	}
 
+	/**
+	 * test updating a Profile that does not exist
+	 *
+	 * @expectedException \PDOException
+	 **/
+	public function testUpdateInvalidProfile() {
+		// create a Profile and try to update it without actually inserting it
+		$profile = new Profile(null, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT);
+		$profile->update($this->getPFO());
+	}
+
+	/**
+	 * test creating a Profile and deleting it
+	 **/
+	public function testDeleteValidProfile() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+
+		// create a new Profile and insert into mySQL
+		$profile = new Profile(null, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT):
+		$profile->insert($this->getPDO());
+
+		// delete Profile from mySQL
+		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$profile->delete($this->getPDO());
+
+		// grab data from mySQL and enforce the Profile does not exist
+		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
+		$this->assertNull($pdoProfile);
+		$this->assertSame($numRows, $this->getConnection()->getRowCount("profile"));
+	}
+
+	/**
+	 * test deleting a Profile that does not exist
+	 *
+	 * #expectedException \PDOException
+	 **/
+	public function testDeleteInvalidProfile() : void {
+		// create a Profile and try to delete it without actually inserting it
+		$profile = new Profile(null, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT);
+		$profile->delete($this->getPDO());
+	}
+
+	/**
+	 * test inserting a Profile and re-grabbing it from mySQL
+	 **/
+	public function testGetValidProfileByProfileId() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+
+		//create a new Profile and insert into mySQL
+		$profile = new Profile(null, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->VALID_EMAIL,
+			$this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT);
+		$profile->insert($getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
+		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertSame($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertSame($pdoProfile->getProfileAtHandle(), $this->VALID_ATHANDLE);
+		$this->assertSame($pdoProfile->getProfileEmail(), $this->VALID_HASH);
+		$this->assertSame($pdoProfile->getProfileName(), $this->VALID_NAME);
+		$this->assertSame($pdoProfile->getProfileSalt(), $this->VALID_SALT);
+	}
+
+	/**
+	 * test grabbing a Profile that does not exist
+	 **/
+	public function testGetInvalidProfileByProfileId() : void {
+		// grab a profile id that exceed the maximum allowable profile id
+		$profile = Profile::getProfileByProfileId($this->getPDO(), PetRescueAbqTest::INVALID_KEY);
+		$this->assertNull($profile);
+	}
 
 }
 
