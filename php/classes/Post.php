@@ -12,6 +12,7 @@ require_once("autoload.php");
  */
 
 class Post implements \JsonSerializable {
+	private postId;
 
 	/**
 	 * formats the state variables for JSON serialization
