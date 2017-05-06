@@ -4,7 +4,7 @@
  * Date: 5/5/17
  * Time: 10:25 PM
  **/
-namespace PetRescueAbq\http\petfoster\Profile;
+namespace PetRescueAbq\http\Petfoster\Profile;
 
 require_once(dirname(__DIR__) . "/autoload.php");
 
