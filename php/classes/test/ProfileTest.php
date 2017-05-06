@@ -33,7 +33,7 @@ class ProfileTest extends PetRescueAbqTest {
 	 * valid second at handle to use
 	 * @var string $VALID_ATHANDLE2
 	 **/
-	protected $VALID_ATHANDLE = "@passingtest";
+	protected $VALID_ATHANDLE2 = "@passingtest";
 
 	/**
 	 * valid email to use
@@ -62,7 +62,7 @@ class ProfileTest extends PetRescueAbqTest {
 	/**
 	 * run default setup to operation to create salt and hash
 	 **/
-	public final function setUp() : VOID {
+	public final function setUp() : void {
 		parent::setUp();
 
 		//
@@ -97,6 +97,42 @@ class ProfileTest extends PetRescueAbqTest {
 		$this->assertSame($pdoProfile->getProfileSale(), $this->VALID_SALT);
 	}
 
+	/**
+	 * test inserting a Profile that already exists
+	 *
+	 * @expectedException \PDOException
+	 **/
+	public function testInsertInvalidProfile() : void {
+		// create a profile with a non null profileId and it will fail
+		$profile = new Profile(PetRescueAbqTest::INVALID_KEY, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT);
+		$profile->insert($this->getPDO());
+	}
+
+	/**
+	 * test inserting a Profile, editing and then updating it
+	 **/
+	public function testUpdateValidProfile() {
+		// count the number of rows and save if for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+
+		//create a ne Profile and insert into mySQL
+		$profile = new Profile(null, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT);
+		$profile->insert($this->getPDO());
+
+		//edit the Profile and update it in mySQL
+		$profile->setProfileAtHandle($this->VALID_ATHANDLE2);
+		$profile->update($this->getPDO());
+
+		// grab data from mySQL and enforce the fields match our expectations
+		$pdoProfile = Profile::getProfilebyProfileId($this->getPDO(), $profile->getProfileId());
+		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertSame($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertSame($pdoProfile->getProfileAtHandle(), $this->VALID_ATHANDLE2);
+		$this->assertSame($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
+		$this->assertSame($pdoProfile->getProfileHash(), $this->VALID_HASH);
+		$this->assertSame($pdoProfile->getProfileName(), $this->VALID_NAME);
+		$this->assertSame($pdoProfile->getProfileSale(), $this->VALID_SALT);
+	}
 
 
 }
