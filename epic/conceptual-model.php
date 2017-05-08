@@ -58,7 +58,6 @@
 			<li>imageId (primary key)</li>
 			<li>imagePostId (foreign key)</li>
 			<li>imageCloudinaryId (public key)</li>
-			<li>imageType</li>
 		</ul>
 
 		<p><strong>Relations</strong></p>

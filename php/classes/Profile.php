@@ -67,7 +67,7 @@ class Profile implements \JsonSerializable {
 			$this->setProfileName($newProfileName);
 		}
 			//determine what exception was thrown
-		catch(\InvalidArgumentException | \TypeError | \Exception) {
+		catch(\InvalidArgumentException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class ($exception);
 			throw(new $excpetionType($exception->getMessage(), 0, $exception));
 		}
