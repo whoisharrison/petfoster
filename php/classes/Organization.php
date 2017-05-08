@@ -14,17 +14,13 @@ require_once("autoload.php");
  * @version 0.1.0
  **/
 
-/**
- * Class Organization
- * @package Edu\Cnm\Petfoster
- **/
-	/**id for this Organization; this is the primary key
-	 *@var int $organizationId
+	/**Class Organization
+	 *@package Edu\Cnm\Petfoster
 	 **/
 class Organization implements \JsonSerializable {
 	/**
 	 *id for this Organization; this is the primary key
-	 * @var int $productId
+	 * @var int $organizationId
 	 **/
 	private $organizationId;
 	/*
@@ -82,4 +78,39 @@ class Organization implements \JsonSerializable {
 	 * @var char $organizationZip
 	 **/
 	private $organizationZip;
+	/*
+	 * Constructor for this Organization
+	 * @param int|null $newOrganizationId id of this Organization or null if a new Organization
+	 * @param int $newOrganizationProfileId id of the Profile that administers the Organization's profile and posts.
+	 * @param char|null $newOrganizationActivationToken activation token to authorize the use of the organization profile.
+	 * @param string $newOrganizationAddress1 Primary address line of the Organization.
+	 * @param string $newOrganizationAddress2 Secondary address line of the Organization.
+	 * @param string $newOrganizationCity City for address of the Organization.
+	 * @param string $newOrganizationEmail Email of the Organization.
+	 * @param string $newOrganizationLicense License of the Organization.
+	 * @param string $newOrganizationName Official name of the Organization.
+	 * @param string $newOrganizationPhone Phone number of the Organization.
+	 * @param char $newOrganizationState State for address of the Organization.
+	 * @param char $newOrganizationZip Zip code for address of the Organization.
+	 *
+	 *
+	 *
+	 *
+	 *
+	 *
+	 *
+	 *
+	 *
+	 * */
+
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public function jsonSerialize() {
+		$fields = get_object_vars($this);
+		return($fields);
+	}
 }
