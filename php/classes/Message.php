@@ -58,8 +58,8 @@ class Message implements \JsonSerializable {
 	/** constrictor for this message
 	 *
 	 * @param int|null $newMessageId id of this message or null if a new message
-	 * @param int $newOrganizationId id of the organization that sent this message
-	 * @param int $newProfileId id of the profile that sent this message
+	 * @param int $newMessageOrganizationId id of the organization that sent this message
+	 * @param int $newMessageProfileId id of the profile that sent this message
 	 * @param string $newMessageContent string containing the message data
 	 * @param string $newMessageSubject string containing the subject data
 	 * @param /Datetime|string|null $newMessageDateTime date and time Message was sent or a null if set to current date and time
@@ -239,6 +239,49 @@ class Message implements \JsonSerializable {
 		//store the message subject
 		$this->messageSubject = $newMessageSubject;
 	}
+
+
+	/**
+	 * accessor method for message datetime
+	 * @return \DateTime value for message datetime
+	 */
+	public function getMessageDateTime() {
+		return ($this->messageDateTime);
+	}
+
+	/**
+	 * mutator method for message date time
+	 * @param \Datetime|string|null $newMessageDateTime date as a DateTime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $newMessageDateTime is not valid object or string
+	 * @throws \RangeException if $newMessageDateTime is a date that does not exist
+	 */
+	public function setMessageDateTime($newMessageDateTime = null) : void {
+
+		//base case: if the date is null, use the current date and time
+		if($newMessageDateTime === null) {
+			$this->messageDateTime = new \DateTime();
+			return;
+		}
+
+		//store the message date using the ValidateDate trait
+		try {
+			$newMessageDateTime = self::validateDateTime($newMessageDateTime);
+
+		} catch(\InvalidArgumentException | \RangeException $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+
+		$this->messageDateTime = $newMessageDateTime;
+	}
+
+
+	/**
+	 * inserts this message into mySQL
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
 
 
 
