@@ -207,6 +207,9 @@ class ProfileTest extends PetRescueAbqTest {
 		$profile = Profile::getProfileByProfileId($this->getPDO(), PetRescueAbqTest::INVALID_KEY);
 		$this->assertNull($profile);
 	}
+	/**
+	 * test grabbing a Profile by email
+	 */
 
 }
 
