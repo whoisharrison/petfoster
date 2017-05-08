@@ -208,8 +208,6 @@ class ProfileTest extends PetRescueAbqTest {
 		$this->assertNull($profile);
 	}
 
-
-
 }
 
 
