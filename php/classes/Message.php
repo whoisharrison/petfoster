@@ -32,7 +32,7 @@ class Message implements \JsonSerializable {
 
 	/**
 	 * id of the profile that sent this message, this is a foreign key
-	 * @var int $messageProfileId
+	 * @var int $messageProfileId        u
 	 */
 	private $messageProfileId;
 
