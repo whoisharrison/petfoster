@@ -62,7 +62,7 @@ class Profile implements \JsonSerializable {
 	 * @documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
 
-	public function __construct(?int $newProfileId, ?string $newProfileActivationToken, ?string $newProfileAtHandle, ?string $newProfileEmail, ?string $newProfileHash, ?string $newProfileName, ?string $newProfileSalt) {
+	public function __construct(?int $newProfileId, ?string $newProfileActivationToken, string $newProfileAtHandle, string $newProfileEmail, string $newProfileHash, string $newProfileName, string $newProfileSalt) {
 		try{
 			$this->setProfileId($newProfileId);
 			$this->setProfileActivationToken($newProfileActivationToken);
@@ -142,7 +142,92 @@ class Profile implements \JsonSerializable {
 		$this->profileActivationToken = $newProfileActivationToken;
 	}
 
-	/
+	/**
+	 * accessor method for at handle
+	 *
+	 * @return string value of at handle*
+	 **/
+	public function getProfileAtHandle(): string {
+		return ($this->profileAtHandle);
+	}
+
+	/**
+	 * mutator method for the at handle
+	 *
+	 * @param string $newProfileAtHandle new value of at handle
+	 * @throws \InvalidArgumentException if $newAtHandle is not a string or insecure
+	 * @throws \RangeException if $newAtHandle is >32 characters
+	 * @throws \TypeError if $newAtHandle is not a string
+	 **/
+	public function setProfileAtHandle(string $newProfileAtHandle) : void {
+		//verify the at handle is secure
+		$newProfileAtHandle = trim($newProfileAtHandle);
+		$newProfileAtHandle = filer_var($newProfileAtHandle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileAtHandle) === true) {
+			throw(new \InvalidArgumentException("profile at handle is empty or insecure"));
+		}
+
+		// verify the at handle will fit in the database
+		if(strlen($newProfileAtHandle) > 32) {
+			throw(new \RangeException("profile at handle is too long"));
+		}
+
+		// store the at handle
+		$this->profileAtHandle = $newProfileAtHandle;
+	}
+
+	/**
+	 * accessor method for email
+	 *
+	 * @return string value of email
+	 **/
+	public function getProfileEmail(): string {
+		return $this->profileEmail;
+	}
+
+	/**
+	 * mutator method for email
+	 *
+	 * @param string $newProfileEmail new value of email
+	 * @throws \InvalidArgumentException if $newEmail is not a valid email or insecure
+	 * @throws \RangeException if $newProfileEmail is >128 characters
+	 * @throws \TypeError if $newProfileEmail is not a string
+	 **/
+	public function setProfileEmail(string $newProfileEmail) : void {
+		// verify the email is secure
+		$newProfileEmail = trim($newProfileEmail);
+		$newProfileEmail = filter_var($newProfileEmail, FILTER_VALIDATE_EMAIL);
+		if(empty($newProfileEmail) === true) {
+			throw(new \InvalidArgumentException("Email empty or insecure"));
+		}
+
+		// verify the email will fit in the database
+		if(strlen($newProfileEmail) > 128) {
+			throw(new \RangeException("Email is too large"));
+		}
+
+		// store the email
+		$this->profileEmail = $newProfileEmail;
+	}
+
+	/**
+	 * accessor method for profileHash
+	 *
+	 * @return string value of hash
+	 **/
+	public function getProfileHash(): string {
+		return $this->profileHash;
+	}
+
+	/**
+	 * mutator method for profile hash password
+	 *
+	 * @param string $newProfileHash
+	 *
+	 **/
+
+
+
 
 
 }
