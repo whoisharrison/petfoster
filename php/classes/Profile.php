@@ -223,8 +223,18 @@ class Profile implements \JsonSerializable {
 	 * mutator method for profile hash password
 	 *
 	 * @param string $newProfileHash
-	 *
+	 * @throws \InvalidArgumentException if hash is not secure
+	 * @throws \RangeException if hash is not 128 characters
+	 * @throws \TypeError if the profile hash is not a string
 	 **/
+	public function  setProfileHash(string $newProfileHash): void {
+		//enforce that the hash is properly formatted
+		$newProfileHash = trim($newProfileHash);
+		$newProfileHash - strtolower($newProfileHash);
+		if(empty($newProfileHash) === true) {
+			throw(new \InvalidArgumentException("profile password hash is empty or insecure"));
+		}
+	}
 
 
 
