@@ -119,7 +119,7 @@ class ProfileTest extends PetRescueAbqTest {
 		$profile = new Profile(null, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT);
 		$profile->insert($this->getPDO());
 
-		//edit the Profile and update it in mySQL
+		//edit the Profile AtHandle and update it in mySQL
 		$profile->setProfileAtHandle($this->VALID_ATHANDLE2);
 		$profile->update($this->getPDO());
 

@@ -70,7 +70,7 @@ CREATE TABLE post (
 -- create image entity
 CREATE TABLE image (
 	imageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	imagePostId VARCHAR(128) NOT NULL,
+	imagePostId INT UNSIGNED(128) NOT NULL,
 	imageCloudinaryId VARCHAR(32) NOT NULL,
 	INDEX(imagePostId),
 	FOREIGN KEY (imagePostId) REFERENCES post(postId),
