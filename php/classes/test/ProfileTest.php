@@ -115,7 +115,7 @@ class ProfileTest extends PetRescueAbqTest {
 		// count the number of rows and save if for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 
-		//create a ne Profile and insert into mySQL
+		//create a new Profile and insert into mySQL
 		$profile = new Profile(null, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT);
 		$profile->insert($this->getPDO());
 
@@ -207,6 +207,8 @@ class ProfileTest extends PetRescueAbqTest {
 		$profile = Profile::getProfileByProfileId($this->getPDO(), PetRescueAbqTest::INVALID_KEY);
 		$this->assertNull($profile);
 	}
+
+
 
 }
 
