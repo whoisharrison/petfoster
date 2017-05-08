@@ -147,7 +147,7 @@ class Organization implements \JsonSerializable {
 	/**
 	 * accessor method for account activation token
 	 *
-	 * @return string value of the activation token
+	 * @return string value of the activation token (or null if authenticated)
 	 */
 	public function getOrganizationActivationToken() : ?string {
 		return ($this->organizationActivationToken);
@@ -174,6 +174,96 @@ class Organization implements \JsonSerializable {
 			throw(new\RangeException("user activation token has to be 32"));
 		}
 		$this->organizationActivationToken = $newOrganizationActivationToken;
+	}
+	/**
+	 * accessor method for organization address1
+	 *
+	 * @return string value of organization address1
+	 **/
+	public function getOrganizationAddress1() :string {
+		return($this->organizationAddress1);
+	}
+	/**
+	 * mutator method for organization address1
+	 *
+	 * @param string $newOrganizationAddress1 new value of organization address1
+	 * @throws \InvalidArgumentException if $newOrganizationAddress1 is not a string or insecure
+	 * @throws \RangeException if $newOrganizationAddress1 is > 64 characters
+	 * @throws \TypeError if $newOrganizationAddress1 is not a string
+	 **/
+	public function setOrganizationAddress1(string $newOrganizationAddress1) : void {
+		// verify the organization address1 is secure
+		$newOrganizationAddress1 = trim($newOrganizationAddress1);
+		$newOrganizationAddress1 = filter_var($newOrganizationAddress1, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newOrganizationAddress1) === true) {
+			throw(new \InvalidArgumentException("organization address1 is empty or insecure"));
+		}
+		// verify the organization address1 will fit in the database
+		if(strlen($newOrganizationAddress1) > 64) {
+			throw(new \RangeException("organization address1 too large"));
+		}
+		// store the organization address1
+		$this->organizationAddress1 = $newOrganizationAddress1;
+	}
+	/**
+	 * accessor method for organization address2
+	 *
+	 * @return string value of organization address2
+	 **/
+	public function getOrganizationAddress2() :string {
+		return($this->organizationAddress2);
+	}
+	/**
+	 * mutator method for organization address2
+	 *
+	 * @param string $newOrganizationAddress2 new value of organization address2
+	 * @throws \InvalidArgumentException if $newOrganizationAddress2 is not a string or insecure
+	 * @throws \RangeException if $newOrganizationAddress2 is > 64 characters
+	 * @throws \TypeError if $newOrganizationAddress2 is not a string
+	 **/
+	public function setOrganizationAddress2(string $newOrganizationAddress2) : void {
+		// verify the organization address2 is secure
+		$newOrganizationAddress2 = trim($newOrganizationAddress2);
+		$newOrganizationAddress2 = filter_var($newOrganizationAddress2, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newOrganizationAddress2) === true) {
+			throw(new \InvalidArgumentException("organization address2 is empty or insecure"));
+		}
+		// verify the organization address2 will fit in the database
+		if(strlen($newOrganizationAddress2) > 64) {
+			throw(new \RangeException("organization address2 too large"));
+		}
+		// store the organization address2
+		$this->organizationAddress2 = $newOrganizationAddress2;
+	}
+	/**
+	 * accessor method for organization city
+	 *
+	 * @return string value of organization city
+	 **/
+	public function getOrganizationCity() :string {
+		return($this->organizationCity);
+	}
+	/**
+	 * mutator method for organization city
+	 *
+	 * @param string $newOrganizationCity new value of organization city
+	 * @throws \InvalidArgumentException if $newOrganizationCity is not a string or insecure
+	 * @throws \RangeException if $newOrganizationCity is > 32 characters
+	 * @throws \TypeError if $newOrganizationCity is not a string
+	 **/
+	public function setOrganizationCity(string $newOrganizationCity) : void {
+		// verify the organization city is secure
+		$newOrganizationCity = trim($newOrganizationCity);
+		$newOrganizationCity = filter_var($newOrganizationCity, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newOrganizationCity) === true) {
+			throw(new \InvalidArgumentException("organization city is empty or insecure"));
+		}
+		// verify the organization city will fit in the database
+		if(strlen($newOrganizationCity) > 32) {
+			throw(new \RangeException("organization city too large"));
+		}
+		// store the organization city
+		$this->organizationCity = $newOrganizationCity;
 	}
 	/**
 	 * accessor method for email
@@ -269,9 +359,9 @@ class Organization implements \JsonSerializable {
 	/**
 	 * accessor method for phone
 	 *
-	 * @return string value of phone or null
+	 * @return string value of phone
 	 **/
-	public function getOrganizationPhone(): ?string {
+	public function getOrganizationPhone(): string {
 		return ($this->organizationPhone);
 	}
 	/**
@@ -282,7 +372,7 @@ class Organization implements \JsonSerializable {
 	 * @throws \RangeException if $newPhone is > 32 characters
 	 * @throws \TypeError if $newPhone is not a string
 	 **/
-	public function setOrganizationPhone(?string $newOrganizationPhone): void {
+	public function setOrganizationPhone(string $newOrganizationPhone): void {
 		//if $organizationPhone is null return it right away
 		if($newOrganizationPhone === null) {
 			$this->organizationPhone = null;
