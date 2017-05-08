@@ -29,53 +29,53 @@ class Organization implements \JsonSerializable {
 	 **/
 	private $organizationProfileId;
 	/*
-	 * Activation Token to authorize use of the organization profile.
-	 * @var char $organizationActivationToken
+	 * Token handed out to verify that the Organization is valid and not malicious.
+	 * @var $organizationActivationToken
 	 **/
 	private $organizationActivationToken;
 	/*
 	 * Primary address line of the organization profile.
-	 * @var varchar $organizationAddress1
+	 * @var string $organizationAddress1
 	 **/
 	private $organizationAddress1;
 	/*
 	 * Secondary address line of the organization profile. (optional)
-	 * @var varchar $organizationAddress2
+	 * @var string $organizationAddress2
 	 **/
 	private $organizationAddress2;
 	/*
 	 * City for address of the organization profile.
-	 * @var varchar $organizationCity
+	 * @var string $organizationCity
 	 **/
 	private $organizationCity;
 	/*
 	 * Email address of the organization profile.
-	 * @var varchar $organizationEmail
+	 * @var string $organizationEmail
 	 **/
 	private $organizationEmail;
 	/*
-	 * Official City License to operate of the organization.
-	 * @var varchar $organizationLicense
+	 * Official City License to operate of the organization. This is a unique index.
+	 * @var string $organizationLicense
 	 **/
 	private $organizationLicense;
 	/*
-	 * Official name of the organization.
-	 * @var varchar $organizationName
+	 * Official name of the organization. This is a unique index.
+	 * @var string $organizationName
 	 **/
 	private $organizationName;
 	/*
 	 * Phone number of the organization.
-	 * @var varchar $organizationPhone
+	 * @var string $organizationPhone
 	 **/
 	private $organizationPhone;
 	/*
 	 * State for address of the organization profile.
-	 * @var char $organizationState
+	 * @var string $organizationState
 	 **/
 	private $organizationState;
 	/*
 	 * Zip code for address of the organization profile.
-	 * @var char $organizationZip
+	 * @var string $organizationZip
 	 **/
 	private $organizationZip;
 	/*
@@ -92,16 +92,216 @@ class Organization implements \JsonSerializable {
 	 * @param string $newOrganizationPhone Phone number of the Organization.
 	 * @param char $newOrganizationState State for address of the Organization.
 	 * @param char $newOrganizationZip Zip code for address of the Organization.
-	 *
-	 *
-	 *
-	 *
-	 *
-	 *
-	 *
-	 *
-	 *
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 *@Documentation https://php.net/manual/en/language.oop5.decon.php
 	 * */
+	public function __construct(?int $newOrganizationId, ?string $newOrganizationActivationToken, string $newOrganizationAddress1, ?string $newOrganizationAddress2, string $newOrganizationCity, string $newOrganizationEmail, string $newOrganizationLicense, string $newOrganizationName, string $newOrganizationPhone, string $newOrganizationState, string $newOrganizationZip) {
+		try {
+			$this->setOrganizationId($newOrganizationId);
+			$this->setOrganizationActivationToken($newOrganizationActivationToken);
+			$this->setOrganizationAddress1($newOrganizationAddress1);
+			$this->setOrganizationAddress2($newOrganizationAddress2);
+			$this->setOrganizationCity($newOrganizationCity);
+			$this->setOrganizationEmail($newOrganizationEmail);
+			$this->setOrganizationLicense($newOrganizationLicense);
+			$this->setOrganizationName($newOrganizationName);
+			$this->setOrganizationPhone($newOrganizationPhone);
+			$this->setOrganizationState($newOrganizationState);
+			$this->setOrganizationZip($newOrganizationZip);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			//determine what exception type was thrown
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
+	}
+	/**
+	 * accessor method for organization id
+	 *
+	 * @return int value of organization id (or null if new Organization)
+	 **/
+	public function getOrganizationId(): int {
+		return ($this->organizationId);
+	}
+	/**
+	 * mutator method for organization id
+	 *
+	 * @param int|null $newOrganizationId value of new organization id
+	 * @throws \RangeException if $newOrganizationId is not positive
+	 * @throws \TypeError if $newOrganizationId is not an integer
+	 **/
+	public function setOrganizationId(?int $newOrganizationId): void {
+		if($newOrganizationId === null) {
+			$this->organizationId = null;
+			return;
+		}
+		// verify the organization id is positive
+		if($newOrganizationId <= 0) {
+			throw(new \RangeException("organization id is not positive"));
+		}
+		// convert and store the organization id
+		$this->organizationId = $newOrganizationId;
+	}
+	/**
+	 * accessor method for account activation token
+	 *
+	 * @return string value of the activation token
+	 */
+	public function getOrganizationActivationToken() : ?string {
+		return ($this->organizationActivationToken);
+	}
+	/**
+	 * mutator method for account activation token
+	 *
+	 * @param string $newOrganizationActivationToken
+	 * @throws \InvalidArgumentException  if the token is not a string or insecure
+	 * @throws \RangeException if the token is not exactly 32 characters
+	 * @throws \TypeError if the activation token is not a string
+	 */
+	public function setOrganizationActivationToken(?string $newOrganizationActivationToken): void {
+		if($newOrganizationActivationToken === null) {
+			$this->organizationActivationToken = null;
+			return;
+		}
+		$newOrganizationActivationToken = strtolower(trim($newOrganizationActivationToken));
+		if(ctype_xdigit($newOrganizationActivationToken) === false) {
+			throw(new\RangeException("user activation is not valid"));
+		}
+		//make sure user activation token is only 32 characters
+		if(strlen($newOrganizationActivationToken) !== 32) {
+			throw(new\RangeException("user activation token has to be 32"));
+		}
+		$this->organizationActivationToken = $newOrganizationActivationToken;
+	}
+	/**
+	 * accessor method for email
+	 *
+	 * @return string value of email
+	 **/
+	public function getOrganizationEmail(): string {
+		return $this->organizationEmail;
+	}
+	/**
+	 * mutator method for email
+	 *
+	 * @param string $newOrganizationEmail new value of email
+	 * @throws \InvalidArgumentException if $newEmail is not a valid email or insecure
+	 * @throws \RangeException if $newEmail is > 128 characters
+	 * @throws \TypeError if $newEmail is not a string
+	 **/
+	public function setOrganizationEmail(string $newOrganizationEmail): void {
+		// verify the email is secure
+		$newOrganizationEmail = trim($newOrganizationEmail);
+		$newOrganizationEmail = filter_var($newOrganizationEmail, FILTER_VALIDATE_EMAIL);
+		if(empty($newOrganizationEmail) === true) {
+			throw(new \InvalidArgumentException("organization email is empty or insecure"));
+		}
+		// verify the email will fit in the database
+		if(strlen($newOrganizationEmail) > 128) {
+			throw(new \RangeException("organization email is too large"));
+		}
+		// store the email
+		$this->organizationEmail = $newOrganizationEmail;
+	}
+
+	/**
+	 * accessor method for organization license
+	 *
+	 * @return string value of organization license
+	 **/
+	public function getOrganizationLicense(): string {
+		return ($this->organizationLicense);
+	}
+	/**
+	 * mutator method for organization license
+	 *
+	 * @param string $newOrganizationLicense new value of license
+	 * @throws \InvalidArgumentException if $newOrganizationLicense is not a string or insecure
+	 * @throws \RangeException if $newOrganizationLicense is > 32 characters
+	 * @throws \TypeError if $newOrganizationLicense is not a string
+	 **/
+	public function setOrganizationLicense(string $newOrganizationLicense) : void {
+		// verify the license is secure
+		$newOrganizationLicense = trim($newOrganizationLicense);
+		$newOrganizationLicense = filter_var($newOrganizationLicense, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newOrganizationLicense) === true) {
+			throw(new \InvalidArgumentException("organization license is empty or insecure"));
+		}
+		// verify the license will fit in the database
+		if(strlen($newOrganizationLicense) > 32) {
+			throw(new \RangeException("organization license is too large"));
+		}
+		// store the license
+		$this->organizationLicense = $newOrganizationLicense;
+	}
+	/**
+	 * accessor method for organization name
+	 *
+	 * @return string value of organization name
+	 **/
+	public function getOrganizationName(): string {
+		return ($this->organizationName);
+	}
+	/**
+	 * mutator method for organization name
+	 *
+	 * @param string $newOrganizationName new value of organization name
+	 * @throws \InvalidArgumentException if $newOrganizationName is not a string or insecure
+	 * @throws \RangeException if $newOrganizationName is > 64 characters
+	 * @throws \TypeError if $newOrganizationName is not a string
+	 **/
+	public function setOrganizationName(string $newOrganizationName) : void {
+		// verify the organization name is secure
+		$newOrganizationName = trim($newOrganizationName);
+		$newOrganizationName = filter_var($newOrganizationName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newOrganizationName) === true) {
+			throw(new \InvalidArgumentException("organization name is empty or insecure"));
+		}
+		// verify the organization name will fit in the database
+		if(strlen($newOrganizationName) > 64) {
+			throw(new \RangeException("organization name is too large"));
+		}
+		// store the organization name
+		$this->organizationName = $newOrganizationName;
+	}
+	/**
+	 * accessor method for phone
+	 *
+	 * @return string value of phone or null
+	 **/
+	public function getOrganizationPhone(): ?string {
+		return ($this->organizationPhone);
+	}
+	/**
+	 * mutator method for phone
+	 *
+	 * @param string $newOrganizationPhone new value of phone
+	 * @throws \InvalidArgumentException if $newPhone is not a string or insecure
+	 * @throws \RangeException if $newPhone is > 32 characters
+	 * @throws \TypeError if $newPhone is not a string
+	 **/
+	public function setOrganizationPhone(?string $newOrganizationPhone): void {
+		//if $organizationPhone is null return it right away
+		if($newOrganizationPhone === null) {
+			$this->organizationPhone = null;
+			return;
+		}
+		// verify the phone is secure
+		$newOrganizationPhone = trim($newOrganizationPhone);
+		$newOrganizationPhone = filter_var($newOrganizationPhone, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newOrganizationPhone) === true) {
+			throw(new \InvalidArgumentException("organization phone is empty or insecure"));
+		}
+		// verify the phone will fit in the database
+		if(strlen($newOrganizationPhone) > 32) {
+			throw(new \RangeException("organization phone is too large"));
+		}
+		// store the phone
+		$this->organizationPhone = $newOrganizationPhone;
+	}
+
 
 
 	/**
