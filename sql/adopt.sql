@@ -57,7 +57,7 @@ CREATE TABLE message (
 -- create post entity
 CREATE TABLE post (
 	postId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	postOrganizationId VARCHAR(128) NOT NULL,
+	postOrganizationId INT UNSIGNED VARCHAR(128) NOT NULL,
 	postBreed VARCHAR(32) NOT NULL,
 	postDescription VARCHAR(255) NOT NULL,
 	postSex CHAR(1) NOT NULL,

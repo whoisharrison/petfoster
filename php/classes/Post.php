@@ -179,7 +179,7 @@ class Post implements \JsonSerializable {
 	 * @throws \TypeError if $newPostSex is not a string
 	 **/
 
-	public function setPostSex(string $postSex) {
+	public function setPostSex(string $newPostSex) {
 		$newPostSex = trim ($newPostSex);
 		$newPostSex = filter_var($newPostSex, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newPostSex)=== true) {
@@ -205,7 +205,7 @@ class Post implements \JsonSerializable {
 	 * @throws |\TypeError if $newPostType is not a string
 	 **/
 
-	public function setPostType(string $postType) {
+	public function setPostType(string $newPostType) {
 		$newPostType = trim($newPostType);
 		$newPostType = filter_var($newPostType, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newPostType) === true) {
@@ -216,8 +216,6 @@ class Post implements \JsonSerializable {
 		}
 		$this->postType = $newPostType;
 	}
-
-
 
 	/**
 	 * formats the state variables for JSON serialization
