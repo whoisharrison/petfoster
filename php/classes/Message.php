@@ -72,7 +72,7 @@ class Message implements \JsonSerializable {
 	 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 	 **/
 
-	//
+	//do these need to be in the order as in the conceptual model
 
 	public function _construct(?int $newMessageId, ?int $newMessageOrganizationId, ?int $newMessageProfileId, string $newMessageContent, string $newMessageSubject, $newMessageDateTime = null) {
 		try {
@@ -183,10 +183,62 @@ class Message implements \JsonSerializable {
 	 * mutator method for message content
 	 * @param string $newMessageContent new value of message content
 	 * @throws \InvalidArgumentException if $newMessageContent is not a string ot insecure
-	 * @throws \RangeException if $newMessageContent is > 140 characters
+	 * @throws \RangeException if $newMessageContent is > 505 characters
 	 * @throws \TypeError if $newMessageContent is not a string
 	 */
-	public function
+	public function setMessageContent(string $newMessageContent) : void {
+
+		//verify the message content is secure
+		$newMessageContent = trim($newMessageContent);
+		$newMessageContent = filter_var($newMessageContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newMessageContent) === true) {
+			throw(new \InvalidArgumentException("message content is empty or insecure"));
+		}
+
+		//verify the message content will fit in the database
+		//changed char from 255 to 505 - BURQUE!
+		if(strlen($newMessageContent) > 505) {
+			throw(new \RangeException("message content too large"));
+		}
+
+		//store the message content
+		$this->messageContent = $newMessageContent;
+	}
+
+
+	/**
+	 * accessor method for message subject
+	 * @return string value of message subject
+	 */
+	public function getMessageSubject(): string {
+		return ($this->messageSubject);
+	}
+
+	/**
+	 * mutator method for message subject
+	 * @param string $newMessageSubject new value of message subject
+	 * @throws \InvalidArgumentException if $newMessageSubject is not a string or insecure
+	 * @throws \RangeException if $newMessageSubject is > 64
+	 * we may want to make the string longer
+	 * @throws \TypeError if $newMessageSubject is not a string
+	 */
+	public function setMessageSubject(string $newMessageSubject) : void{
+
+		//verify the message subject is secure
+		$newMessageSubject = trim($newMessageSubject);
+		$newMessageSubject = filter_var($newMessageSubject, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newMessageSubject) === true) {
+			throw(new \InvalidArgumentException("message subject is empty or insecure"));
+		}
+
+		//verify the message subject will fit in the database
+		if(strlen($newMessageSubject) > 64) {
+			throw(new \RangeException("message subject is too large"));
+		}
+
+		//store the message subject
+		$this->messageSubject = $newMessageSubject;
+	}
 
 
 
