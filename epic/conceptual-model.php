@@ -22,12 +22,15 @@
 			<li>organizationId (primary key)</li>
 			<li>organizationProfileId (foreign key)</li>
 			<li>organizationActivationToken (for account verification)</li>
+			<li>organizationAddress1</li>
+			<li>organizationAddress2</li>
+			<li>organizationCity</li>
 			<li>organizationEmail</li>
-			<li>organizationHash (for account password)</li>
-			<li>organizationLicence</li>
+			<li>organizationLicense</li>
 			<li>organizationName</li>
 			<li>organizationPhone</li>
-			<li>organizationSalt (for account password)</li>
+			<li>organizationState</li>
+			<li>organizationZip</li>
 		</ul>
 
 		<p><strong>Post</strong></p>

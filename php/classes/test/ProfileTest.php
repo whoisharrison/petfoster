@@ -14,7 +14,7 @@ require_once(dirname(__DIR__) . "/autoload.php");
  * This is the complete PHPUnit test of the Profile class. mySQL/PDO enabled methods will be tested for both valid and invalid inputs.
  *
  * @see profile
- * @auther Michael Harrison <mharrison13@cnm.edu>
+ * @author Michael Harrison <mharrison13@cnm.edu>
  */
 class ProfileTest extends PetRescueAbqTest {
 	/**
