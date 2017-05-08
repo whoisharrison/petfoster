@@ -282,6 +282,27 @@ class Message implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
+	public function insert(\PDO $pdo) : void {
+		//enforce the messageId is null
+		if($this->messageId !== null) {
+			throw(new \PDOException("not a new message"));
+		}
+
+		//create query template
+		$query = "INSERT INTO message(messageOrganizationId, messageProfileId, messageContent, messageSubject, messageDateTime) VALUES(:messageOrganizationId, :messageProfileId, :messageContent, :messageSubject, :messageDateTime)";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the place holders in the template
+		//changed formattedDate to formattedDateTime and changed messageDate to messageDateTime
+		$formattedDateTime = $this->messageDateTime->format("Y-m-d H:i:s");
+		$parameters = ["messageOrganizationId" => $this->messageOrganizationId, "messageProfileId" => $this->messageProfileId, "messageContent" => $this->messageContent, "messageSubject" => $this->messageSubject, "messageDateTime" => formattedDateTime];
+		$statement->execute($parameters);
+
+		//update the null messageId with what mySQL just gave us
+		$this->messageId = intval($pdo->lastInsertId());
+	}
+
+
 
 
 
