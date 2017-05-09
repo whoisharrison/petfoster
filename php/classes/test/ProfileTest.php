@@ -218,14 +218,23 @@ class ProfileTest extends PetRescueAbqTest {
 		// create a new profile and insert into mySQL
 		$profile = new Profile(null, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT);
 		$profile->insert($this->getPDO());
+
+		//grab data from mySQL
+		$pdoProfile = Profile::getProfileByProfileEmail($this->getPDO(), $profile->getProfileMEail());
+		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertSame($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertSame($pdoProfile->getProfileAtHandle(), $this->VALID_ATHANDLE);
+		$this->assertSame($pdoProfile->getProfileEmail(), $this->VALID_HASH);
+		$this->assertSame($pdoProfile->getProfileName(), $this->VALID_NAME);
+		$this->assertSame($pdoProfile->getProfileSalt(), $this->VALID_SALT);
 	}
 
 	/**
-	 * test grabbing a Profile by email that doesn't exist
+	 * test grabbing a Profile by email that does n0t exist
 	 */
-	public function testGetInvalidProfileActivation() : {
+	public function testGetInvalidProfileActivation() : void {
 		// grab an email that does not exist
-		$profile = Profile::getProfileByProfileActivationToken($this->getPDO(), "ebffc9ff602631aec2f7adb8ccc92c049aedf4a0");
+		$profile = Profile::getProfileByProfileByProfileEmail($this->getPDO(), "mharrison@cnm.edu");
 		$this->assetNull($profile);
 	}
 
