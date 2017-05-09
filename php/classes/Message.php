@@ -74,7 +74,7 @@ class Message implements \JsonSerializable {
 
 	//do these need to be in the order as in the conceptual model
 
-	public function _construct(?int $newMessageId, ?int $newMessageOrganizationId, ?int $newMessageProfileId, string $newMessageContent, string $newMessageSubject, $newMessageDateTime = null) {
+	public function _construct(?int $newMessageId, ?int $newMessageOrganizationId, ?int $newMessageProfileId, string $newMessageContent, $newMessageDateTime = null, string $newMessageSubject) {
 		try {
 			$this->setMessageId($newMessageId);
 			$this->setMessageOrganizationId($newMessageOrganizationId);
@@ -116,7 +116,7 @@ class Message implements \JsonSerializable {
 			throw(new \RangeException("message id is not positive"));
 		}
 
-		//convert abd store the message id
+		//convert and store the message id
 		$this->messageId = $newMessageId;
 	}
 
@@ -207,41 +207,6 @@ class Message implements \JsonSerializable {
 
 
 	/**
-	 * accessor method for message subject
-	 * @return string value of message subject
-	 */
-	public function getMessageSubject(): string {
-		return ($this->messageSubject);
-	}
-
-	/**
-	 * mutator method for message subject
-	 * @param string $newMessageSubject new value of message subject
-	 * @throws \InvalidArgumentException if $newMessageSubject is not a string or insecure
-	 * @throws \RangeException if $newMessageSubject is > 64
-	 * we may want to make the string longer
-	 * @throws \TypeError if $newMessageSubject is not a string
-	 */
-	public function setMessageSubject(string $newMessageSubject) : void{
-
-		//verify the message subject is secure
-		$newMessageSubject = trim($newMessageSubject);
-		$newMessageSubject = filter_var($newMessageSubject, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newMessageSubject) === true) {
-			throw(new \InvalidArgumentException("message subject is empty or insecure"));
-		}
-
-		//verify the message subject will fit in the database
-		if(strlen($newMessageSubject) > 64) {
-			throw(new \RangeException("message subject is too large"));
-		}
-
-		//store the message subject
-		$this->messageSubject = $newMessageSubject;
-	}
-
-
-	/**
 	 * accessor method for message datetime
 	 * @return \DateTime value for message datetime
 	 */
@@ -277,6 +242,41 @@ class Message implements \JsonSerializable {
 
 
 	/**
+	 * accessor method for message subject
+	 * @return string value of message subject
+	 */
+	public function getMessageSubject(): string {
+		return ($this->messageSubject);
+	}
+
+	/**
+	 * mutator method for message subject
+	 * @param string $newMessageSubject new value of message subject
+	 * @throws \InvalidArgumentException if $newMessageSubject is not a string or insecure
+	 * @throws \RangeException if $newMessageSubject is > 64
+	 * we may want to make the string longer
+	 * @throws \TypeError if $newMessageSubject is not a string
+	 */
+	public function setMessageSubject(string $newMessageSubject) : void{
+
+		//verify the message subject is secure
+		$newMessageSubject = trim($newMessageSubject);
+		$newMessageSubject = filter_var($newMessageSubject, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newMessageSubject) === true) {
+			throw(new \InvalidArgumentException("message subject is empty or insecure"));
+		}
+
+		//verify the message subject will fit in the database
+		if(strlen($newMessageSubject) > 64) {
+			throw(new \RangeException("message subject is too large"));
+		}
+
+		//store the message subject
+		$this->messageSubject = $newMessageSubject;
+	}
+
+
+	/**
 	 * inserts this message into mySQL
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -289,13 +289,13 @@ class Message implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "INSERT INTO message(messageOrganizationId, messageProfileId, messageContent, messageSubject, messageDateTime) VALUES(:messageOrganizationId, :messageProfileId, :messageContent, :messageSubject, :messageDateTime)";
+		$query = "INSERT INTO message(messageOrganizationId, messageProfileId, messageContent, messageDateTime, messageSubject) VALUES(:messageOrganizationId, :messageProfileId, :messageContent, :messageDateTime, :messageSubject)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
 		//changed formattedDate to formattedDateTime and changed messageDate to messageDateTime
 		$formattedDateTime = $this->messageDateTime->format("Y-m-d H:i:s");
-		$parameters = ["messageOrganizationId" => $this->messageOrganizationId, "messageProfileId" => $this->messageProfileId, "messageContent" => $this->messageContent, "messageSubject" => $this->messageSubject, "messageDateTime" => formattedDateTime];
+		$parameters = ["messageOrganizationId" => $this->messageOrganizationId, "messageProfileId" => $this->messageProfileId, "messageContent" => $this->messageContent, "messageDateTime" => formattedDateTime, "messageSubject" => $this->messageSubject, "messageId" => $this->messageId];
 		$statement->execute($parameters);
 
 		//update the null messageId with what mySQL just gave us
@@ -311,7 +311,7 @@ class Message implements \JsonSerializable {
 	 */
 	public function delete(\PDO $pdo) : void {
 
-		//enforce the messageId is not null, dont delete a message that hasnt been inserted
+		//enforce the messageId is not null, do not delete a message that has not been inserted
 		if($this->messageId === null) {
 			throw(new \PDOException("unable to delete a message that does not exist"));
 		}
@@ -332,9 +332,130 @@ class Message implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 */
-	public function update(\PDO $pdo) : void{
+	public function update(\PDO $pdo) : void {
 
+		//enforce the messageId is not null, do not update a message that has not been insertedd
+		if($this->messageId === null) {
+			throw(new \PDOException("unable to update a message that does not exist"));
+		}
+
+		//create query template
+		$query = "UPDATE message SET messageOrganizationId = :messageOrganizationId, messageProfileId = :messageProfileId, messageContent = :messageContent, messageDateTime = :messageDateTime, messageSubject = :messageSubject WHERE messageId = :messageId";
+		$statement = $pdo->prepare($query);
+
+		//bind the member varibales to the place holders in the template
+		$formattedDate = $this->messageDateTime->format("Y-m-d H:i:s");
+		$parameters = ["messageOrganizationId" => $this->messageOrganizationId, "messageProfileId" => $this->messageProfileId, "messageContent" => $this->messageContent, "messageDateTime" => $this->messageDateTime, "messageSubject" => $this->messageSubject];
+		$statement->execute($parameters);
 	}
+
+
+	/**
+	 * gets the Message by content
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $messageContent message content to search for
+	 * @return \SplFixedArray SplFixedArray of Messages found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not correct data type
+	 */
+	public static function getMessageByMessageContent(\PDO $pdo, string $messageContent) : \SplFixedArray {
+
+		//sanitize the description before searching
+		$messageContent = trim($messageContent);
+		$messageContent = filter_var($messageContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($messageContent) === true) {
+			throw(new \PDOException("message content is invalid"));
+		}
+
+		//create query template
+		//WHAT DO I USE INSTEAD OF MESSAGE?
+		$query = "SELECT messageId, messageOrganizationId, messageProfileId, messageContent, messageDateTime, messageSubject FROM message WHERE messageContent MESSAGE :messageContent";
+		$statement = $pdo->prepare($query);
+
+		//bind the message content to the place holder in the template
+		$messageContent = "%messageContent%";
+		$parameters = ["messageContent" => $messageContent];
+		$statement->execute($parameters);
+
+		//build an array of messages
+		$messages = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+
+			try {
+				$message = new message($row["messageId"], $row["messageOrganizationId"], $row["messageProfileId"], $row["messageContent"], $row["messageDateTime"], $row["messageSubject"]);
+				$messages[$messages->key()] = $message;
+				$messages->next();
+
+			} catch(\Exception $exception) {
+
+				//if the row could not be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+
+		}
+		return($messages);
+	}
+
+
+	/**
+	 * gets the Message by subject
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $messageContent message content to search for
+	 * @return \SplFixedArray SplFixedArray of Messages found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not correct data type
+	 */
+	public static function getMessageByMessageSubject(\PDO $pdo, string $messageSubject) : \SplFixedArray {
+
+		//sanitize the description before searching
+		$messageSubject = trim($messageSubject);
+		$messageSubject = filter_var($messageSubject, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($messageSubject) === true) {
+			throw(new \PDOException("message subject is invalid"));
+		}
+
+		//create query template
+		//WHAT DO I USE INSTEAD OF MESSAGE?
+		$query = "SELECT messageId, messageOrganizationId, messageProfileId, messageContent, messageDateTime, messageSubject FROM message WHERE messageSubject MESSAGE :messageSubject";
+		$statement = $pdo->prepare($query);
+
+		//bind the message subject to the place holder in the template
+		$messageSubject = "%messageSubject%";
+		$parameters = ["messageSubject" => $messageSubject];
+		$statement->execute($parameters);
+
+		//build an array of messages
+		$messages = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+
+			try {
+				$message = new message($row["messageId"], $row["messageOrganizationId"], $row["messageProfileId"], $row["messageContent"], $row["messageDateTime"], $row["messageSubject"]);
+				$messages[$messages->key()] = $message;
+				$messages->next();
+
+			} catch(\Exception $exception) {
+
+				//if the row could not be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+
+		}
+		return($messages);
+	}
+
+
+	/**
+	 * gets the Message by organizationId
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $messageId message id to search for
+	 * @return Message|null Message found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 */
+
+
 
 
 
