@@ -46,8 +46,8 @@ class Post implements \JsonSerializable {
 
 	/**
 	 * Constructor for this post
-	 * @param int $newPostId id of this post
-	 * @param string $newPostOrganizationId
+	 * @param int| null $newPostId id of this post
+	 * @param int| null $newPostOrganizationId
 	 * @param string $newPostBreed breed of the animal
 	 * @param string $newPostDescription description of the animal
 	 * @param string $newPostSex Sex of the animal
@@ -58,15 +58,14 @@ class Post implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * */
 
-	public function __construct(int $newPostId, string $newPostOrganizationId, string $newPostBreed, string $newPostDescription, string $newPostSex, string $newPostType) {
+	public function __construct(int $newPostId, ?int $newPostOrganizationId, string $newPostBreed, string $newPostDescription, string $newPostSex, string $newPostType) {
 		try {
 			$this->setPostId($newPostId);
 			$this->setPostOrganizationId($newPostOrganizationId);
-			$this->setPostBreed(newPostBreed);
+			$this->setPostBreed($newPostBreed);
 			$this->setPostDescription($newPostDescription);
-			$this->setPostSex(newPostSex);
-			$this->setPostType($newPostType;)
-
+			$this->setPostSex($newPostSex);
+			$this->setPostType($newPostType);
 		}
 			//determine what exception type was thrown
 		catch(\InvalidArgumentException| \RangeException | \TypeError $exception)); {
@@ -76,11 +75,12 @@ class Post implements \JsonSerializable {
 
 	}
 
-	/** accessor method for post id
-	 * @return int value for post id
 	/**
+	 * accessor method for post id
+	 * @return int value of post id
+	**/
 
-	public function getPostId() {
+	public function getPostId(): ?int {
 		return ($this->postId);
 	}
 
@@ -91,7 +91,12 @@ class Post implements \JsonSerializable {
 	 * @throws \TypeError if $newPostId is not an integer
 	 **/
 
-		public function setPostId(int $newPostId) {
+		public function setPostId(int $newPostId) : void {
+			if($newPostId === null) {
+				$this->postId = null;
+				return;
+			}
+
 		//verify that the post id is positive
 		if($newPostId <= 0) {
 			throw(new \RangeException("please enter a positive value"));
@@ -99,13 +104,42 @@ class Post implements \JsonSerializable {
 		// convert and store post id
 		$this->postId = $newPostId;
 			}
+	/**
+	 * accessor method for post organization id
+	 * @return int value of post organization id
+	 **/
+
+	public function getPostOrganizationId(): ?int {
+		return ($this->postOrganizationId);
+	}
+	/**mutator method for post organization id
+	 *
+	 * @param int $newPostOrganizationId new value for post id
+	 * @throws \RangeException if $newPostId is not positive
+	 * @throws \TypeError if $newPostId is not an integer
+	 **/
+
+	public function setPostOrganizationId(int $newPostOrganizationId) : void {
+		if($newPostOrganizationId === null) {
+			$this->postOrganizationId = null;
+			return;
+		}
+
+		//verify that the post id is positive
+		if($newPostOrganizationId <= 0) {
+			throw(new \RangeException("please enter a positive value"));
+		}
+		// convert and store post id
+		$this->postOrganizationId = $newPostOrganizationId;
+	}
+
 
 		/** accessor method for postBreed
 		 *
 		 * @return string value of post Breed
 		 **/
 
-		public function getPostBreed() :string {
+		public function getPostBreed(): ?string {
 		return ($this->postBreed);
 	}
 	/**
@@ -116,7 +150,7 @@ class Post implements \JsonSerializable {
 	 * @throws \TypeError if $newPostBreed is not a string
 	 **/
 
-			public function setPostBreed(string $newPostBreed) {
+			public function setPostBreed(string $newPostBreed) : void {
 			//verify teh post content is secure
 			$newPostBreed = trim ($newPostBreed);
 			$newPostBreed = filter_var($newPostBreed, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -135,7 +169,7 @@ class Post implements \JsonSerializable {
 	 *
 	 * @return string value of post Description
 	 **/
-	public function getPostDescription() :string {
+	public function getPostDescription(): ?string {
 		return $this->postDescription;
 	}
 	/**
@@ -143,7 +177,7 @@ class Post implements \JsonSerializable {
 	 * @param string $newPostDescription the new value of the post description
 	 * @throws \InvalidArgumentException if $newPostDescription is not a string or insecure
 	 * @throws \RangeException if $newPostDescription is > 255 characters
-	 * @throws \TypeError if $newPostDescription is not string
+	 * @throws \TypeError if $newPostDescription is not a string
 	 **/
 
 	public function setPostDescription($newPostDescription) : void {
@@ -179,7 +213,7 @@ class Post implements \JsonSerializable {
 	 * @throws \TypeError if $newPostSex is not a string
 	 **/
 
-	public function setPostSex(string $newPostSex) {
+	public function setPostSex(string $newPostSex) : void {
 		$newPostSex = trim ($newPostSex);
 		$newPostSex = filter_var($newPostSex, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newPostSex)=== true) {
@@ -194,7 +228,7 @@ class Post implements \JsonSerializable {
 	 * @return string $postType value of post type
 	**/
 
-	public function getPostType()  {
+	public function getPostType() : ?string {
 		return ($this->postType);
 	}
 	/**
@@ -202,10 +236,10 @@ class Post implements \JsonSerializable {
 	 * @param string $newPostType new value of post type
 	 * @throws \InvalidArgumentException if $newPostType is insecure
 	 * @throws \RangeException if $newPostType is > 1 character
-	 * @throws |\TypeError if $newPostType is not a string
+	 * @throws \TypeError if $newPostType is not a string
 	 **/
 
-	public function setPostType(string $newPostType) {
+	public function setPostType(string $newPostType) : void {
 		$newPostType = trim($newPostType);
 		$newPostType = filter_var($newPostType, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newPostType) === true) {
