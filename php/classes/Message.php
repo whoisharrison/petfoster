@@ -447,7 +447,7 @@ class Message implements \JsonSerializable {
 
 
 	/**
-	 * gets the Message by organizationId
+	 * gets the Message by messageId
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $messageId message id to search for
 	 * @return Message|null Message found or null if not found
@@ -455,7 +455,50 @@ class Message implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 */
 
+	public static function getMessageByMessageId(\PDO $pdo, int $messageId) : ?Message {
 
+		//sanitize the messageId before searching
+		if($messageId <= 0) {
+			throw(new \PDOException("message id is not positive"));
+		}
+
+		//create query template
+		$query = "SELECT messageId, messageOrganizationId, messageProfileId, messageContent, messageDateTime, messageSubject FROM message WHERE messageId = :messageId";
+		$statement = $pdo->prepare($query);
+
+		//bind the message id to the place holder in the template
+		$parameters = ["messageId" => $messageId];
+		$statement->execute($parameters);
+
+		//grab the message from mySQL
+		try {
+			$message = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$message = new Message($row["messageId"], $row["messageOrganizationId"], $row["messageProfileId"], $row["messageContent"], $row["messageDateTime"], $row["messageSubject"]);
+			}
+
+		} catch(\Exception $exception) {
+			//if the row could not be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return($message);
+	}
+
+
+	/**
+	 *gets the Message by organization id
+	 *@param \PDO $pdo PDO connection object
+	 *@param int $messageOrganizationId organization id to search by
+	 *@return \SplFixedArray SplFixedArray of Messages found
+	 *@throws \PDOException with mySQL related errors occur
+	 *@throws \TypeError when variables are not the correct data type
+	 */
+
+	public static function getsMessageByMessageOrganizationId(\PDO $pdo, int $messageOrganizationId) : \SplFixedArray {
+
+	}
 
 
 
