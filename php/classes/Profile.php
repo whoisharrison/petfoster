@@ -83,7 +83,7 @@ class Profile implements \JsonSerializable {
 	 *
 	 * @return int value of profile id (or null if new profile)
 	 **/
-	public function getProfileId(): int {
+	public function getProfileId(): ?int {
 		return ($this->profileId);
 }
 
@@ -145,7 +145,7 @@ class Profile implements \JsonSerializable {
 	/**
 	 * accessor method for at handle
 	 *
-	 * @return string value of at handle*
+	 * @return string value of at handle
 	 **/
 	public function getProfileAtHandle(): string {
 		return ($this->profileAtHandle);
@@ -253,7 +253,70 @@ class Profile implements \JsonSerializable {
 	/**
 	 * accessor method for name
 	 *
-	 * @return string value of name or null
+	 * @return string value of profile name
 	 **/
+	public function getProfileName() : string {
+		return ($this->profileName);
+	}
+
+	/**
+	 * mutator method for profile name
+	 *
+	 * @param string $newProfileName new value for profile name
+	 * @throws \InvalidArgumentException if $newProfileName is not a string or insecure
+	 * @throws \RangeException if $newProfileName is > 32 characters
+	 * @throws \TypeError if $newProfileName is not a string
+	 **/
+
+	public function getProfileName(string $newProfileName): void {
+		// verify the email is secure
+		$newProfileName = trim($newProfileName);
+		$newProfileName = filter_var($newProfileName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newProfileName) === true) {
+			throw(new \InvalidArgumentException("Profile name is empty"));
+		}
+
+		//verity the email will will fit in database
+		if(strlen($newProfileName) > 32) {
+			throw(new \RangeException("Profile name is too large"));
+		}
+
+		//store profile name
+		$this->profileName = $newProfileName;
+	}
+
+	/**
+	 * accessor method for Salt
+	 *
+	 *@return string value for Salt hexadecimal
+	 **/
+	public function getProfileSalt(): string {
+		return $this->profileSalt;
+	}
+	/**
+	 * mutator method for Salt
+	 *
+	 * @param string $newProfileSalt
+	 * @throws \InvalidArgumentException if salt is not insecure
+	 * @throws \RangeException if salt is not 64 characters
+	 * @throws \TypeError if profile salt is not a string
+	 **/
+	public function setProfileSalt(string $newProfileSalt) : void {
+		$newProfileSalt = trim(@$newProfileSalt);
+		$newProfileSalt = strtolower($newProfileSalt);
+
+		//enforce the salt is a string representation of a hexadecimal
+		if(!ctype_xdigit($newProfileSalt)) {
+			throw (new \InvalidArgumentException("profile password hash is empty or insecure"));
+		}
+
+		//enforce that the salt is 64 characters
+		if(strlen($newProfileSalt) !== 64) {
+			throw(new \RangeException("profile password much be 128 characters"));
+		}
+
+		//store hash
+		$this->profileSalt = $newProfileSalt
+	}
 
 }
