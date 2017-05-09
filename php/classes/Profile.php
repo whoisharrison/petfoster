@@ -250,4 +250,10 @@ class Profile implements \JsonSerializable {
 
 	}
 
+	/**
+	 * accessor method for name
+	 *
+	 * @return string value of name or null
+	 **/
+
 }
