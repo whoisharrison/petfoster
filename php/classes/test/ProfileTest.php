@@ -207,9 +207,27 @@ class ProfileTest extends PetRescueAbqTest {
 		$profile = Profile::getProfileByProfileId($this->getPDO(), PetRescueAbqTest::INVALID_KEY);
 		$this->assertNull($profile);
 	}
+
 	/**
-	 * test grabbing a Profile by email
+	 * test grabbing a profile by email
+	 **/
+	public function testGetValidProfileByEmail() : void {
+		//count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+
+		// create a new profile and insert into mySQL
+		$profile = new Profile(null, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT);
+		$profile->insert($this->getPDO());
+	}
+
+	/**
+	 * test grabbing a Profile by email that doesn't exist
 	 */
+	public function testGetInvalidProfileActivation() : {
+		// grab an email that does not exist
+		$profile = Profile::getProfileByProfileActivationToken($this->getPDO(), "ebffc9ff602631aec2f7adb8ccc92c049aedf4a0");
+		$this->assetNull($profile);
+	}
 
 }
 

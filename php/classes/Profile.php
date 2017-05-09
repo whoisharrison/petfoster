@@ -234,10 +234,20 @@ class Profile implements \JsonSerializable {
 		if(empty($newProfileHash) === true) {
 			throw(new \InvalidArgumentException("profile password hash is empty or insecure"));
 		}
+
+		//enforce that the hash is a sting representation of a hexadecimal
+		if(!ctype_xdigit($newProfileHash)) {
+			throw(new \InvalidArgumentException("profile password hash is empty or insecure"));
+		}
+
+		//enforce that the hash is exactly 128 characters
+		if(strlen($newProfileHash) !== 128) {
+			throw(new \RangeException("hash must be 128 characters"));
+		}
+
+		//store the hash
+		$this->profileHash = $newProfileHash;
+
 	}
-
-
-
-
 
 }
