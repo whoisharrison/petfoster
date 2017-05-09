@@ -303,6 +303,40 @@ class Message implements \JsonSerializable {
 	}
 
 
+	/**
+	 * deletes this Message from mySQL
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function delete(\PDO $pdo) : void {
+
+		//enforce the messageId is not null, dont delete a message that hasnt been inserted
+		if($this->messageId === null) {
+			throw(new \PDOException("unable to delete a message that does not exist"));
+		}
+
+		//create query template
+		$query = "DELETE FROM message WHERE messageId = :messageId";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variable to the place holder in the template
+		$parameters = ["messageId" => $this->messageId];
+		$statement->execute($parameters);
+	}
+
+
+	/**
+	 * updates this Message in mySQL
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function update(\PDO $pdo) : void{
+
+	}
+
+
 
 
 
