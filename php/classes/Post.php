@@ -252,6 +252,70 @@ class Post implements \JsonSerializable {
 	}
 
 	/**
+	 * inserts this post in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related error occurs
+	 * @throows \TypeError if $pdo is not a PDO connection object
+	 **/
+
+		public function insert(\PDO $pdo): void {
+			// enforce the profileId is null (ie. don't insert a post ID that already exists)
+			if($this->postId !== null) {
+			throw (new \PDOException("not a new post"));
+			}
+			//create query template
+			$query = "INSERT INTO post(postOrganizationId, postBreed, postDescription, postSex, postType) VALUES( :postOrganizationId, :postDescription, :postBreed, :postSex, :postType)";
+			$statement = $pdo->prepare($query);
+
+			// bind the member variables to the place holders in the template
+			$parameters =  ["postOrganizationId"=> $this->postOrganizationId, "postBreed" => $this->postBreed, "postDescription" => $this->postDescription, "postSex" => $this->postSex, "postType" => $this->postType];
+			$statement->execute($parameters);
+			// update the null postId with what mySQL just gave us
+			$this->postId = intval($pdo->lastInsertId());
+		}
+
+		/**
+		 * deletes this post in mySQL
+		 *
+		 * @param \PDO $pdo PDO connection object
+		 * @throws \PDOException when mySQL related errors occur
+		 * @throws \TypeError if $pdo is not a PDO connection
+		 **/
+			public function delete(\PDO $pdo) {
+				//enforce the postID is not null (i.e., don't delete a post that hasn't been inserted)
+				if($this->postId ===null) {
+					throw(new \PDOException("can't delete a post that is not there"));
+				}
+				//create query template
+				$query = "DELETE FROM post WHERE postId = :postId";
+				$statement =  $pdo->prepare($query);
+
+				//bind the member variables to the place holder in the template
+				$parameters = ["postId" => $this->postId];
+				$statement->execute($parameters);
+			}
+
+			/** updates the post in my SQl
+			 *
+			 * @param \PDO $pdo PDO connection object
+			 * @throws \PDOException when mySQL related errors occur
+			 * @throws \TypeError if $pdo is not a PDO connection
+			 **/
+				public function update(\PDO $pdo): void {
+				//enforce the postId is not null (i.e., don't update a post that does not exist)
+				if($this->postId === null) {
+					throw(new \PDOException("Can't update a profile that does not exist"));
+
+				//create query template
+					$query = "UPDATE post SET postOrganizationId = :postOrganizationId, postBreed = :postBreed, postDescription = :postDescription, postSex = :postSex, postType = :postType";
+					$statement = $pdo->prepare($query);
+
+					//bind the member variables to the place holders in the template
+					$paramters = parameters =  ["postOrganizationId"=> $this->postOrganizationId, "postBreed" => $this->postBreed, "postDescription" => $this->postDescription, "postSex" => $this->postSex, "postType" => $this->postType];
+					%$statement->execute($paramters);
+		}
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize
@@ -260,4 +324,4 @@ class Post implements \JsonSerializable {
 		$fields = get_object_vars($this);
 		return($fields);
 	}
-}
+
