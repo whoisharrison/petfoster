@@ -319,20 +319,39 @@ class Profile implements \JsonSerializable {
 		$this->profileSalt = $newProfileSalt;
 	}
 	/**
-	 * inserts this profile in mySQL
+	 * inserts profile in mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-public function insert(\PDO $pdo): void {
-	//enforce the profileID is null (do not insert profile that already exists)
-	if($this->profileId !== null) {
-		throw(new \PDOException("not a new profile"));
+	public function insert(\PDO $pdo): void {
+		//enforce the profileID is null (do not insert profile that already exists)
+		if($this->profileId !== null) {
+			throw(new \PDOException("not a new profile"));
+		}
+
+		// create query template
+		$query = "INSERT INTO profile(profileActivationToken, profileAtHandle, profileEmail, ProfileHash, ProfileName, ProfileSalt) VALUES (:profileActivationToken, :profileAtHandle, :profileEmail, :profileHash, :profileName, :profileSalt)";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the placeholders in the template
+		$parameters = ["profileActivationToken" => $this->profileActivationToken, "profileAtHandle" => $this->profileAtHandle, "profileEmail" => $this->profileEmail, "profileHash" => $this->profileHash, "profileName" => $this->profileName, "profileSalt" => $this->profileSalt];
+
+		// update the null profileId with what mySQL just gave
+		$this->profileId = intval($pdo->lastInsertId());
 	}
 
-	// create query template
-	$query = "INSERT INTO profile(profileActivationToken, profileAtHandle, profileEmail, ProfileHash, ProfileName, ProfileSalt) VALUES (:profileActivationToken, :profileAtHandle, :profileEmail, :profileName, :profileSalt")"
+	/**
+	 * deleted profile from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function delete(\PDO $pdo): void {
+		//enforce the profileId is not null (i.e., don't delete a profile that does not exist)
+	}
 
-}
+
 }
