@@ -256,7 +256,7 @@ class Post implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related error occurs
-	 * @throows \TypeError if $pdo is not a PDO connection object
+	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
 
 		public function insert(\PDO $pdo): void {
@@ -306,14 +306,14 @@ class Post implements \JsonSerializable {
 					//enforce the postId is not null (i.e., don't update a post that does not exist)
 					if($this->postId === null) {
 						throw(new \PDOException("Can't update a profile that does not exist"));
-
+					}
 						//create query template
-						$query = "UPDATE post SET postOrganizationId = :postOrganizationId, postBreed = :postBreed, postDescription = :postDescription, postSex = :postSex, postType = :postType";
+						$query = "UPDATE post SET postId = :postId, postOrganizationId = :postOrganizationId, postBreed = :postBreed, postDescription = :postDescription, postSex = :postSex, postType = :postType";
 						$statement = $pdo->prepare($query);
 
 						//bind the member variables to the place holders in the template
-						$parameters = parameters = ["postOrganizationId" => $this->postOrganizationId, "postBreed" => $this->postBreed, "postDescription" => $this->postDescription, "postSex" => $this->postSex, "postType" => $this->postType];
-						%
+						$parameters = ["postOrganizationId" => $this->postOrganizationId, "postBreed" => $this->postBreed, "postDescription" => $this->postDescription, "postSex" => $this->postSex, "postType" => $this->postType];
+
 						$statement->execute($parameters);
 					}
 
@@ -345,13 +345,18 @@ class Post implements \JsonSerializable {
 							$post = null;
 							$statement->setFetchMode(\PDO::FETCH_ASSOC);
 							$row = $statement->Fetch();
-							$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
+
+							if($row !== false) {
+								$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
+							}
+
 						} catch(\Exception $exception) {
 							// if the row couldn't be converted, rethrow it
 							throw(new \PDOException($exception->getMessage(), 0, $exception));
 						}
 						return ($post);
 					}
+
 					/**
 					 * gets the Post by Post Organization Id
 					 *
@@ -361,10 +366,11 @@ class Post implements \JsonSerializable {
 					 * @throws \PDOException when my SQL related error occurs
 					 * @throws \TypeError when variables are not the correct data type
 					 *
+					 * might be wrong @RoLopez
 					 **/
 					public static function getPostByPostOrganizationId(\PDO $pdo, int $postOrganizationId) {
 						//sanitize the postId before searching
-						if($postOrganizationId<= 0) {
+						if($postOrganizationId <= 0) {
 							throw(new\PDOException("post organization id is not positive"));
 						}
 						// create query template
@@ -372,22 +378,25 @@ class Post implements \JsonSerializable {
 						$statement = $pdo->prepare($query);
 
 						//bind the post id to the place holder in the template
-						$parameters =  ["postOrganizationId"=> $postOrganizationId];
+						$parameters = ["postOrganizationId" => $postOrganizationId];
 						$statement->execute($parameters);
 
 						// grab the post from mySQL
-						try{
+						try {
 							$post = null;
 							$statement->setFetchMode(\PDO::FETCH_ASSOC);
 							$row = $statement->Fetch();
-							$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
-						}
-						catch(\Exception $exception) {
+							if($row !== false) {
+								$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
+							}
+
+						} catch(\Exception $exception) {
 							// if the row couldn't be converted, rethrow it
 							throw(new \PDOException($exception->getMessage(), 0, $exception));
 						}
-						return($post);
+						return ($post);
 					}
+
 					/**
 					 *gets the Post by post breed
 					 *
@@ -421,20 +430,21 @@ class Post implements \JsonSerializable {
 								$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
 								$posts [$post->key()] = $post;
 								$posts->next();
-							}  catch(\Exception $exception) {
+							} catch(\Exception $exception) {
 								//if the row couldn't be converted, rethrow it
 								throw(new \PDOException($exception->getMessage(), 0, $exception));
 							}
 						}
-						return($posts);
+						return ($posts);
 					}
+
 					/**
 					 *gets the Post by post description
 					 *
 					 * @param \PDO $pdo PDO connection Object
 					 * @param string $postDescription to search for
 					 * @return \SplFixedArray SplFixedArray of Posts found
-					 * @throws \ PDOException when mySQL related errors occur
+					 * @throws \PDOException when mySQL related errors occur
 					 * @throws \TypeError when variables are not correct data type
 					 **/
 					public static function getPostByPostDescription(\PDO $pdo, string $postDescription) {
@@ -468,6 +478,7 @@ class Post implements \JsonSerializable {
 						}
 						return ($posts);
 					}
+
 					/**
 					 *gets the Post by post sex
 					 *
@@ -501,6 +512,7 @@ class Post implements \JsonSerializable {
 								$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
 								$posts [$post->key()] = $post;
 								$posts->next();
+
 							} catch(\Exception $exception) {
 								//if the row couldn't be converted, rethrow it
 								throw(new \PDOException($exception->getMessage(), 0, $exception));
@@ -508,6 +520,7 @@ class Post implements \JsonSerializable {
 						}
 						return ($posts);
 					}
+
 					/**
 					 *gets the Post by post type
 					 *
@@ -548,6 +561,7 @@ class Post implements \JsonSerializable {
 						}
 						return ($posts);
 					}
+
 					/**
 					 * get all the posts
 					 * @param \PDO $pdo PDO connection object
@@ -556,9 +570,9 @@ class Post implements \JsonSerializable {
 					 * @throws \TypeError when variables are not the correct data type
 					 */
 
-					public static function getAllPosts (\PDO $pdo) : \SplFixedArray {
+					public static function getAllPosts(\PDO $pdo): \SplFixedArray {
 						//create query template
-						$query = "SELECT postId, postrganizationId, postBreed, ;postDescription, postSex, postType FROM post";
+						$query = "SELECT postId, postrganizationId, postBreed, postDescription, postSex, postType FROM post";
 						$statement = $pdo->prepare($query);
 						$statement->execute();
 
@@ -567,7 +581,7 @@ class Post implements \JsonSerializable {
 						$statement->setFetchMode(\PDO::FETCH_ASSOC);
 						while(($row = $statement->fetch()) !== false) {
 
-							try{
+							try {
 								$post = new Post($row["postId"], $row["postOrganizationId"], $row["postDescription"], $row["postSex"], $row["postBreed"], $row["postType"]);
 								$posts[$posts->key()] = $post;
 								$posts->next();
@@ -578,7 +592,7 @@ class Post implements \JsonSerializable {
 
 							}
 						}
-						return($posts);
+						return ($posts);
 					}
 
 					/**
@@ -586,9 +600,11 @@ class Post implements \JsonSerializable {
 					 *
 					 * @return array resulting state variables to serialize
 					 **/
-					public function jsonSerialize() {
+					public
+					function jsonSerialize() {
 						$fields = get_object_vars($this);
 						return ($fields);
 					}
 
 
+				}

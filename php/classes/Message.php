@@ -55,14 +55,14 @@ class Message implements \JsonSerializable {
 	private $messageSubject;
 
 
-	/** constrictor for this message
+	/** constructor for this message
 	 *
-	 * @param int|null $newMessageId id of this message or null if a new message
-	 * @param int $newMessageOrganizationId id of the organization that sent this message
+	 * @param int|null $newMessageId id of this message or null if a new Message
+	 * @param int $newMessageOrganizationId id of the organization that sent this Message
 	 * @param int $newMessageProfileId id of the profile that sent this message
-	 * @param string $newMessageContent string containing the message data
+	 * @param string $newMessageContent string containing the Message data
 	 * @param string $newMessageSubject string containing the subject data
-	 * @param /Datetime|string|null $newMessageDateTime date and time Message was sent or a null if set to current date and time
+	 * @param \DateTime|string|null $newMessageDateTime date and time Message was sent or a null if set to current date and time
 	 *
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds
@@ -293,7 +293,7 @@ class Message implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
-		//changed formattedDate to formattedDateTime and changed messageDate to messageDateTime
+		//changed formattedDateTime to formattedDateTime and changed messageDate to messageDateTime
 		$formattedDateTime = $this->messageDateTime->format("Y-m-d H:i:s");
 		$parameters = ["messageOrganizationId" => $this->messageOrganizationId, "messageProfileId" => $this->messageProfileId, "messageContent" => $this->messageContent, "messageDateTime" => formattedDateTime, "messageSubject" => $this->messageSubject, "messageId" => $this->messageId];
 		$statement->execute($parameters);
@@ -344,7 +344,7 @@ class Message implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		//bind the member varibales to the place holders in the template
-		$formattedDate = $this->messageDateTime->format("Y-m-d H:i:s");
+		$formattedDateTime = $this->messageDateTime->format("Y-m-d H:i:s");
 		$parameters = ["messageOrganizationId" => $this->messageOrganizationId, "messageProfileId" => $this->messageProfileId, "messageContent" => $this->messageContent, "messageDateTime" => $this->messageDateTime, "messageSubject" => $this->messageSubject];
 		$statement->execute($parameters);
 	}
@@ -401,7 +401,7 @@ class Message implements \JsonSerializable {
 	/**
 	 * gets the Message by subject
 	 * @param \PDO $pdo PDO connection object
-	 * @param string $messageContent message content to search for
+	 * @param string $messageSubject message content to search for
 	 * @return \SplFixedArray SplFixedArray of Messages found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not correct data type
@@ -417,7 +417,7 @@ class Message implements \JsonSerializable {
 
 		//create query template
 		//WHAT DO I USE INSTEAD OF MESSAGE?
-		$query = "SELECT messageId, messageOrganizationId, messageProfileId, messageContent, messageDateTime, messageSubject FROM message WHERE messageSubject MESSAGE :messageSubject";
+		$query = "SELECT messageId, messageOrganizationId, messageProfileId, messageContent, messageDateTime, messageSubject FROM message WHERE messageSubject LIKE :messageSubject";
 		$statement = $pdo->prepare($query);
 
 		//bind the message subject to the place holder in the template
@@ -670,6 +670,4 @@ class Message implements \JsonSerializable {
 			$fields["messageDateTime"] = round(floatval($this->messageDateTime->format("U.u")) * 1000);
 			return($fields);
 		}
-
-
 }
