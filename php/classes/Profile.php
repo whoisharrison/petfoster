@@ -397,8 +397,10 @@ class Profile implements \JsonSerializable {
 	public static function getProfileByProfileId(\PDO $pdo, int $profileId):?Profile {
 		// sanitize the profile id before searching
 		if($profileId <= 0) {
-			@throw(new \PDOException("Profile id is not a positive"));
+			throw(new \PDOException("profile is not a positive number"));
 		}
+
+
 	}
 
 }
