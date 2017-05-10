@@ -1,8 +1,8 @@
 <?php
 
-namespace Edu\Cnm\petfoster;
+namespace Edu\Cnm\Petfoster;
 
-require_once("autoload");
+require_once("autoload.php");
 
 /**
  * section of a for a message for petrescueabq
@@ -624,12 +624,51 @@ class Message implements \JsonSerializable {
 		}
 		return($messages);
 
+
+		/**
+		 * get all the messages
+		 * @param \PDO $pdo PDO connection object
+		 * @return \SplFixedArray SplFixedArray of Messages found or null if not found
+		 * @throws \PDOException when mySQL related errors occur
+		 * @throws \TypeError when variables are not the correct data type
+		 */
+
+		public static function getAllMessages(\PDO $pdo) : \SplFixedArray {
+			//create query template
+			$query = "SELECT messageId, messageOrganizationId, messageProfileId, messageContent, messageDateTime, messageSubject FROM message";
+			$statement = $pdo->prepare($query);
+			$statement->execute();
+
+			//build an array of messages
+			$messages = new \SplFixedArray($statement->rowCount());
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			while(($row = $statement->fetch()) !== false) {
+
+				try{
+					$message = new Message($row["messageId"], $row["messageOrganizationId"], $row["messageProfileId"], $row["messageContent"], $row["messageDateTime"], $row["messageSubject"]);
+					$messages[$messages->key()] = $message;
+					$messages->next();
+
+				} catch(\Exception $exception) {
+					//if the row could not be converted, rethrow it
+					throw(new \PDOException($exception->getMessage(), 0, $exception));
+
+				}
+			}
+			return($messages);
+		}
+
+		/**
+		 * formats the state variables for JSON serialization
+		 * @return array resulting state variables to serialize
+		 */
+
+		public function jsonSerialize() {
+			$fields = get_object_vars($this);
+			//format the date sp that the front end can consume it
+			$fields["messageDateTime"] = round(floatval($this->messageDateTime->format("U.u")) * 1000);
+			return($fields);
+		}
+
 	}
-
-
-
-
-
-
-
 }
