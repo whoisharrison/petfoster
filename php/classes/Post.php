@@ -388,9 +388,198 @@ class Post implements \JsonSerializable {
 						}
 						return($post);
 					}
+					/**
+					 *gets the Post by post breed
+					 *
+					 * @param \PDO $pdo PDO connection Object
+					 * @param string $postBreed to search for
+					 * @return \SplFixedArray SplFixedArray of Posts found
+					 * @throws \ PDOException when mySQL related errors occur
+					 * @throws \TypeError when variables are not correct data type
+					 **/
+					public static function getPostByPostBreed(\PDO $pdo, string $postBreed) {
+						// sanitize the description before searching
+						$postBreed = trim($postBreed);
+						$postBreed = filter_var($postBreed, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+						if(empty($postBreed) === true) {
+							throw(new \PDOException("post breed is invalid"));
+						}
+						// create query template
+						$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post WHERE postBreed = :postBreed";
+						$statement = $pdo->prepare($query);
+
+						// bind the Post Breed to the place holder in the template
+						$postBreed = "%$postBreed%";
+						$parameters = ["postBreed" => $postBreed];
+						$statement->execute($parameters);
+
+						// build an array of Posts
+						$posts = new \SplFixedArray($statement->rowCount());
+						$statement->setFetchMode(\PDO::FETCH_ASSOC);
+						while(($row = $statement->fetch()) !== false) {
+							try {
+								$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
+								$posts [$post->key()] = $post;
+								$posts->next();
+							}  catch(\Exception $exception) {
+								//if the row couldn't be converted, rethrow it
+								throw(new \PDOException($exception->getMessage(), 0, $exception));
+							}
+						}
+						return($posts);
 					}
+					/**
+					 *gets the Post by post description
+					 *
+					 * @param \PDO $pdo PDO connection Object
+					 * @param string $postDescription to search for
+					 * @return \SplFixedArray SplFixedArray of Posts found
+					 * @throws \ PDOException when mySQL related errors occur
+					 * @throws \TypeError when variables are not correct data type
+					 **/
+					public static function getPostByPostDescription(\PDO $pdo, string $postDescription) {
+						// sanitize the description before searching
+						$postDescription = trim($postDescription);
+						$postDescription = filter_var($postDescription, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+						if(empty($postDescription) === true) {
+							throw(new \PDOException("post description is invalid"));
+						}
+						// create query template
+						$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post WHERE postDescription  = :postDescription";
+						$statement = $pdo->prepare($query);
 
+						// bind the Post Description to the place holder in the template
+						$postDescription = "%$postDescription%";
+						$parameters = ["postDescription" => $postDescription];
+						$statement->execute($parameters);
 
+						// build an array of Posts
+						$posts = new \SplFixedArray($statement->rowCount());
+						$statement->setFetchMode(\PDO::FETCH_ASSOC);
+						while(($row = $statement->fetch()) !== false) {
+							try {
+								$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
+								$posts [$post->key()] = $post;
+								$posts->next();
+							} catch(\Exception $exception) {
+								//if the row couldn't be converted, rethrow it
+								throw(new \PDOException($exception->getMessage(), 0, $exception));
+							}
+						}
+						return ($posts);
+					}
+					/**
+					 *gets the Post by post sex
+					 *
+					 * @param \PDO $pdo PDO connection Object
+					 * @param string $postSex to search for
+					 * @return \SplFixedArray SplFixedArray of Posts found
+					 * @throws \ PDOException when mySQL related errors occur
+					 * @throws \TypeError when variables are not correct data type
+					 **/
+					public static function getPostByPostSex(\PDO $pdo, string $postSex) {
+						// sanitize the description before searching
+						$postSex = trim($postSex);
+						$postSex = filter_var($postSex, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+						if(empty($postSex) === true) {
+							throw(new \PDOException("post description is invalid"));
+						}
+						// create query template
+						$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post WHERE postSex  = :postSex";
+						$statement = $pdo->prepare($query);
+
+						// bind the Post Sex to the place holder in the template
+						$postSex = "%$postSex%";
+						$parameters = ["postSex" => $postSex];
+						$statement->execute($parameters);
+
+						// build an array of Posts
+						$posts = new \SplFixedArray($statement->rowCount());
+						$statement->setFetchMode(\PDO::FETCH_ASSOC);
+						while(($row = $statement->fetch()) !== false) {
+							try {
+								$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
+								$posts [$post->key()] = $post;
+								$posts->next();
+							} catch(\Exception $exception) {
+								//if the row couldn't be converted, rethrow it
+								throw(new \PDOException($exception->getMessage(), 0, $exception));
+							}
+						}
+						return ($posts);
+					}
+					/**
+					 *gets the Post by post type
+					 *
+					 * @param \PDO $pdo PDO connection Object
+					 * @param string $postType to search for
+					 * @return \SplFixedArray SplFixedArray of Posts found
+					 * @throws \ PDOException when mySQL related errors occur
+					 * @throws \TypeError when variables are not correct data type
+					 **/
+					public static function getPostByPostType(\PDO $pdo, string $postType) {
+						// sanitize the description before searching
+						$postType = trim($postType);
+						$postType = filter_var($postType, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+						if(empty($postType) === true) {
+							throw(new \PDOException("post description is invalid"));
+						}
+						// create query template
+						$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post WHERE postType  = :postType";
+						$statement = $pdo->prepare($query);
+
+						// bind the Post Type to the place holder in the template
+						$postType = "%$postType%";
+						$parameters = ["postSex" => $postType];
+						$statement->execute($parameters);
+
+						// build an array of Posts
+						$posts = new \SplFixedArray($statement->rowCount());
+						$statement->setFetchMode(\PDO::FETCH_ASSOC);
+						while(($row = $statement->fetch()) !== false) {
+							try {
+								$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
+								$posts [$post->key()] = $post;
+								$posts->next();
+							} catch(\Exception $exception) {
+								//if the row couldn't be converted, rethrow it
+								throw(new \PDOException($exception->getMessage(), 0, $exception));
+							}
+						}
+						return ($posts);
+					}
+					/**
+					 * get all the posts
+					 * @param \PDO $pdo PDO connection object
+					 * @return \SplFixedArray SplFixedArray of Posts found or null if not found
+					 * @throws \PDOException when mySQL related errors occur
+					 * @throws \TypeError when variables are not the correct data type
+					 */
+
+					public static function getAllPosts (\PDO $pdo) : \SplFixedArray {
+						//create query template
+						$query = "SELECT postId, postrganizationId, postBreed, ;postDescription, postSex, postType FROM post";
+						$statement = $pdo->prepare($query);
+						$statement->execute();
+
+						//build an array of Posts
+						$posts = new \SplFixedArray($statement->rowCount());
+						$statement->setFetchMode(\PDO::FETCH_ASSOC);
+						while(($row = $statement->fetch()) !== false) {
+
+							try{
+								$post = new Post($row["postId"], $row["postOrganizationId"], $row["postDescription"], $row["postSex"], $row["postBreed"], $row["postType"]);
+								$posts[$posts->key()] = $post;
+								$posts->next();
+
+							} catch(\Exception $exception) {
+								//if the row could not be converted, rethrow it
+								throw(new \PDOException($exception->getMessage(), 0, $exception));
+
+							}
+						}
+						return($posts);
+					}
 
 					/**
 					 * formats the state variables for JSON serialization
