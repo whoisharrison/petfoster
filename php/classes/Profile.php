@@ -162,7 +162,7 @@ class Profile implements \JsonSerializable {
 	public function setProfileAtHandle(string $newProfileAtHandle) : void {
 		//verify the at handle is secure
 		$newProfileAtHandle = trim($newProfileAtHandle);
-		$newProfileAtHandle = filer_var($newProfileAtHandle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$newProfileAtHandle = filter_var($newProfileAtHandle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newProfileAtHandle) === true) {
 			throw(new \InvalidArgumentException("profile at handle is empty or insecure"));
 		}
@@ -230,10 +230,7 @@ class Profile implements \JsonSerializable {
 	public function  setProfileHash(string $newProfileHash): void {
 		//enforce that the hash is properly formatted
 		$newProfileHash = trim($newProfileHash);
-		$newProfileHash - strtolower($newProfileHash);
-		if(empty($newProfileHash) === true) {
-			throw(new \InvalidArgumentException("profile password hash is empty or insecure"));
-		}
+		$newProfileHash = strtolower($newProfileHash);
 
 		//enforce that the hash is a sting representation of a hexadecimal
 		if(!ctype_xdigit($newProfileHash)) {
@@ -268,7 +265,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \TypeError if $newProfileName is not a string
 	 **/
 
-	public function getProfileName(string $newProfileName): void {
+	public function setProfileName(string $newProfileName): void {
 		// verify the email is secure
 		$newProfileName = trim($newProfileName);
 		$newProfileName = filter_var($newProfileName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -332,7 +329,7 @@ class Profile implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "INSERT INTO profile(profileActivationToken, profileAtHandle, profileEmail, ProfileHash, ProfileName, ProfileSalt) VALUES (:profileActivationToken, :profileAtHandle, :profileEmail, :profileHash, :profileName, :profileSalt)";
+		$query = "INSERT INTO profile(profileActivationToken, profileAtHandle, profileEmail, profileHash, profileName, profileSalt) VALUES (:profileActivationToken, :profileAtHandle, :profileEmail, :profileHash, :profileName, :profileSalt)";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the placeholders in the template
@@ -378,7 +375,7 @@ class Profile implements \JsonSerializable {
 		}
 
 		// create a query template
-		$query = "UPDATE profile SET profileActivationToken = :profileActivationToken, profileAtHandle = :profileAtHandle, profileEmail = :profileEmail, profileHast = :profileHash, profileName = :profileName, profileSalt = :profileSalt";
+		$query = "UPDATE profile SET profileActivationToken = :profileActivationToken, profileAtHandle = :profileAtHandle, profileEmail = :profileEmail, profileHash = :profileHash, profileName = :profileName, profileSalt = :profileSalt";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variable to the place holders in the tamplate
@@ -400,7 +397,20 @@ class Profile implements \JsonSerializable {
 			throw(new \PDOException("profile is not a positive number"));
 		}
 
+		// create query template
+		$query = "SELECT profileId, profileActivationToken, profileAtHandle, profileEmail, profileHash, pro"
 
+
+	}
+
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+	public
+	function jsonSerialize() {
+		return (get_object_vars($this));
 	}
 
 }
