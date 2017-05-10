@@ -316,7 +316,12 @@ class Profile implements \JsonSerializable {
 		}
 
 		//store hash
-		$this->profileSalt = $newProfileSalt
+		$this->profileSalt = $newProfileSalt;
 	}
+	/**
+	 * inserts this profile in mySQL
+	 *
+	 *
+	 **/
 
 }
