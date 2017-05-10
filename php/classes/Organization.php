@@ -1,6 +1,6 @@
 <?php
 
-namespace Edu\Cnm\Petfoster;
+namespace Edu\Cnm\PetRescueAbq;
 
 require_once("autoload.php");
 
@@ -15,7 +15,7 @@ require_once("autoload.php");
  **/
 
 	/**Class Organization
-	 *@package Edu\Cnm\Petfoster
+	 *@package Edu\Cnm\PetRescueAbq
 	 **/
 class Organization implements \JsonSerializable {
 	/**
@@ -144,6 +144,32 @@ class Organization implements \JsonSerializable {
 		// convert and store the organization id
 		$this->organizationId = $newOrganizationId;
 	}
+
+	/**
+	 * accessor method for organization profile id
+	 * @return int value of the organization profile id
+	 **/
+	public function getOrganizationProfileId(): int {
+		return ($this->organizationProfileId);
+	}
+
+	/**
+	 * mutator method for organization profile id
+	 * @param int $newOrganizationProfileId new value of organization profile id
+	 * @throws \RangeException is $newOrganizationProfileId is not positive
+	 * @throws \TypeError if %newOrganizationProfileId is not an integer
+	 */
+	public function setMessageProfileId(int $newOrganizationProfileId) : void {
+
+		//verify the organization profile id is positive
+		if($newOrganizationProfileId <= 0) {
+			throw(new \RangeException("organization profile id is not positive"));
+		}
+
+		//convert and store the organization profile id
+		$this->organizationProfileId = $newOrganizationProfileId;
+	}
+
 	/**
 	 * accessor method for account activation token
 	 *
@@ -166,6 +192,7 @@ class Organization implements \JsonSerializable {
 			return;
 		}
 		$newOrganizationActivationToken = strtolower(trim($newOrganizationActivationToken));
+		$newOrganizationActivationToken = filter_var($newOrganizationActivationToken, FILTER_SANITIZE_STRING);
 		if(ctype_xdigit($newOrganizationActivationToken) === false) {
 			throw(new\RangeException("user activation is not valid"));
 		}
@@ -210,7 +237,7 @@ class Organization implements \JsonSerializable {
 	 *
 	 * @return string value of organization address2
 	 **/
-	public function getOrganizationAddress2() :string {
+	public function getOrganizationAddress2() :?string {
 		return($this->organizationAddress2);
 	}
 	/**
@@ -221,7 +248,7 @@ class Organization implements \JsonSerializable {
 	 * @throws \RangeException if $newOrganizationAddress2 is > 64 characters
 	 * @throws \TypeError if $newOrganizationAddress2 is not a string
 	 **/
-	public function setOrganizationAddress2(string $newOrganizationAddress2) : void {
+	public function setOrganizationAddress2(?string $newOrganizationAddress2) : void {
 		// verify the organization address2 is secure
 		$newOrganizationAddress2 = trim($newOrganizationAddress2);
 		$newOrganizationAddress2 = filter_var($newOrganizationAddress2, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -391,7 +418,76 @@ class Organization implements \JsonSerializable {
 		// store the phone
 		$this->organizationPhone = $newOrganizationPhone;
 	}
-
+	/**
+	 * accessor method for state
+	 *
+	 * @return string value of state
+	 **/
+	public function getOrganizationState(): string {
+		return ($this->organizationState);
+	}
+	/**
+	 * mutator method for state
+	 *
+	 * @param string $newOrganizationState new value of state
+	 * @throws \InvalidArgumentException if $newState is not a string or insecure
+	 * @throws \RangeException if $newState is > 2 characters
+	 * @throws \TypeError if $newState is not a string
+	 **/
+	public function setOrganizationState(string $newOrganizationState): void {
+		//if $organizationState is null return it right away
+		if($newOrganizationState === null) {
+			$this->organizationState = null;
+			return;
+		}
+		// verify the state is secure
+		$newOrganizationState = trim($newOrganizationState);
+		$newOrganizationState = filter_var($newOrganizationState, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newOrganizationState) === true) {
+			throw(new \InvalidArgumentException("organization state is empty or insecure"));
+		}
+		// verify the state will fit in the database
+		if(strlen($newOrganizationState) > 2) {
+			throw(new \RangeException("organization state is too large"));
+		}
+		// store the state
+		$this->organizationState = $newOrganizationState;
+	}
+	/**
+	 * accessor method for zip
+	 *
+	 * @return string value of zip
+	 **/
+	public function getOrganizationZip(): string {
+		return ($this->organizationZip);
+	}
+	/**
+	 * mutator method for zip
+	 *
+	 * @param string $newOrganizationZip new value of zip
+	 * @throws \InvalidArgumentException if $newZip is not a string or insecure
+	 * @throws \RangeException if $newZip is > 10 characters
+	 * @throws \TypeError if $newZip is not a string
+	 **/
+	public function setOrganizationZip(string $newOrganizationZip): void {
+		//if $organizationZip is null return it right away
+		if($newOrganizationZip === null) {
+			$this->organizationZip = null;
+			return;
+		}
+		// verify the zip is secure
+		$newOrganizationZip = trim($newOrganizationZip);
+		$newOrganizationZip = filter_var($newOrganizationZip, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newOrganizationZip) === true) {
+			throw(new \InvalidArgumentException("organization zip is empty or insecure"));
+		}
+		// verify the zip will fit in the database
+		if(strlen($newOrganizationZip) > 10) {
+			throw(new \RangeException("organization zip is too large"));
+		}
+		// store the zip
+		$this->organizationZip = $newOrganizationZip;
+	}
 
 
 	/**
