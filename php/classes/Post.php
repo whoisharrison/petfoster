@@ -54,7 +54,7 @@ class Post implements \JsonSerializable {
 	 * @param string $newPostType Type of post
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings are too long, negative integers)
-	 * @throws \TypeError if the data types violate teh hints
+	 * @throws \TypeError if the data types violate the hints
 	 * @throws \Exception if some other exception occurs
 	 * */
 
@@ -68,9 +68,9 @@ class Post implements \JsonSerializable {
 			$this->setPostType($newPostType);
 		}
 			//determine what exception type was thrown
-		catch(\InvalidArgumentException| \RangeException | \TypeError $exception)); {
+		catch(\InvalidArgumentException| \RangeException | \TypeError $exception) {
 			$exceptionType = get_class($exception);
-			throw(new $exceptionType ($exceptionType->getMessage(), 0, $exception));
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
 
 	}
@@ -303,25 +303,103 @@ class Post implements \JsonSerializable {
 			 * @throws \TypeError if $pdo is not a PDO connection
 			 **/
 				public function update(\PDO $pdo): void {
-				//enforce the postId is not null (i.e., don't update a post that does not exist)
-				if($this->postId === null) {
-					throw(new \PDOException("Can't update a profile that does not exist"));
+					//enforce the postId is not null (i.e., don't update a post that does not exist)
+					if($this->postId === null) {
+						throw(new \PDOException("Can't update a profile that does not exist"));
 
-				//create query template
-					$query = "UPDATE post SET postOrganizationId = :postOrganizationId, postBreed = :postBreed, postDescription = :postDescription, postSex = :postSex, postType = :postType";
-					$statement = $pdo->prepare($query);
+						//create query template
+						$query = "UPDATE post SET postOrganizationId = :postOrganizationId, postBreed = :postBreed, postDescription = :postDescription, postSex = :postSex, postType = :postType";
+						$statement = $pdo->prepare($query);
 
-					//bind the member variables to the place holders in the template
-					$paramters = parameters =  ["postOrganizationId"=> $this->postOrganizationId, "postBreed" => $this->postBreed, "postDescription" => $this->postDescription, "postSex" => $this->postSex, "postType" => $this->postType];
-					%$statement->execute($paramters);
-		}
-	/**
-	 * formats the state variables for JSON serialization
-	 *
-	 * @return array resulting state variables to serialize
-	 **/
-	public function jsonSerialize() {
-		$fields = get_object_vars($this);
-		return($fields);
-	}
+						//bind the member variables to the place holders in the template
+						$parameters = parameters = ["postOrganizationId" => $this->postOrganizationId, "postBreed" => $this->postBreed, "postDescription" => $this->postDescription, "postSex" => $this->postSex, "postType" => $this->postType];
+						%
+						$statement->execute($parameters);
+					}
+
+					/**
+					 * gets the Post by Post Id
+					 *
+					 * @param \PDO $pdo PDO connection object
+					 * @param int $postId post id to search for
+					 * @return Post|null Post found or null if not found
+					 * @throws \PDOException when my SQL related error occurs
+					 * @throws \TypeError when variables are not the correct data type
+					 *
+					 **/
+					public static function getPostByPostId(\PDO $pdo, int $postId) {
+						//sanitize the postId before searching
+						if($postId <= 0) {
+							throw(new\PDOException("post id is not positive"));
+						}
+						// create query template
+						$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType";
+						$statement = $pdo->prepare($query);
+
+						//bind the post id to the place holder in the template
+						$parameters = ["postId" => $postId];
+						$statement->execute($parameters);
+
+						// grab the post from mySQL
+						try {
+							$post = null;
+							$statement->setFetchMode(\PDO::FETCH_ASSOC);
+							$row = $statement->Fetch();
+							$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
+						} catch(\Exception $exception) {
+							// if the row couldn't be converted, rethrow it
+							throw(new \PDOException($exception->getMessage(), 0, $exception));
+						}
+						return ($post);
+					}
+					/**
+					 * gets the Post by Post Organization Id
+					 *
+					 * @param \PDO $pdo PDO connection object
+					 * @param int $postOrganizationId post id to search for
+					 * @return Post|null Post found or null if not found
+					 * @throws \PDOException when my SQL related error occurs
+					 * @throws \TypeError when variables are not the correct data type
+					 *
+					 **/
+					public static function getPostByPostOrganizationId(\PDO $pdo, int $postOrganizationId) {
+						//sanitize the postId before searching
+						if($postOrganizationId<= 0) {
+							throw(new\PDOException("post organization id is not positive"));
+						}
+						// create query template
+						$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType";
+						$statement = $pdo->prepare($query);
+
+						//bind the post id to the place holder in the template
+						$parameters =  ["postOrganizationId"=> $postOrganizationId];
+						$statement->execute($parameters);
+
+						// grab the post from mySQL
+						try{
+							$post = null;
+							$statement->setFetchMode(\PDO::FETCH_ASSOC);
+							$row = $statement->Fetch();
+							$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
+						}
+						catch(\Exception $exception) {
+							// if the row couldn't be converted, rethrow it
+							throw(new \PDOException($exception->getMessage(), 0, $exception));
+						}
+						return($post);
+					}
+					}
+
+
+
+					/**
+					 * formats the state variables for JSON serialization
+					 *
+					 * @return array resulting state variables to serialize
+					 **/
+					public function jsonSerialize() {
+						$fields = get_object_vars($this);
+						return ($fields);
+					}
+
 
