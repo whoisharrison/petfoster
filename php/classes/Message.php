@@ -497,7 +497,35 @@ class Message implements \JsonSerializable {
 	 */
 
 	public static function getsMessageByMessageOrganizationId(\PDO $pdo, int $messageOrganizationId) : \SplFixedArray {
+		//sanitize the organization id before searching
+		if($messageOrganizationId <= 0) {
+			throw(new \RangeException("message organization id must be positive"));
+		}
 
+		//create query template
+		$query = "SELECT messageId, messageOrganizationId, messageProfileId, messageContent, messageDateTime, messageSubject FROM message WHERE messageOrganizationId = :messageOrganizationId";
+		$statement = $pdo->prepare($query);
+
+		//bind the message organization id to the place holder in the template
+		$parameters = ["$messageOrganizationId => $messageOrganizationId"];
+		$statement->execute($parameters);
+
+		//build an array of messages
+		$messages = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$message = new Message($row["messageId"], $row["messageOrganizationId"], $row["messageProfileId"], $row["messageContent"], $row["messageDateTime"], $row["messageSubject"]);
+				$messages[$messages->key()] = $message;
+				$messages->next();
+
+			} catch(\Exception $exception) {
+				//if the row could not be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+
+		}
+		return($messages);
 	}
 
 
