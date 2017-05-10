@@ -187,7 +187,7 @@ class ProfileTest extends PetRescueAbqTest {
 		//create a new Profile and insert into mySQL
 		$profile = new Profile(null, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->VALID_EMAIL,
 			$this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT);
-		$profile->insert($getPDO());
+		$profile->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());

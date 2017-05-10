@@ -343,15 +343,62 @@ class Profile implements \JsonSerializable {
 	}
 
 	/**
-	 * deleted profile from mySQL
+	 * delete profile from mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
-	 */
+	 **/
 	public function delete(\PDO $pdo): void {
-		//enforce the profileId is not null (i.e., don't delete a profile that does not exist)
+		//enforce the profileId is not null (i.e. does not delete a profile that does not exist)
+		if($this->profileId === null) {
+			throw(new \PDOException("unable to delete a profile that doesn't exist"));
+		}
+
+		// create query template
+		$query = "DELETE FROM profile WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders in the template
+		$parameters = ["profileId" => $this->profileId];
+		$statement->execute($parameters);
 	}
 
+	/**
+	 *updates Profile from mySQL
+	 *
+	 * @param \PDO $pdo connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo): void {
+		//ensure that the profileID is not null (i.e. do not update a profile that doesn't exist)
+		if($this->profileId === null) {
+			throw(new \PDOException("unable to update profile that does not exist"));
+		}
+
+		// create a query template
+		$query = "UPDATE profile SET profileActivationToken = :profileActivationToken, profileAtHandle = :profileAtHandle, profileEmail = :profileEmail, profileHast = :profileHash, profileName = :profileName, profileSalt = :profileSalt";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variable to the place holders in the tamplate
+		$parameters = ["profileId" => $this->profileId, "profileActivationToken" => $this->profileActivationToken, "profileAtHandle" => $this->profileAtHandle, "profileEmail" => $this->profileEmail, "profileHash" => $this->profileHash, "profileName" => $this->profileName, "profileSalt" => $this->profileSalt];
+	}
+
+	/**
+	 * gets the profile by profile id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $profileId profile id to search for
+	 * @return Profile|null Profile or null if not found
+	 * @throws \PDOException why mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getProfileByProfileId(\PDO $pdo, int $profileId):?Profile {
+		// sanitize the profile id before searching
+		if($profileId <= 0) {
+			@throw(new \PDOException("Profile id is not a positive"));
+		}
+	}
 
 }
