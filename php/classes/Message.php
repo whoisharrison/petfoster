@@ -612,7 +612,7 @@ class Message implements \JsonSerializable {
 		$messages = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 
-		while($row = $statement->fetch() !== false) {
+		while(($row = $statement->fetch()) !== false) {
 			try {
 				$message = new Message($row["messageId"], $row["messageOrganizationId"], $row["messageProfileId"], $row["messageContent"], $row["messageDateTime"], $row["messageSubject"]);
 				$messages[$messages->key()] = $message;
@@ -622,7 +622,8 @@ class Message implements \JsonSerializable {
 				throw (new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return($messages);
+		return ($messages);
+	}
 
 
 		/**
@@ -670,5 +671,5 @@ class Message implements \JsonSerializable {
 			return($fields);
 		}
 
-	}
+
 }
