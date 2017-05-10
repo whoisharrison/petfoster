@@ -58,7 +58,7 @@ class Post implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * */
 
-	public function __construct(int $newPostId, ?int $newPostOrganizationId, string $newPostBreed, string $newPostDescription, string $newPostSex, string $newPostType) {
+	public function __construct(int $newPostId, int $newPostOrganizationId, string $newPostBreed, string $newPostDescription, string $newPostSex, string $newPostType) {
 		try {
 			$this->setPostId($newPostId);
 			$this->setPostOrganizationId($newPostOrganizationId);
@@ -79,7 +79,7 @@ class Post implements \JsonSerializable {
 	 * @return int value of post id
 	 **/
 
-	public function getPostId(): ?int {
+	public function getPostId(): int {
 		return ($this->postId);
 	}
 
@@ -109,7 +109,7 @@ class Post implements \JsonSerializable {
 	 * @return int value of post organization id
 	 **/
 
-	public function getPostOrganizationId(): ?int {
+	public function getPostOrganizationId(): int {
 		return ($this->postOrganizationId);
 	}
 
@@ -120,16 +120,13 @@ class Post implements \JsonSerializable {
 	 * @throws \TypeError if $newPostId is not an integer
 	 **/
 
-	public function setPostOrganizationId(int $newPostOrganizationId): void {
-		if($newPostOrganizationId === null) {
-			$this->postOrganizationId = null;
-			return;
-		}
+	public function setPostOrganizationId(int $newPostOrganizationId) : void {
 
 		//verify that the post id is positive
 		if($newPostOrganizationId <= 0) {
 			throw(new \RangeException("please enter a positive value"));
 		}
+
 		// convert and store post id
 		$this->postOrganizationId = $newPostOrganizationId;
 	}
@@ -140,7 +137,7 @@ class Post implements \JsonSerializable {
 	 * @return string value of post Breed
 	 **/
 
-	public function getPostBreed(): ?string {
+	public function getPostBreed(): string {
 		return ($this->postBreed);
 	}
 
@@ -171,7 +168,7 @@ class Post implements \JsonSerializable {
 	 *
 	 * @return string value of post Description
 	 **/
-	public function getPostDescription(): ?string {
+	public function getPostDescription(): string {
 		return $this->postDescription;
 	}
 
@@ -204,9 +201,10 @@ class Post implements \JsonSerializable {
 	 * @return string value of post sex
 	 */
 
-	public function getPostSex() {
+	public function getPostSex(): string {
 		return ($this->postSex);
-	}
+		}
+
 
 	/**
 	 * mutator method for post sex
@@ -233,7 +231,7 @@ class Post implements \JsonSerializable {
 	 * @return string $postType value of post type
 	 **/
 
-	public function getPostType(): ?string {
+	public function getPostType(): string {
 		return ($this->postType);
 	}
 
@@ -333,7 +331,7 @@ class Post implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 *
 	 **/
-	public static function getPostByPostId(\PDO $pdo, int $postId): ?Post {
+	public static function getPostByPostId(\PDO $pdo, int $postId): Post {
 		//sanitize the postId before searching
 		if($postId <= 0) {
 			throw(new\PDOException("post id is not positive"));
@@ -368,7 +366,7 @@ class Post implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $postOrganizationId post id to search for
-	 * @return Post|null Post found or null if not found
+	 * @return \SplFixedArray SplFixedArray of Messages found
 	 * @throws \PDOException when my SQL related error occurs
 	 * @throws \TypeError when variables are not the correct data type
 	 *
@@ -380,27 +378,27 @@ class Post implements \JsonSerializable {
 			throw(new\PDOException("post organization id is not positive"));
 		}
 		// create query template
-		$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post WHERE postOrganizatonId = :postOrganizationId";
+		$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post WHERE postOrganizationId = :postOrganizationId";
 		$statement = $pdo->prepare($query);
 
 		//bind the post id to the place holder in the template
 		$parameters = ["postOrganizationId" => $postOrganizationId];
 		$statement->execute($parameters);
 
-		// grab the post from mySQL
-		try {
-			$post = null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->Fetch();
-			if($row !== false) {
+		// build an array of Posts
+		$posts = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
 				$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
+				$posts [$posts->key()] = $post;
+				$posts->next();
+			} catch(\Exception $exception) {
+				//if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-
-		} catch(\Exception $exception) {
-			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return ($post);
+		return ($posts);
 	}
 
 	/**
@@ -434,7 +432,7 @@ class Post implements \JsonSerializable {
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
-				$posts [$post->key()] = $post;
+				$posts [$posts->key()] = $post;
 				$posts->next();
 			} catch(\Exception $exception) {
 				//if the row couldn't be converted, rethrow it
@@ -476,7 +474,7 @@ class Post implements \JsonSerializable {
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
-				$posts [$post->key()] = $post;
+				$posts [$posts->key()] = $post;
 				$posts->next();
 			} catch(\Exception $exception) {
 				//if the row couldn't be converted, rethrow it
@@ -496,7 +494,7 @@ class Post implements \JsonSerializable {
 
 	public static function getAllPosts(\PDO $pdo): \SplFixedArray {
 		//create query template
-		$query = "SELECT postId, postrganizationId, postBreed, postDescription, postSex, postType FROM post";
+		$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
