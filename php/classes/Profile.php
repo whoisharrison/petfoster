@@ -321,7 +321,18 @@ class Profile implements \JsonSerializable {
 	/**
 	 * inserts this profile in mySQL
 	 *
-	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
+public function insert(\PDO $pdo): void {
+	//enforce the profileID is null (do not insert profile that already exists)
+	if($this->profileId !== null) {
+		throw(new \PDOException("not a new profile"));
+	}
 
+	// create query template
+	$query = "INSERT INTO profile(profileActivationToken, profileAtHandle, profileEmail, ProfileHash, ProfileName, ProfileSalt) VALUES (:profileActivationToken, :profileAtHandle, :profileEmail, :profileName, :profileSalt")"
+
+}
 }
