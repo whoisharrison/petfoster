@@ -572,7 +572,7 @@ class Profile implements \JsonSerializable {
 			}
 		} catch(\Exception $excpetion){
 			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($excpetion->getMessage(), 0, $excpetion);)
+			throw(new \PDOException($exception->getMessage(), 0, $exception);)
 		}
 		return ($profile);
 	}
@@ -586,5 +586,4 @@ class Profile implements \JsonSerializable {
 	function jsonSerialize() {
 		return (get_object_vars($this));
 	}
-
 }
