@@ -1,6 +1,6 @@
- <?php
+<?php
 
-namespace Edu\Cnm\Petfoster;
+namespace Edu\Cnm\PetRescueAbq;
 
 require_once("autoload.php");
 
@@ -230,7 +230,7 @@ class Message implements \JsonSerializable {
 
 		//store the message date using the ValidateDate trait
 		try {
-			$newMessageDateTime = self::validateDateTime($newMessageDateTime);
+			$newMessageDateTime = self::ValidateDate($newMessageDateTime);
 
 		} catch(\InvalidArgumentException | \RangeException $exception) {
 			$exceptionType = get_class($exception);
@@ -294,8 +294,8 @@ class Message implements \JsonSerializable {
 
 		//bind the member variables to the place holders in the template
 		//changed formattedDateTime to formattedDateTime and changed messageDate to messageDateTime
-		$formattedDateTime = $this->messageDateTime->format("Y-m-d H:i:s");
-		$parameters = ["messageOrganizationId" => $this->messageOrganizationId, "messageProfileId" => $this->messageProfileId, "messageContent" => $this->messageContent, "messageDateTime" => formattedDateTime, "messageSubject" => $this->messageSubject, "messageId" => $this->messageId];
+		$formattedDateTime = $this->messageDateTime->format("Y-m-d H:i:s.u");
+		$parameters = ["messageOrganizationId" => $this->messageOrganizationId, "messageProfileId" => $this->messageProfileId, "messageContent" => $this->messageContent, "messageDateTime" => $formattedDateTime, "messageSubject" => $this->messageSubject, "messageId" => $this->messageId];
 		$statement->execute($parameters);
 
 		//update the null messageId with what mySQL just gave us
@@ -357,7 +357,8 @@ class Message implements \JsonSerializable {
 	 * @return \SplFixedArray SplFixedArray of Messages found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not correct data type
-	 */
+	 * PROBABLY WILL NOT NEED THIS
+
 	public static function getMessageByMessageContent(\PDO $pdo, string $messageContent) : \SplFixedArray {
 
 		//sanitize the description before searching
@@ -396,7 +397,7 @@ class Message implements \JsonSerializable {
 		}
 		return($messages);
 	}
-
+*/
 
 	/**
 	 * gets the Message by subject
@@ -405,7 +406,8 @@ class Message implements \JsonSerializable {
 	 * @return \SplFixedArray SplFixedArray of Messages found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not correct data type
-	 */
+	 * * PROBABLY WILL NOT NEED THIS
+
 	public static function getMessageByMessageSubject(\PDO $pdo, string $messageSubject) : \SplFixedArray {
 
 		//sanitize the description before searching
@@ -444,6 +446,7 @@ class Message implements \JsonSerializable {
 		}
 		return($messages);
 	}
+	 */
 
 
 	/**
@@ -579,7 +582,8 @@ class Message implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 * @throws \InvalidArgumentException is either sun dates are in the wrong format
-	 */
+	 * PROBABLY WILL NOT NEED THIS
+
 
 	public static function getMessageByMessageDateTime (\PDO $pdo, \DateTime $sunriseMessageDateTime, \DateTime $sunsetMessageDateTime) : \SplFixedArray {
 		//enforce both dates are present
@@ -624,7 +628,7 @@ class Message implements \JsonSerializable {
 		}
 		return ($messages);
 	}
-
+*/
 
 		/**
 		 * get all the messages

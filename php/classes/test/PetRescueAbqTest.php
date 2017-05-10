@@ -32,7 +32,7 @@ require_once(dirname(__DIR__, 3) . "/vendor/autoload.php");
  *
  * @author Michael Harrison <mharrison13@cnm.edu
  **/
-abstract class DataDesignTest extends TestCase {
+abstract class PetRescueAbqTest extends TestCase {
 	use TestCaseTrait;
 	/**
 	 * invalid id to use for an INT UNSIGNED field (maximum allowed INT UNSIGTNED in mySQL) + 1

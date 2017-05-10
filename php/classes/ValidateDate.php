@@ -1,7 +1,7 @@
 <?php
 
 //copy and paste to the top of the class files
-namespace Edu\Cnm\Petfoster;
+namespace Edu\Cnm\PetRescueAbq;
 /**
  * Trait to Validate a mySQL Date
  *
