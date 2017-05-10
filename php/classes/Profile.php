@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\Petfoster;
+namespace Edu\Cnm\PetRescueAbq;
 require("autoload.php");
 /**
  * Profile Class for Petfoster
