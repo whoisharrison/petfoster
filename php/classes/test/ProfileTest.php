@@ -4,8 +4,7 @@
  * Date: 5/5/17
  * Time: 10:25 PM
  **/
-use Edu\Cnm\Petfoster\Test\PetRescueAbqTest;
-use Edu\Cnm\PetRescueAbq\{Profile, Organization, Message, Post};
+use Edu\Cnm\PetRescueAbq\test;
 
 require_once(dirname(__DIR__) . "/autoload.php");
 

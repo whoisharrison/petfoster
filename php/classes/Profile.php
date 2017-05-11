@@ -334,6 +334,9 @@ class Profile implements \JsonSerializable {
 
 		// bind the member variables to the placeholders in the template
 		$parameters = ["profileActivationToken" => $this->profileActivationToken, "profileAtHandle" => $this->profileAtHandle, "profileEmail" => $this->profileEmail, "profileHash" => $this->profileHash, "profileName" => $this->profileName, "profileSalt" => $this->profileSalt];
+		$statement->execute($parameters);
+
+
 
 		// update the null profileId with what mySQL just gave
 		$this->profileId = intval($pdo->lastInsertId());
@@ -378,8 +381,9 @@ class Profile implements \JsonSerializable {
 		$query = "UPDATE profile SET profileActivationToken = :profileActivationToken, profileAtHandle = :profileAtHandle, profileEmail = :profileEmail, profileHash = :profileHash, profileName = :profileName, profileSalt = :profileSalt";
 		$statement = $pdo->prepare($query);
 
-		// bind the member variable to the place holders in the tamplate
+		// bind the member variable to the place holders in the template
 		$parameters = ["profileId" => $this->profileId, "profileActivationToken" => $this->profileActivationToken, "profileAtHandle" => $this->profileAtHandle, "profileEmail" => $this->profileEmail, "profileHash" => $this->profileHash, "profileName" => $this->profileName, "profileSalt" => $this->profileSalt];
+		$statement->execute($parameters);
 	}
 
 	/**
