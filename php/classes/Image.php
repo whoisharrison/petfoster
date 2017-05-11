@@ -6,7 +6,7 @@ require_once("autoload.php");
  * @author askidmore <askidmore1@cnm.edu>
  * @version 4.0.0
  **/
-class Image implements \JsonSerializable; {
+class Image implements \JsonSerializable {
 		use ValidateDate;
 
 		/**
@@ -15,7 +15,7 @@ class Image implements \JsonSerializable; {
 		 * all variables will be private
 		 **/
 		private
-		$ImageId;
+		$imageId;
 		/**
 		 * id of the post for this image; this is a foreign key
 		 * @var int $ImagePostId
@@ -48,7 +48,7 @@ class Image implements \JsonSerializable; {
 				$this->setImageCloudinaryId($newImageCloudinaryId);
 			} //determine what exception type was thrown
 
-			catch(\InvalidArgumentException |
+			catch (\InvalidArgumentException |
 			\RangeException | \Exception | \TypeError $exception) {
 				$exceptionType = get_class($exception);
 				throw(new $exceptionType($exception->getMessage(), 0, $exception));{
