@@ -1,0 +1,13 @@
+<phpunit>
+	<testsuites>
+		<testsuite name="PetRescueAbqTest">
+			<file>ProfileTest.php</file>
+
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">..</directory>
+		</whitelist>
+	</filter>
+</phpunit>
