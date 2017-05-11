@@ -5,7 +5,7 @@
 * Date: 5/10/17
 * Time: 10:32 AM
 **/
-namespace Edu\Cnm\Petfoster\Test;
+namespace Edu\Cnm\PetRescueAbq\Test;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\DbUnit\TestCaseTrait;
