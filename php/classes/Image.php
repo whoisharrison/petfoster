@@ -48,12 +48,12 @@ class Image implements \JsonSerializable {
 				$this->setImageCloudinaryId($newImageCloudinaryId);
 			} //determine what exception type was thrown
 
-			catch (\InvalidArgumentException |
+			catch(\InvalidArgumentException |
 			\RangeException | \Exception | \TypeError $exception) {
 				$exceptionType = get_class($exception);
-				throw(new $exceptionType($exception->getMessage(), 0, $exception));{
-				}
+				throw(new $exceptionType($exception->getMessage(), 0, $exception));
 			}
+		}
 		/**
 		 * accessor method for image id
 		 *
