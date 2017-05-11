@@ -4,7 +4,8 @@
  * Date: 5/5/17
  * Time: 10:25 PM
  **/
-namespace Edu\Cnm\PetRescueAbq\Profile;
+use Edu\Cnm\Petfoster\Test\PetRescueAbqTest;
+use Edu\Cnm\PetRescueAbq\{Profile, Organization, Message, Post};
 
 require_once(dirname(__DIR__) . "/autoload.php");
 
@@ -235,7 +236,7 @@ class ProfileTest extends PetRescueAbqTest {
 	public function testGetInvalidProfileActivation() : void {
 		// grab an email that does not exist
 		$profile = Profile::getProfileByProfileByProfileEmail($this->getPDO(), "mharrison@cnm.edu");
-		$this->assetNull($profile);
+		$this->assertNull($profile);
 	}
 
 }

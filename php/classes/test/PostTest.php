@@ -71,7 +71,7 @@ class PostTest extends PetRescueAbqTest {
 	public final function setUp()  : void {
 		parent::setUp();
 		$password = "abc123";
-		$profileActivationToken = "22222222222222222222222222222222"
+		$profileActivationToken = "22222222222222222222222222222222";
 		$this->VALID_SALT = bin2hex(random_bytes(64));
 		$this->VALID_HASH = hash_pbkdf2("sha128", $password, $this->VALID_SALT, 262144);
 

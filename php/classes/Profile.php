@@ -2,7 +2,7 @@
 namespace Edu\Cnm\PetRescueAbq;
 require("autoload.php");
 /**
- * Profile Class for Petfoster
+ * Profile Class for Pet Rescue Abq Profile
  *
  * This class is a collection of profile data collected by users of Pet Rescue ABQ.
  *
@@ -298,7 +298,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \RangeException if salt is not 64 characters
 	 * @throws \TypeError if profile salt is not a string
 	 **/
-	public function setProfileSalt(string $newProfileSalt) : void {
+	public function setProfileSalt(string $newProfileSalt): void {
 		$newProfileSalt = trim(@$newProfileSalt);
 		$newProfileSalt = strtolower($newProfileSalt);
 
@@ -493,7 +493,7 @@ class Profile implements \JsonSerializable {
 				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileAtHandle"], $row["profileEmail"], $row["profileHash"], $row["profileName"], $row["profileSalt"]);
 				$profiles[$profiles->key()] = $profile;
 				$profile->next();
-			} catch(\Excpetion $excpetion) {
+			} catch(\Excpetion $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
@@ -532,7 +532,7 @@ class Profile implements \JsonSerializable {
 		while (($row = $statement->fetch()) !== false) {
 			try {
 				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileAtHandle"], $row["profileEmail"], $row["profileHash"], $row["profileName"], $row["profileSalt"]);
-				$profiles[$profile->key()] = $profile;
+				$profiles[$profiles->key()] = $profile;
 				$profiles->next();
 			} catch(\Exception $exception) {
 				//if the row couldn't be converted, rethrow it
@@ -572,7 +572,7 @@ class Profile implements \JsonSerializable {
 			}
 		} catch(\Exception $exception){
 			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception);)
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 		return ($profile);
 	}
