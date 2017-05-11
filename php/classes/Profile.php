@@ -473,23 +473,23 @@ class Profile implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getProfileByProfileAtHandle(\PDO $pdo, string $profileAtHandle) : \SplFixedArray {
+	public static function getProfileByProfileAtHandle(\PDO $pdo, string $profileAtHandle): \SplFixedArray {
 		// sanitize the at handle before searching
-		$profileAthandle = trim($profileAtHandle);
+		$profileAtHandle = trim($profileAtHandle);
 		$profileAtHandle = filter_var($profileAtHandle, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($profileAtHandle) === true) {
 			throw(new \PDOException("not a valid at handle"));
 		}
 
 		// create query template
-		$query = "SELECT profileId, profileActivationToken, profileAtHandle, profileEmail, profileHash, profilName, profileSalt FROM propfile WHERE profielAtHandle = :profileAtHandle";
+		$query = "SELECT profileId, profileActivationToken, profileAtHandle, profileEmail, profileHash, profileName, profileSalt FROM profile WHERE profileAtHandle = :profileAtHandle";
 		$statement = $pdo->prepare($query);
 
 		//bind the profile at handle to the place holder in the template
 		$parameters = ["profileAtHandle" => $profileAtHandle];
 		$statement->execute($parameters);
 
-		$profile = new \SplFixedArray($statement->rowCount());
+		$profiles = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 
 		while (($row = $statement->fetch()) !== false) {
@@ -502,7 +502,7 @@ class Profile implements \JsonSerializable {
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($profile);
+		return ($profiles);
 	}
 
 	/**
