@@ -22,7 +22,7 @@ class Profile implements \JsonSerializable {
 	private $profileActivationToken;
 	/**
 	 * this is the AtHandle for the user profile
-	 * @var profileAtHandle
+	 * @var $profileAtHandle
 	 **/
 	private $profileAtHandle;
 	/**
@@ -413,7 +413,7 @@ class Profile implements \JsonSerializable {
 			if($row != false) {
 				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileAtHandle"], $row["profileEmail"], $row["profileHash"], $row["profileName"], $row["profileSalt"]);
 			}
-		} catch(\Eception $exception) {
+		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
@@ -570,7 +570,7 @@ class Profile implements \JsonSerializable {
 			if($row !== false) {
 				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileAtHandle"], $row["profileEmail"], $row["profileHash"], $row["profileName"], $row["profileSalt"]);
 			}
-		} catch(\Exception $excpetion){
+		} catch(\Exception $exception){
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception);)
 		}
