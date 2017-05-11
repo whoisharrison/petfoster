@@ -65,6 +65,25 @@ class PostTest extends PetRescueAbqTest {
 	 */
 	protected $VALID_POSTTYPE;
 
+	/**
+	 * create dependent objects before running each test
+	 */
+	public final function setUp()  : void {
+		parent::setUp();
+		$password = "abc123";
+		$profileActivationToken = "22222222222222222222222222222222"
+		$this->VALID_SALT = bin2hex(random_bytes(64));
+		$this->VALID_HASH = hash_pbkdf2("sha128", $password, $this->VALID_SALT, 262144);
+
+		/**
+		 * created and insert a Profile to own the test Organization
+		 */
+
+		$this->profile = new Profile(null,$profileActivationToken,"JamMasterJ", "tmafm1@gmail.com",$this->VALID_HASH,"Jabari",$this->VALID_SALT);
+		$this->profile->insert($this->getPDO());
+
+	}
+
 
 
 
