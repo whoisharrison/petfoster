@@ -1,5 +1,5 @@
 <?php
-namespace Edu\Cnm\Petfoster;;
+namespace Edu\Cnm\PetRescueAbq;;
 require_once("autoload.php");
 /**
  *
