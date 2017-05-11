@@ -496,13 +496,13 @@ class Profile implements \JsonSerializable {
 			try {
 				$profile = new Profile($row["profileId"], $row["profileActivationToken"], $row["profileAtHandle"], $row["profileEmail"], $row["profileHash"], $row["profileName"], $row["profileSalt"]);
 				$profiles[$profiles->key()] = $profile;
-				$profile->next();
-			} catch(\Excpetion $exception) {
+				$profiles->next();
+			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
 		}
-		return ($profiles);
+		return ($profile);
 	}
 
 	/**
