@@ -54,6 +54,11 @@ class OrganizationTest extends PetRescueAbqTest {
 	 **/
 	protected $VALID_EMAIL = "test@phpunit.com";
 	/**
+	 * valid email to use
+	 * @var string $VALID_EMAIL2
+	 */
+	protected $VALID_EMAIL2 = "testtest@cnm.edu;"
+	/**
 	 * valid License to use
 	 * @var string $VALID_LICENSE
 	 **/
@@ -90,14 +95,6 @@ class OrganizationTest extends PetRescueAbqTest {
 		// create and insert a Profile to own the test Organization
 		$this->profile = new Profile(null, null,"@testOrgHandle", "tester@phpunit.com",$this->VALID_PROFILE_HASH, "Don One", $this->VALID_PROFILE_SALT);
 		$this->profile->insert($this->getPDO());
-		// calculate the date (using the time the unit test is setup)
-		$this->VALID_TWEETDATE = new \DateTime();
-		//format the sunrise date to use for testing
-		$this->VALID_SUNRISEDATE = new \DateTime();
-		$this->VALID_SUNRISEDATE->sub(new \DateInterval("P10D"));
-		//format the sunset date to use for testing
-		$this->VALID_SUNSETDATE = new\DateTime();
-		$this->VALID_SUNSETDATE->add(new \DateInterval("P10D"));
 	}
 	/**
 	 * test inserting a valid Organization and verify that the actual mySQL data matches
@@ -111,43 +108,39 @@ class OrganizationTest extends PetRescueAbqTest {
 		$organization->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoTweet = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationId());
+		$pdoOrganization = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationId());
 		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ORGANIZATIONADDRESS1);
 		$this->assertEquals($pdoOrganization->getOrganizationAddress2(), $this->VALID_ORGANIZATIONADDRESS2);
 		$this->assertEquals($pdoOrganization->getOrganizationCity(), $this->VALID_ORGANIZATIONCITY);
 		$this->assertEquals($pdoOrganization->getOrganizationEmail(), $this->VALID_ORGANIZATIONEMAIL);
-
-
-		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoTweet->getTweetDate()->getTimestamp(), $this->VALID_TWEETDATE->getTimestamp());
 	}
+
 	/**
-	 * test inserting a Tweet that already exists
+	 * test inserting an Organization that already exists
 	 *
 	 * @expectedException \PDOException
 	 **/
-	public function testInsertInvalidTweet() : void {
-		// create a Tweet with a non null tweet id and watch it fail
-		$tweet = new Tweet(DataDesignTest::INVALID_KEY, $this->profile->getProfileId(), $this->VALID_TWEETCONTENT, $this->VALID_TWEETDATE);
-		$tweet->insert($this->getPDO());
+	public function testInsertInvalidOrganization() : void {
+		// create an Organization with a non null organization id and watch it fail
+			$organization = new Organization(PetRescueAbqTest::INVALID_KEY, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+			$organization->insert($this->getPDO());
 	}
 	/**
-	 * test inserting a Tweet, editing it, and then updating it
+	 * test inserting an Organization, editing it, and then updating it
 	 **/
-	public function testUpdateValidTweet() : void {
+	public function testUpdateValidOrganization() : void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
-		// create a new Tweet and insert to into mySQL
-		$tweet = new Tweet(null, $this->profile->getProfileId(), $this->VALID_TWEETCONTENT, $this->VALID_TWEETDATE);
-		$tweet->insert($this->getPDO());
-		// edit the Tweet and update it in mySQL
-		$tweet->setTweetContent($this->VALID_TWEETCONTENT2);
-		$tweet->update($this->getPDO());
+		$numRows = $this->getConnection()->getRowCount("organization");
+		// create a new Organization and insert it into mySQL
+		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		// edit the Organization and update it in mySQL
+		$organization->setOrganizationEmail($this->VALID_EMAIL2);
+		$organization->update($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoTweet = Tweet::getTweetByTweetId($this->getPDO(), $tweet->getTweetId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
-		$this->assertEquals($pdoTweet->getTweetProfileId(), $this->profile->getProfileId());
+		$pdoOrganization = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
+		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getOrganizationId());
 		$this->assertEquals($pdoTweet->getTweetContent(), $this->VALID_TWEETCONTENT2);
 		//format the date too seconds since the beginning of time to avoid round off error
 		$this->assertEquals($pdoTweet->getTweetDate()->getTimestamp(), $this->VALID_TWEETDATE->getTimestamp());
