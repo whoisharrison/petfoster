@@ -4,7 +4,7 @@
  * Date: 5/5/17
  * Time: 10:25 PM
  **/
-use Edu\Cnm\PetRescueAbq\test;
+namespace Edu\Cnm\PetRescueAbq\Test;
 
 require_once(dirname(__DIR__) . "/autoload.php");
 
