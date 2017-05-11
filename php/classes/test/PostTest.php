@@ -17,7 +17,58 @@ require_once (dirname(__DIR__) . "/autoload.php");
  *
  **/
 class PostTest extends PetRescueAbqTest {
+	/**
+	 * Profile that created the Organization; this is the foreign key relations
+	 * @var $Profile
+	 */
+	protected $profile = null;
+
+	/**
+	 *Organization that created the Post; this is the foreign key relations
+	 * @var $Organization
+	 **/
+	protected $organization = null;
+
+	/**
+	 * valid profile hash to create the profile object to own the test
+	 * @var $VALID_HASH;
+	 **/
+	protected $VALID_HASH;
+
+	/**
+	 * valid salt to use to create the profile object to own the test
+	 * @var string $VALID__SALT
+	 */
+	protected $VALID_SALT;
+
+	/**
+	 * valid postOrganizationId to use to create the Post
+	 * @var int $VALID_POSTORGANIZATIONID
+	 **/
+	protected $VALID_POSTORGANIZATIONID;
+
+	/**
+	 * valid postBreed to use to create the Post
+	 * @var string $VALID_POSTBREED
+	 */
+	protected $VALID_POSTBREED;
+
+	/**
+	 * valid postSex to use toe create the Post
+	 * @var string $VALID_ POSTSEX
+	 */
+	protected $VALID_POSTSEX;
+
+	/**
+	 * valid postType to use to created the Post
+	 * @var string $VALID_POSTTYPE
+	 */
+	protected $VALID_POSTTYPE;
+
+
 
 
 }
+
+
 
