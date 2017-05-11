@@ -140,8 +140,18 @@ class OrganizationTest extends PetRescueAbqTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoOrganization = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
+
+		// stop - return to work here
+
 		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getOrganizationId());
+		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoTweet->getTweetContent(), $this->VALID_TWEETCONTENT2);
+		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
+
+
+
+
 		//format the date too seconds since the beginning of time to avoid round off error
 		$this->assertEquals($pdoTweet->getTweetDate()->getTimestamp(), $this->VALID_TWEETDATE->getTimestamp());
 	}
