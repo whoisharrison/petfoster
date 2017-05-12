@@ -159,8 +159,10 @@ class Image implements \JsonSerializable {
 			// create query template
 			$query = "INSERT INTO image(imageId, imagePostId, imageCloudinaryId) VALUES(imageId, :imagePostId, :imageCloudinaryId)";
 			$statment =  $pdo->prepare($query);
-
-// update the null imagaeId with what mySQL just gave us
+			//bind member variables to place holders in template
+			$parameters = ["imageId"=> $this->imageId, "imagePostId" => $this->imagePostId, "imageCloudinaryId", $this->$this->imageCloudinaryId];
+			$statment->execute($parameters);
+// update the null imageId with what mySQL just gave us
 		$this->imageId = intval($pdo->lastInsertId());
 	}
 
@@ -191,34 +193,20 @@ class Image implements \JsonSerializable {
  * @throws \TypeError if $pdo is not a PDO connection object
  **/
 	public function update(\PDO $pdo) : void {
-	// enforce the imageId is not null (i.e., don't update a image that hasn't been inserted)
-	if($this->imageId === null) {
-		throw(new \PDOException("unable to update a image that does not exist"));
-	}
-// create query template
-	$query = "UPDATE image SET imagePostId = :imagePostId, imageCloudinaryId = :imageCloudinaryId WHERE imageId = :imageId";
-	$statement = $pdo->prepare($query);
-	{
-
-		// build an array of images
-		$images = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
-			try {
-				$image = new Image($row["ImageId"], $row["ImagePostId"], $row["imageCloudinaryId"]);
-				$images[$images->key()] = $image;
-				$images->next();
-			} catch(\Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
-			}
+		// enforce the imageId is not null (i.e., don't update a image that hasn't been inserted)
+		if($this->imageId === null) {
+			throw(new \PDOException("unable to update a image that does not exist"));
 		}
-		return($images);
-
+// create query template
+		$query = "UPDATE image SET imagePostId = :imagePostId, imageCloudinaryId = :imageCloudinaryId WHERE imageId = :imageId";
+		$statement = $pdo->prepare($query);
+		//bind variabale in template
+		$parameters = ["imageId" => $this->imageId, "imagePostId" => $this->imagePostId, "imageCloudinaryId" => $this->imageCloudinaryId];
+		$statement->execute($parameters);
 	}
 
 	/**
-	 * gets the Image by imageId
+	 * gets the Image by imageId and imagePostId
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $imageId image id to search for
@@ -226,16 +214,19 @@ class Image implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getImageByImageId(\PDO $pdo, int $imageId) : ?image {
-		// sanitize the tweetId before searching
+	public static function getImageByImageIdAndImagePostId(\PDO $pdo, int $imageId, int $imagePostId) : ?image {
+		// sanitize the image and post ids before searching
 		if($imageId <= 0) {
 			throw(new \PDOException("image id is not positive"));
 		}
+			if($imagePostId <= 0) {
+				throw(new \PDOException("image post id not positive"));
+			}
 		// create query template
-		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image WHERE imageId = :imageId";
+		$query = "SELECT imageId, imagePostId FROM image WHERE imageId = :imageId AND imagePostId = :imagePostId";
 		$statement = $pdo->prepare($query);
-		// bind the image id to the place holder in the template
-		$parameters = ["imageId" => $imageId];
+		// bind the image id and post id to the place holder in the template
+		$parameters = ["imageId" => $imageId, "imagePostId" => $imagePostId];
 		$statement->execute($parameters);
 
 // grab the image from mySQL
@@ -253,53 +244,27 @@ class Image implements \JsonSerializable {
 		return($image);
 	}
 	/**
-	 * gets the Image by post id
-	 *
+	 * //gets image by image cloudinary id
 	 * @param \PDO $pdo PDO connection object
-	 * @param int $imagePostId post id to search by
-	 * @return \SplFixedArray SplFixedArray of Images found
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError when variables are not the correct data type
+	 * @param string $imageCloudinaryId
+	 * @return \SplFixedArray
+	 * @throws \PDOException when msql related errors occur
+	 * @throws \TypeError when variables are not the correct data
 	 **/
-	public static function getImageByImagePostId(\PDO $pdo, int $imagePostId) : \SPLFixedArray {
-		// sanitize the post id before searching
-		if($imagePostId <= 0) {
-			throw(new \RangeException("image post id must be positive"));
+	public static function getImageByImageCloudinaryId(\PDO$pdo, string $imageCloudinaryId) {
+		// sanitize the description before searching
+		$imageCloudinaryId = trim($imageCloudinaryId);
+		$imageCloudinaryId = filter_var($imageCloudinaryId,FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($imageCloudinaryId) === true) {
+			throw(new \PDOException("image cloudinary id is invalid"));
 		}
-		// create query template
-		$query = "SELECT imageId, imagePostId, imageCloudinary FROM image WHERE imagePostId = :imagePostId";
+		//create query template
+		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image WHERE imageCloudinaryId LIKE :imageCloudinaryId";
 		$statement = $pdo->prepare($query);
-		// bind the image post id to the place holder in the template
-		$parameters = ["imagePostId" => $imagePostId];
+		// bind the image cloudinary id to the place holder in teh template
+		$imageCloudinaryId = "%imageCloudinaryId%";
+		$parameters = ["imageCloudinaryId" => $imageCloudinaryId];
 		$statement->execute($parameters);
-		// build an array of images
-		$images = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
-			try {
-				$image = new image($row["imageId"], $row["imagePostId"], $row["imageCloudinary"]);
-				$images[$images->key()] = $image;
-				$images->next();
-			} catch(\Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
-			}
-		}
-		return($images);
-	}
-	/**
-	 * gets all Images
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @return \SplFixedArray SplFixedArray of Images found or null if not found
-	 * @throws \PDOException when mySQL related errors occur
-	 * @throws \TypeError when variables are not the correct data type
-	 **/
-	public static function getAllImages(\PDO $pdo) : \SPLFixedArray {
-		// create query template
-		$query = "SELECT imageId, imagePostId, imagePostId FROM image";
-		$statement = $pdo->prepare($query);
-		$statement->execute();
 		// build an array of images
 		$images = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -316,14 +281,41 @@ class Image implements \JsonSerializable {
 		return ($images);
 	}
 	/**
+	 * gets all Images
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of Images found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllImages(\PDO $pdo) : \SPLFixedArray {
+		// create query template
+		$query = "SELECT imageId, imagePostId, imagePostId FROM image";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+		//build an array of images
+		$images = new\SplFixedArray($statement->rowCount());
+	$statement->setFetchMode(\PDO::FETCH_ASSOC);
+	while(($row = $statement->fetch()) !== false) {
+		try {
+			$images[$images->key()] = $images;
+			$images->next();
+		} catch(\Exception$exception){
+			//if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getFile(), 0, $exception));
+
+		}
+	}
+		return ($images);
+
+	}
+	/**
 	 * formats the state variables for JSON serialization
 	 *
 	 * @return array resulting state variables to serialize
 	 **/
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
-		//format the date so that the front end can consume it
-		$fields["Date"] = round(floatval($this->Date->format("U.u")) * 1000);
 		return($fields);
 	}
 }
