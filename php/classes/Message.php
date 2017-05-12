@@ -2,14 +2,17 @@
 
 namespace Edu\Cnm\PetRescueAbq;
 
-require_once("autoload.php");
+
+
+require("autoload.php");
 
 /**
- * section of a for a message for petrescueabq
+ * message section for PetRescueAbq
  *
  * messages between users and admins to get information about the dog they chose
  *
- * @author LRL <rolopez.email@gmail.com>
+ *
+ * @author LRL <rolopez.email@gmail.com> thanks! @deepdivedylan
  * version 1.0
  */
 
@@ -74,7 +77,7 @@ class Message implements \JsonSerializable {
 
 	//do these need to be in the order as in the conceptual model
 
-	public function _construct(?int $newMessageId,  ?int $newMessageProfileId, ?int $newMessageOrganizationId, string $newMessageContent, $newMessageDateTime = null, string $newMessageSubject) {
+	public function _construct(?int $newMessageId, ?int $newMessageProfileId, ?int $newMessageOrganizationId, string $newMessageContent, $newMessageDateTime = null, string $newMessageSubject) {
 		try {
 			$this->setMessageId($newMessageId);
 			$this->setMessageProfileId($newMessageProfileId);
@@ -95,7 +98,7 @@ class Message implements \JsonSerializable {
 	 * @return int|null value of messageId
 	 */
 	public function getMessageId(): int {
-		return $this->messageId;
+		return ($this->messageId);
 	}
 
 	/**
@@ -125,7 +128,7 @@ class Message implements \JsonSerializable {
 	 * @return int value of the message profile id
 	 **/
 	public function getMessageProfileId(): int {
-		return ($this->messageProfileId);
+		return($this->messageProfileId);
 	}
 
 	/**
@@ -174,7 +177,7 @@ class Message implements \JsonSerializable {
 	 * accessor method for message content
 	 * @return string value of message content
 	 */
-	public function getMessageContent(): string {
+	public function getMessageContent() :string {
 		return ($this->messageContent);
 	}
 
@@ -196,7 +199,7 @@ class Message implements \JsonSerializable {
 
 		//verify the message content will fit in the database
 		//changed char from 255 to 505 - BURQUE!
-		if(strlen($newMessageContent) > 505) {
+		if(strlen($newMessageContent) > 1024) {
 			throw(new \RangeException("message content too large"));
 		}
 
@@ -209,13 +212,13 @@ class Message implements \JsonSerializable {
 	 * accessor method for message datetime
 	 * @return \DateTime value for message datetime
 	 */
-	public function getMessageDateTime() {
+	public function getMessageDateTime() : \DateTime {
 		return ($this->messageDateTime);
 	}
 
 	/**
 	 * mutator method for message date time
-	 * @param \Datetime|string|null $newMessageDateTime date as a DateTime object or string (or null to load the current time)
+	 * @param \Datetime|string|null $newMessageDateTime date as a DateTime object or string (or null to load the current time
 	 * @throws \InvalidArgumentException if $newMessageDateTime is not valid object or string
 	 * @throws \RangeException if $newMessageDateTime is a date that does not exist
 	 */
@@ -229,7 +232,7 @@ class Message implements \JsonSerializable {
 
 		//store the message date using the ValidateDate trait
 		try {
-			$newMessageDateTime = self::ValidateDate($newMessageDateTime);
+			$newMessageDateTime = self::ValidateDateTime($newMessageDateTime);
 
 		} catch(\InvalidArgumentException | \RangeException $exception) {
 			$exceptionType = get_class($exception);
@@ -244,8 +247,8 @@ class Message implements \JsonSerializable {
 	 * accessor method for message subject
 	 * @return string value of message subject
 	 */
-	public function getMessageSubject(): string {
-		return ($this->messageSubject);
+	public function getMessageSubject() :string {
+		return($this->messageSubject);
 	}
 
 	/**
@@ -256,7 +259,7 @@ class Message implements \JsonSerializable {
 	 * we may want to make the string longer
 	 * @throws \TypeError if $newMessageSubject is not a string
 	 */
-	public function setMessageSubject(string $newMessageSubject) : void{
+	public function setMessageSubject(string $newMessageSubject) : void {
 
 		//verify the message subject is secure
 		$newMessageSubject = trim($newMessageSubject);
@@ -294,7 +297,7 @@ class Message implements \JsonSerializable {
 		//bind the member variables to the place holders in the template
 		//changed formattedDateTime to formattedDateTime and changed messageDate to messageDateTime
 		$formattedDateTime = $this->messageDateTime->format("Y-m-d H:i:s.u");
-		$parameters = ["messageProfileId" => $this->messageProfileId, "messageOrganizationId" => $this->messageOrganizationId, "messageContent" => $this->messageContent, "messageDateTime" => $formattedDateTime, "messageSubject" => $this->messageSubject, "messageId" => $this->messageId];
+		$parameters = ["messageProfileId" => $this->messageProfileId, "messageOrganizationId" => $this->messageOrganizationId, "messageContent" => $this->messageContent, "messageDateTime" => $formattedDateTime, "messageSubject" => $this->messageSubject];
 		$statement->execute($parameters);
 
 		//update the null messageId with what mySQL just gave us
@@ -342,8 +345,8 @@ class Message implements \JsonSerializable {
 		$query = "UPDATE message SET messageProfileId = :messageProfileId, messageOrganizationId = :messageOrganizationId, messageContent = :messageContent, messageDateTime = :messageDateTime, messageSubject = :messageSubject WHERE messageId = :messageId";
 		$statement = $pdo->prepare($query);
 
-		//bind the member varibales to the place holders in the template
-		$formattedDateTime = $this->messageDateTime->format("Y-m-d H:i:s");
+		//bind the member variables to the place holders in the template
+		$formattedDate = $this->messageDateTime->format("Y-m-d H:i:s.u");
 		$parameters = ["messageProfileId" => $this->messageProfileId, "messageOrganizationId" => $this->messageOrganizationId, "messageContent" => $this->messageContent, "messageDateTime" => $this->messageDateTime, "messageSubject" => $this->messageSubject];
 		$statement->execute($parameters);
 	}
@@ -517,7 +520,7 @@ class Message implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$message = new Message($row["messageId"],  $row["messageProfileId"], $row["messageOrganizationId"], $row["messageContent"], $row["messageDateTime"], $row["messageSubject"]);
+				$message = new Message($row["messageId"], $row["messageProfileId"], $row["messageOrganizationId"], $row["messageContent"], $row["messageDateTime"], $row["messageSubject"]);
 				$messages[$messages->key()] = $message;
 				$messages->next();
 
@@ -550,7 +553,7 @@ class Message implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		//bind the message organization id to the place holder in the template
-		$parameters = ["$messageOrganizationId => $messageOrganizationId"];
+		$parameters = ["$messageOrganizationId" => $messageOrganizationId];
 		$statement->execute($parameters);
 
 		//build an array of messages

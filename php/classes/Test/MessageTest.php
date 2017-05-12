@@ -1,6 +1,6 @@
 <?php
 
-namespace Edu\Cnm\PetfosterAbq\Test;
+namespace Edu\Cnm\PetRescueAbq\Test;
 
 //grab the encrypted property files
 
@@ -85,8 +85,9 @@ class MessageTest extends PetRescueAbqTest {
 		$this->profile = new Profile(null, null, "@handle", "test@phpunit.de", 	$this->VALID_HASH, "+15055553333", $this->VALID_SALT);
 		$this->profile->insert($this->getPDO());
 
+		//ASK ABOUT THIS
 		// create and insert a Organization to own the test Message
-	$this->organization = new Organization(null, null, "@handle", "test@phpunit.de", 	$this->VALID_HASH, "+15055553333", $this->VALID_SALT);
+	$this->organization = new Organization(null, null, null, null, 	$this->VALID_HASH, "+15055553333", $this->VALID_SALT);
 	$this->organization->insert($this->getPDO());
 
 	//calculate the date, just use the time the unit test was setup
@@ -316,7 +317,7 @@ public function testGetAllValidMessages() : void {
 	$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
 	$message->insert($this->getPDO());
 
-	//grab the data from mySQL and enforce the firelds match our expectations
+	//grab the data from mySQL and enforce the fields match our expectations
 	$results = Tweet::getMessageByMessageDate($this->getPDO(), $this->VALID_SUNRISEDATE, $this->VALID_SUNSETDATE);
 	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("message"));
 	$this->assertCount(1,$results);
