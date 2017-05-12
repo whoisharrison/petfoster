@@ -92,8 +92,8 @@ abstract class PetRescueAbqTest extends TestCase {
 		// if the connection hasn't been established, create it
 		if($this->connection === null) {
 			// connect to mySQL and provide the interface to PHPUnit
-			$config = readConfig("/etc/apache2/capstone-mysql/petRescueABQ.ini");
-			$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/petRescueABQ.ini");
+			$config = readConfig("/etc/apache2/capstone-mysql/fosterabq.ini");
+			$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
 			$this->connection = $this->createDefaultDBConnection($pdo, $config["database"]);
 		}
 		return($this->connection);
