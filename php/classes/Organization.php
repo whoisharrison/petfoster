@@ -490,7 +490,67 @@ class Organization implements \JsonSerializable {
 		// store the zip
 		$this->organizationZip = $newOrganizationZip;
 	}
+	/**
+	 * inserts this Organization into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function insert(\PDO $pdo) : void {
+		// enforce the organizationId is null (i.e., don't insert a organization that already exists)
+		if($this->organizationId !== null) {
+			throw(new \PDOException("not a new organization"));
+		}
+		// create query template
+		$query = "INSERT INTO organization(organizationProfileId, organizationActivationToken, organizationAddress1, organizationAddress2, organizationCity, organizationEmail, organizationLicense, organizationName, organizationPhone, organizationState, organizationZip) VALUES(:organizationProfileId, :organizationActivationToken, :organizationAddress1, :organizationAddress2, :organizationCity, :organizationEmail, :organizationLicense, :organizationName, :organizationPhone, :organizationState, :organizationZip)";
+		$statement = $pdo->prepare($query);
+		// bind the member variables to the place holders in the template
+		$parameters = ["organizationProfileId" => $this->organizationProfileId, "organizationActivationToken" => $this->organizationActivationToken, "organizationAddress1" => $this->organizationAddress1, "organizationAddress2" => $this->organizationAddress2, "organizationCity" => $this->organizationCity, "organizationEmail" => $this->organizationEmail, "organizationLicense" => $this->organizationLicense, "organizationName" => $this->organizationName, "organizationPhone" => $this->organizationPhone, "organizationState" => $this->organizationState, "organizationZip" => $this->organizationZip];
+		$statement->execute($parameters);
+		// update the null organizationId with what mySQL just gave us
+		$this->organizationId = intval($pdo->lastInsertId());
+	}
 
+	/**
+	 * deletes this Organization from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function delete(\PDO $pdo) : void {
+		// enforce the organizationId is not null (i.e., don't delete a organization that hasn't been inserted)
+		if($this->organizationId === null) {
+			throw(new \PDOException("unable to delete an organization that does not exist"));
+		}
+		// create query template
+		$query = "DELETE FROM organization WHERE organizationId = :organizationId";
+		$statement = $pdo->prepare($query);
+		// bind the member variables to the place holder in the template
+		$parameters = ["organizationId" => $this->organizationId];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * updates this Organization in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 **/
+	public function update(\PDO $pdo) : void {
+		// enforce the organizationId is not null (i.e., don't update a organization that hasn't been inserted)
+		if($this->organizationId === null) {
+			throw(new \PDOException("unable to update an organization that does not exist"));
+		}
+		// create query template
+		$query = "UPDATE organization SET organizationProfileId = :organizationProfileId, organizationActivationToken = :organizationActivationToken, organizationAddress1 = :organizationAddress1, organizationAddress2 = :organizationAddress2, organizationCity = :organizationCity, organizationEmail = :organizationEmail, organizationLicense = :organizationLicense, organizationName = :organizationName, organizationPhone = :organizationPhone, organizationState = :organizationState, organizationZip = :organizationZip WHERE organizationId = :organizationId";
+		$statement = $pdo->prepare($query);
+		// bind the member variables to the place holders in the template
+		$parameters = ["organizationProfileId" => $this->organizationProfileId, "organizationActivationToken" => $this->organizationActivationToken, "organizationAddress1" => $this->organizationAddress1, "organizationAddress2" => $this->organizationAddress2, "organizationCity" => $this->organizationCity, "organizationEmail" => $this->organizationEmail, "organizationLicense" => $this->organizationLicense, "organizationName" => $this->organizationName, "organizationPhone" => $this->organizationPhone, "organizationState" => $this->organizationState, "organizationZip" => $this->organizationZip, "organizationId" => $this->organizationId];
+		$statement->execute($parameters);
+	}
 
 	/**
 	 * formats the state variables for JSON serialization
