@@ -218,5 +218,34 @@ public function testInsertValidPost() : void {
 		$this->assertNull($post);
 	}
 
+	/**
+	 * test inserting a Post and regrabbing it from mySQL
+	 */
+	public function testGetValidPostByMessageProfileId() {
+		//count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("message");
+
+		//create a new Post and insert into mySQL
+		$post = new Post(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
+		$post->insert($this->getPDO());
+
+		//grab the data from mySQL and enforce the fields match our expectations
+		$results = Post::getsMessageByMessageProfileId($this->getPDO(), $message->getMessageProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Message", $results);
+
+		//grab the result from the array and validate it
+		$pdoPost = $results[0];
+		$this->assertEquals($pdoPost->getMessageProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoPost->getMessageOrganizationId(), $this->organization->getOrganizationId());
+
+		$this->assertEquals($pdoMessage->getMessageContent(), $this->VALID_MESSAGECONTENT);
+
+		//date to seconds since the beginning of time to avoid round off error
+		$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATETIME->getTimestamp());
+
+		$this->assertEquals($pdoMessage->getMessageSubject(), $this->VALID_MESSAGESUBJECT);
+	}
 
 
