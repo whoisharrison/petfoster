@@ -9,7 +9,7 @@ use Edu\Cnm\PetRescueAbq\ {Profile, Organization, Message};
 
 //do I need this??
 //require_once("/etc/apache/capstone-mysql/encrypted-config.php");
-require_once(dirname(__DIR__) . "/autoload.php");
+require_once(dirname(__DIR__, 2) . "/autoload.php");
 
 //@author RoLopez <llopez165@cnm.edu>
 
