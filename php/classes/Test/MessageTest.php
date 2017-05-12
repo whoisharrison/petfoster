@@ -78,7 +78,7 @@ class MessageTest extends PetRescueAbqTest {
 		// run the default setUp() method first
 		parent::setUp();
 		$password = "asdfasdf";
-		$this->VALID_SALT = bin2hex(random_bytes(128));
+		$this->VALID_SALT = bin2hex(random_bytes(32));
 		$this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 262144);
 
 		//ASK ABOUT THIS
@@ -86,10 +86,10 @@ class MessageTest extends PetRescueAbqTest {
 		$this->profile = new Profile(null, "22222222222222222222222222222222", "@handle", "test@phpunit.de", $this->VALID_HASH, "null", $this->VALID_SALT);
 		$this->profile->insert($this->getPDO());
 
-		//ASK ABOUT THIS DO I NEED THIS?
+
 		// create and insert a Organization to own the test Message
-	//$this->organization = new Organization(null, null, null, null, 	$this->VALID_HASH, "@handle", $this->VALID_SALT);
-	//$this->organization->insert($this->getPDO());
+	$this->organization = new Organization(null, "22222222222222222222222222222222", "nsdhfbdfbiabfdfdjun", "fthwrthsrt", "Cityname", "whatever@handle.com", "asdfasdfsdcsdc", "Bogusstuff", "15552525566", "NM", "87555");
+	$this->organization->insert($this->getPDO());
 
 	//calculate the date, just use the time the unit test was setup
 	$this->VALID_MESSAGEDATETIME = new \DateTime();

@@ -299,7 +299,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \TypeError if profile salt is not a string
 	 **/
 	public function setProfileSalt(string $newProfileSalt): void {
-		$newProfileSalt = trim(@$newProfileSalt);
+		$newProfileSalt = trim($newProfileSalt);
 		$newProfileSalt = strtolower($newProfileSalt);
 
 		//enforce the salt is a string representation of a hexadecimal

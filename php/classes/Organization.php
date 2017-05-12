@@ -248,6 +248,7 @@ class Organization implements \JsonSerializable {
 	 * @throws \RangeException if $newOrganizationAddress2 is > 64 characters
 	 * @throws \TypeError if $newOrganizationAddress2 is not a string
 	 **/
+	//TODO: according to SQL this is not required so do not check on empty
 	public function setOrganizationAddress2(?string $newOrganizationAddress2) : void {
 		// verify the organization address2 is secure
 		$newOrganizationAddress2 = trim($newOrganizationAddress2);
