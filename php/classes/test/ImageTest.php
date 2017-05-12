@@ -1,16 +1,14 @@
 <?php
 namespace Edu\Cnm\PetRescueAbq\Test;
 
-use Edu\Cnm\Petfoster\Test\PetRescueAbqTest;
 use Edu\Cnm\PetRescueAbq\{
-	Post, Profile, Image
+	Profile, Organization, Post, Image
 };
 
 
 
 // grab the class under scrutiny
-require_once(dirname(_DIR_) . "/autoload.php");
-
+require_once(dirname(__DIR__) . "/autoload.php");
 /**
  * Full PHPUnit test for the Image class
  *
@@ -23,42 +21,81 @@ require_once(dirname(_DIR_) . "/autoload.php");
 class ImageTest extends PetRescueAbqTest {
 
 	/**
+	 * Profile that created the Post which posted the image; this is for foreign key relations
+	 * @var Profile $profile
+	 */
+	protected $profile;
+	/**
+	 * Organization that created the image post, this is for foreign key reltions..don't understand, ask? org/ image not foreign key
+	 * @var Organization $organization;
+	 */
+	 protected $organization;
+	 /**
 	 * Post that created the Image; this is for foreign key relations
 	 * @var Post $post
 	 *
 	 */
 	protected $post = null;
 	/**
-	 * Profile that created the Post which posted the image; this is for foreign key relations
-	 * @var Profile $profile
+	 * valid hash to use
+	 * @var $VALID_HASH
+	 *
 	 */
-	protected $profile;
+	protected $VALID_PROFILE_HASH;
+
 	/**
-	 * valid has to use
-	 * @var VALID_HASH
 
 	 * valid salt to use to create the profile object to own the test
 	 * @var string $VALID_SALT
 	 */
-	protected $VALID_SALT
+	protected $VALID_SALT;
 
 	/**
-	 * create dependent objects before running each test
+
+	/**
+	 * set up create dependent objects before running each test
 	 *
 	 */
 public final function setUp() : void {
 	//run the default setUp() method first
-	parent::setUp();
+	parent::getSetUpOperation();
 
 	//create a salt and hash for the mocked profile
 	$password = "abc123";
-	$this->VALID_SALT = binhex(random_bytes(32));
-	$this->VALID_HASH = hash_pbkdf2("sha512, $password, $this->VALID_SALT,262144");
+	$this->VALID_PROFILE_SALT = bin2hex(random_bytes(32));
+	$this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 262144);
 	$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
 
 	//create and insert the mocked profile
-	$this->profile = new Profile(null,)
-}
+	$this->profile = new Profile(null, null, "@handle:", "test@phpunit.de", $this->VALID_PROFILE_HASH, "+3345952089",$this->VALID_SALT);
+	$this->profile->insert($this->getPDO());
+
+//create and insert the mock Organization
+	$this->organization = new Organization(null, null, null, null, null, null, null, null, null, null, $this->profile->getProfileId(),"PhPUnit image test passing");
+	$this->organization->insert($this->getPDO());
+
+	//create and insert the mock Post
+	$this->post = new Post(null, null, null, null, null, $this->profile->getProfileId(), "PHPUnit image test passing");
+	$this->post->insert($this->getPDO());
+
+
+	//calculate the date (just use the time the unit test ws setup)
+	$this->VALID_IMAGEDATE = new\DateTime();
+	}
+
+	/**
+	 * test that inserts a valid image and verifies that the actual mySQL data matches
+	 **/
+	public function testInsertValidImage() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("image");
+
+		// create a new Image and insert into mySQL
+		$image = new  Image($this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->post->getPostId(),)
+	}
+
+
+
 
 
 
