@@ -252,6 +252,7 @@ class Organization implements \JsonSerializable {
 		// verify the organization address2 is secure
 		$newOrganizationAddress2 = trim($newOrganizationAddress2);
 		$newOrganizationAddress2 = filter_var($newOrganizationAddress2, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		// remove the error msg if add2 is empty
 /*		if(empty($newOrganizationAddress2) === true) {
 			throw(new \InvalidArgumentException("organization address2 is empty or insecure"));
 		}*/
