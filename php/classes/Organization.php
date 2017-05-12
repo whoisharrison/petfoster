@@ -98,7 +98,7 @@ class Organization implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 *@Documentation https://php.net/manual/en/language.oop5.decon.php
 	 * */
-	public function __construct(?int $newOrganizationId, ?string $newOrganizationActivationToken, string $newOrganizationAddress1, ?string $newOrganizationAddress2, string $newOrganizationCity, string $newOrganizationEmail, string $newOrganizationLicense, string $newOrganizationName, string $newOrganizationPhone, string $newOrganizationState, string $newOrganizationZip) {
+	public function __construct(?int $newOrganizationId, ?int $newOrganizationProfileId, ?string $newOrganizationActivationToken, string $newOrganizationAddress1, ?string $newOrganizationAddress2, string $newOrganizationCity, string $newOrganizationEmail, string $newOrganizationLicense, string $newOrganizationName, string $newOrganizationPhone, string $newOrganizationState, string $newOrganizationZip) {
 		try {
 			$this->setOrganizationId($newOrganizationId);
 			$this->setOrganizationActivationToken($newOrganizationActivationToken);
@@ -248,7 +248,7 @@ class Organization implements \JsonSerializable {
 	 * @throws \RangeException if $newOrganizationAddress2 is > 64 characters
 	 * @throws \TypeError if $newOrganizationAddress2 is not a string
 	 **/
-	// TODO: according to SQL this is not required so do not check on empty
+	// according to SQL this is not required so do not check on empty
 	public function setOrganizationAddress2(?string $newOrganizationAddress2) : void {
 		// verify the organization address2 is secure
 		$newOrganizationAddress2 = trim($newOrganizationAddress2);
