@@ -89,7 +89,7 @@ class PostTest extends PetRescueAbqTest {
 
 		//created and insert an Organization
 		$this->organization = new Organization(null, null, "@handle", "test@phpunit.de", $this->VALID_HASH, "+15055553333", $this->VALID_SALT);
-		$this->organization->insert($this->getPDO());
+//		$this->organization->insert($this->getPDO());
 	}
 
 	/** test inserting a valid post and verify that the actual mySQL data matches
@@ -258,14 +258,11 @@ class PostTest extends PetRescueAbqTest {
 			$pdoPost = $results[0];
 
 			$this->assertEquals($pdoPost->getPostOrganizationId(), $this->organization->getOrganizationId());
-
 			$this->assertEquals($pdoPost->getPostBreed(), $this->VALID_POSTBREED);
-
 			$this->assertEquals($pdoPost->getPostDescription(), $this->VALID_POSTDESCRIPTION);
 			$this->assertEquals($pdoPost->getPostSex(), $this->VALID_POSTSEX);
 			$this->assertEquals($pdoPost->getPostType(), $this->VALID_POSTTYPE);
 		}
-	}
 
 }
 
