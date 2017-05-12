@@ -1,6 +1,10 @@
 <?php
 namespace Edu\Cnm\PetRescueAbq\Test;
 
+//grab the encrypted property files
+
+use Edu\Cnm\PetRescueAbq\ {Profile, Organization};
+
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
 /**
@@ -92,7 +96,7 @@ class OrganizationTest extends PetRescueAbqTest {
 		$this->VALID_PROFILE_SALT = bin2hex(random_bytes(32));
 		$this->VALID_PROFILE_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
 		// create and insert a Profile to own the test Organization
-		$this->profile = new Profile(null, null,"@testOrgHandle", "tester@phpunit.com",$this->VALID_PROFILE_HASH, "Don One", $this->VALID_PROFILE_SALT);
+		$this->profile = new Profile(null, null,"@testOrgHandle", "tester@phpunit.com", $this->VALID_PROFILE_HASH, "Don One", $this->VALID_PROFILE_SALT);
 		$this->profile->insert($this->getPDO());
 	}
 	/**

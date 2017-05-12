@@ -252,9 +252,9 @@ class Organization implements \JsonSerializable {
 		// verify the organization address2 is secure
 		$newOrganizationAddress2 = trim($newOrganizationAddress2);
 		$newOrganizationAddress2 = filter_var($newOrganizationAddress2, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newOrganizationAddress2) === true) {
+/*		if(empty($newOrganizationAddress2) === true) {
 			throw(new \InvalidArgumentException("organization address2 is empty or insecure"));
-		}
+		}*/
 		// verify the organization address2 will fit in the database
 		if(strlen($newOrganizationAddress2) > 64) {
 			throw(new \RangeException("organization address2 too large"));
