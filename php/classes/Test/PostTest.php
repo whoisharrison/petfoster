@@ -1,8 +1,7 @@
 <?php
 namespace Edu\Cnm\PetRescueAbq\Test;
 
-use Edu\Cnm\Petfoster\Test\PetRescueAbq;
-use Edu\Cnm\PetRescueAbq\{Profile, Organization, Message, Post};
+use Edu\Cnm\PetRescueAbq\{Profile, Organization, Post};
 
 //grab the class under scrutiny
 require_once (dirname(__DIR__) . "/autoload.php");
@@ -19,19 +18,19 @@ require_once (dirname(__DIR__) . "/autoload.php");
 class PostTest extends PetRescueAbqTest {
 	/**
 	 * Profile that created the Organization; this is the foreign key relations
-	 * @var $Profile
+	 * @var  Profile $profile
 	 */
 	protected $profile = null;
 
 	/**
 	 *Organization that created the Post; this is the foreign key relations
-	 * @var $Organization
+	 * @var  Organization $organization
 	 **/
 	protected $organization = null;
 
 	/**
 	 * valid profile hash to create the profile object to own the test
-	 * @var $VALID_HASH;
+	 * @var $VALID_HASH ;
 	 **/
 	protected $VALID_HASH;
 
@@ -57,7 +56,7 @@ class PostTest extends PetRescueAbqTest {
 	 * valid postDescription to use to create the Post
 	 * @var string $VALID_POSTDESCRIPTION
 	 */
-protected $VALID_POSTDESCRIPTION;
+	protected $VALID_POSTDESCRIPTION;
 
 
 	/**
@@ -75,7 +74,7 @@ protected $VALID_POSTDESCRIPTION;
 	/**
 	 * create dependent objects before running each test
 	 */
-	public final function setUp()  : void {
+	public final function setUp(): void {
 		parent::setUp();
 		$password = "abc123";
 		$profileActivationToken = "22222222222222222222222222222222";
@@ -85,36 +84,35 @@ protected $VALID_POSTDESCRIPTION;
 		/**
 		 * created and insert a Profile to own the test Organization
 		 */
-		$this->profile = new Profile(null,$profileActivationToken,"JamMasterJ", "tmafm1@gmail.com",$this->VALID_HASH,"Jabari",$this->VALID_SALT);
+		$this->profile = new Profile(null, $profileActivationToken, "JamMasterJ", "tmafm1@gmail.com", $this->VALID_HASH, "Jabari", $this->VALID_SALT);
 		$this->profile->insert($this->getPDO());
 
 		//created and insert an Organization
-		$this->organization = new Organization(null, null, "@handle", "test@phpunit.de", $this->VALID_HASH, "+15055553333",$this->VALID_SALT);
+		$this->organization = new Organization(null, null, "@handle", "test@phpunit.de", $this->VALID_HASH, "+15055553333", $this->VALID_SALT);
 		$this->organization->insert($this->getPDO());
 	}
 
-/** test inserting a valid post and verify that the actual mySQL data matches
- *
- */
+	/** test inserting a valid post and verify that the actual mySQL data matches
+	 *
+	 */
 
-public function testInsertValidPost() : void {
-	//count the number fo rows and save it for later
-	$numRows = $this->getConnection()->getRowCount("post:");
+	public function testInsertValidPost(): void {
+		//count the number fo rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("post:");
 
-	//create a new Post and insert into mySQL
-	$post = new POST (null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
-	$post->insert($this->getPDO());
+		//create a new Post and insert into mySQL
+		$post = new Post (null, $this->organization->getOrganizationId(), $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
+		$post->insert($this->getPDO());
 
-	//grab the data from mySQL and enforce the fields match our expectations
-	$pdoPost = Post::getPostByPostId($this->getPDO(), $post->getPostId());
-	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
+		//grab the data from mySQL and enforce the fields match our expectations
+		$pdoPost = Post::getPostByPostId($this->getPDO(), $post->getPostId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 
-//	$this->assertEquals($pdoMessage->getMessageProfileId(), $this->profile->getProfileId()); (not sure if i need)
-	$this->assertEquals($pdoPost->getPostOrganizationId(), $this->organization->getOrganizationId());
-	$this->assertEquals($pdoPost->getPostBreed, $this->VALID_POSTBREED);
-	$this->assertEquals($pdoPost->getPostSex, $this->VALID_POSTSEX);
-	$this->assertEquals($pdoPost->getPostType, $this->VALID_POSTTYPE);
-}
+		$this->assertEquals($pdoPost->getPostOrganizationId(), $post->getPostOrganizationId());
+		$this->assertEquals($pdoPost->getPostBreed(), $this->VALID_POSTBREED);
+		$this->assertEquals($pdoPost->getPostSex(), $this->VALID_POSTSEX);
+		$this->assertEquals($pdoPost->getPostType(), $this->VALID_POSTTYPE);
+	}
 
 
 	/**
@@ -122,22 +120,22 @@ public function testInsertValidPost() : void {
 	 * @expectedException \PDOException
 	 */
 
-		public function testInsertInvalidPost() : void {
-			// create a post with a non null postId and it will fail
-			$post = new Post(PetRescueAbqTest::INVALID_KEY, $this->VALID_POSTORGANIZATIONID, $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
-			$post->insert($this->getPDO());
-		}
+	public function testInsertInvalidPost(): void {
+		// create a post with a non null postId and it will fail
+		$post = new Post(PetRescueAbqTest::INVALID_KEY, $this->VALID_POSTORGANIZATIONID, $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
+		$post->insert($this->getPDO());
+	}
 
 
-/**
-* test inserting a Message, editing it, and then updating it
-*/
-	public function testUpdateValidPost() : void {
+	/**
+	 * test inserting a Post, editing it, and then updating it
+	 */
+	public function testUpdateValidPost(): void {
 		//count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
 
 		//create a new Post and insert it into mySQL
-		$post = new Post(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
+		$post = new Post(null, $this->organization->getOrganizationId(), $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
 		$post->insert($this->getPDO());
 
 
@@ -145,36 +143,26 @@ public function testInsertValidPost() : void {
 		$post->setPostBreed($this->VALID_POSTBREED);
 		$post->update($this->getPDO());
 
-		$post->setpostDescription($this->VALID_POSTDESCRIPTION);
-		$post->update($this->getPDO());
-
-		$post->setPostSex($this->VALID_POSTSEX);
-		$post->update($this->getPDO());
-
-		$post->setPostType($this->VALID_POSTTYPE);
-		$post->update($this->getPDO());
-
 
 		//grab the data from mySQL and enforce the fields match our expectations
-		$pdoMessage = Message::getPostByPostId($this->getPDO(), $post->getPostId());
+		$pdoPost = Post::getPostByPostId($this->getPDO(), $post->getPostId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 
-		$this->assertEquals($pdoPost->getPostProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoPost->getPostOrganizationId(), $this->organization->getOrganizationId());
 		$this->assertEquals($pdoPost->getPostBreed(), $this->VALID_POSTBREED);
 		$this->assertEquals($pdoPost->getPostDescription(), $this->VALID_POSTDESCRIPTION);
 		$this->assertEquals($pdoPost->getPostSex(), $this->VALID_POSTSEX);
-		$this->assertEquals($pdoPost->getPostType(), $this->VALID_POSTTYPE;
+		$this->assertEquals($pdoPost->getPostType(), $this->VALID_POSTTYPE);
 	}
 
 	/**
 	 * test updating a Post that does not exists
 	 * @expectedException \PDOException
 	 */
-	public function testUpdateInvalidPost() : void {
+	public function testUpdateInvalidPost(): void {
 
 		//create a Post with a non null post id and watch it fail
-		$post = new Post(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
+		$post = new Post(null, $this->organization->getOrganizationId(), $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
 		$post->update($this->getPDO());
 	}
 
@@ -182,15 +170,15 @@ public function testInsertValidPost() : void {
 	/**
 	 * test creating a Post and then deleting it
 	 */
-	public function testDeleteValidMessage() : void {
+	public function testDeleteValidPost(): void {
 		//count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("post");
 
 		//create a new Post and insert it into mySQL
-		$post = new Post(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
+		$post = new Post(null, $this->organization->getOrganizationId(), $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
 		$post->insert($this->getPDO());
 
-		//delete the Message from mySQL
+		//delete the Post from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$post->delete($this->getPDO());
 
@@ -204,48 +192,81 @@ public function testInsertValidPost() : void {
 	 * test deleting a Post that does not exist
 	 * @expectedException \PDOException
 	 */
-	public function testDeleteInvalidPost() : void {
+	public function testDeleteInvalidPost(): void {
 		//create a Post and try to delete it without actually inserting it
-		$post = new Post(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
+		$post = new Post(null, $this->organization->getOrganizationId(), $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
 		$post->delete($this->getPDO());
 	}
+
 	/**
 	 * test grabbing a post that does not exist
 	 */
-	public function testGetInvalidPostByPostId() : void {
+	public function testGetInvalidPostByPostId(): void {
 		//grab a organization id that exceeds the maximum allowable profile id
-		$post = Message::getPostByPostId($this->getPdo(), PetRescueAbqTest::INVALID_KEY);
+		$post = Post::getPostByPostId($this->getPdo(), PetRescueAbqTest::INVALID_KEY);
 		$this->assertNull($post);
 	}
 
 	/**
 	 * test inserting a Post and regrabbing it from mySQL
 	 */
-	public function testGetValidPostByMessageProfileId() {
+	public function testGetValidPostByPostOrganziationId() {
 		//count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("message");
+		$numRows = $this->getConnection()->getRowCount("post");
 
 		//create a new Post and insert into mySQL
-		$post = new Post(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
+		$post = new Post(null, $this->organization->getOrganizationId(), $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
 		$post->insert($this->getPDO());
 
 		//grab the data from mySQL and enforce the fields match our expectations
-		$results = Post::getsMessageByMessageProfileId($this->getPDO(), $message->getMessageProfileId());
+
+		$results = Post::getPostsByPostOrganizationId($this->getPdO(), $post->getPostOrganizationId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Message", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Post", $results);
 
 		//grab the result from the array and validate it
 		$pdoPost = $results[0];
-		$this->assertEquals($pdoPost->getMessageProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoPost->getMessageOrganizationId(), $this->organization->getOrganizationId());
 
-		$this->assertEquals($pdoMessage->getMessageContent(), $this->VALID_MESSAGECONTENT);
+		$this->assertEquals($pdoPost->getPostOrganizationId(), $this->organization->getOrganizationId());
+		$this->assertEquals($pdoPost->getPostBreed(), $this->VALID_POSTBREED);
+		$this->assertEquals($pdoPost->getPostSex(), $this->VALID_POSTSEX);
+		$this->assertEquals($pdoPost->getPostType(), $this->VALID_POSTTYPE);
 
-		//date to seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATETIME->getTimestamp());
+		/**
+		 * grabbing all the Posts
+		 */
+		public
+		function testGetAllValidPostTypes(): void {
+			//count the number of rows and save it for later
+			$numRows = $this->getConnection()->getRowCount("post");
 
-		$this->assertEquals($pdoMessage->getMessageSubject(), $this->VALID_MESSAGESUBJECT);
+			//create a new Post and insert it into mySQL
+			$post = new Post(null, $this->organization->getOrganizationId(), $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
+			$post->insert($this->getPDO());
+
+			//grab the data from mySQL and enforce the fields match our expectations
+			$results = Post::getPostByPostType($this->getPDO(), $post->getPostType());
+			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
+			$this->assertCount(1, $results);
+			$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetFosterAbq\\Post", $results);
+
+			/**
+			 * grab the results from the array and validate it
+			 */
+			$pdoPost = $results[0];
+
+			$this->assertEquals($pdoPost->getPostOrganizationId(), $this->organization->getOrganizationId());
+
+			$this->assertEquals($pdoPost->getPostBreed(), $this->VALID_POSTBREED);
+
+			$this->assertEquals($pdoPost->getPostDescription(), $this->VALID_POSTDESCRIPTION);
+			$this->assertEquals($pdoPost->getPostSex(), $this->VALID_POSTSEX);
+			$this->assertEquals($pdoPost->getPostType(), $this->VALID_POSTTYPE);
+		}
 	}
+
+}
+
 
 
