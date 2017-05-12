@@ -9,8 +9,8 @@
 		<p><strong>Profile</strong></p>
 		<ul>
 			<li>profileId (primary key)</li>
-			<li>profileAtHandle</li>
 			<li>profileActivationToken (for account verification)</li>
+			<li>profileAtHandle</li>
 			<li>profileEmail</li>
 			<li>profileHash (for account password)</li>
 			<li>profileName</li>

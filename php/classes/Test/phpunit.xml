@@ -1,9 +1,14 @@
 <phpunit>
 	<testsuites>
 		<testsuite name="PetRescueAbqTest">
+<<<<<<< Updated upstream
 			<!-- <file>ProfileTest.php</file> -->
 			<file>MessageTest.php</file>
 
+=======
+			<file>ProfileTest.php</file>
+			<file>OrganizationTest.php</file>
+>>>>>>> Stashed changes
 
 		</testsuite>
 	</testsuites>

@@ -555,6 +555,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
+
 	public static function getProfileByProfileActivationToken(\PDO $pdo, string $profileActivationToken) : ?profile {
 		//make sure activation token is in the right format and that it is a string representation of a hexadecimal
 		$profileActivationToken = trim($profileActivationToken);

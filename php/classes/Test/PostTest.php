@@ -232,6 +232,7 @@ class PostTest extends PetRescueAbqTest {
 		$this->assertEquals($pdoPost->getPostBreed(), $this->VALID_POSTBREED);
 		$this->assertEquals($pdoPost->getPostSex(), $this->VALID_POSTSEX);
 		$this->assertEquals($pdoPost->getPostType(), $this->VALID_POSTTYPE);
+	}
 
 		/**
 		 * grabbing all the Posts
