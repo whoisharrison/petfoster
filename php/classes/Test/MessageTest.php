@@ -28,7 +28,6 @@ class MessageTest extends PetRescueAbqTest {
 	 */
 	protected $organization = null;
 
-
 	/**
 	 * valid hash to create the organization and profile object for the test
 	 * @var $VALID_HASH
@@ -51,7 +50,7 @@ class MessageTest extends PetRescueAbqTest {
 	 * timestamp of the Message, this starts as null and is assigned later
 	 * @var \DateTime $VALID_MESSAGEDATE
 	 */
-	protected $VALID_MESSAGEDATE = null;
+	protected $VALID_MESSAGEDATETIME = null;
 
 	/**
 	 *content of subject
@@ -81,17 +80,18 @@ class MessageTest extends PetRescueAbqTest {
 		$this->VALID_SALT = bin2hex(random_bytes(64));
 		$this->VALID__HASH = hash_pbkdf2("sha128", $password, $this->VALID_SALT, 262144);
 
+		//ASK ABOUT THIS
 		// create and insert a Profile to own the test Message
-		$this->profile = new Profile(null, null, "@handle", "test@phpunit.de", 	$this->VALID_HASH, "+15055553333", $this->VALID_SALT);
+		$this->profile = new Profile(null, null, "@handle", "test@phpunit.de", $this->VALID_HASH, "null", $this->VALID_SALT);
 		$this->profile->insert($this->getPDO());
 
-		//ASK ABOUT THIS
+		//ASK ABOUT THIS DO I NEED THIS?
 		// create and insert a Organization to own the test Message
-	$this->organization = new Organization(null, null, null, null, 	$this->VALID_HASH, "+15055553333", $this->VALID_SALT);
-	$this->organization->insert($this->getPDO());
+	//$this->organization = new Organization(null, null, null, null, 	$this->VALID_HASH, "@handle", $this->VALID_SALT);
+	//$this->organization->insert($this->getPDO());
 
 	//calculate the date, just use the time the unit test was setup
-	$this->VALID_MESSAGEDATE = new \DateTime();
+	$this->VALID_MESSAGEDATETIME = new \DateTime();
 
 	//format the sunrise date to use for testing
 	$this->VALID_SUNRISEDATE = new\DateTime();
@@ -111,7 +111,7 @@ public function testInsertValidMessage() : void {
 	$numRows = $this->getConnection()->getRowCount("message");
 
 	//create a new Message and insert into mySQL
-	$message = new Message(null, $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATE);
+	$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
 	$message->insert($this->getPDO());
 
 	//grab the data from mySQL and enforce the fields match our expectations
@@ -125,7 +125,7 @@ public function testInsertValidMessage() : void {
 	$this->assertEquals($pdoMessage->getMessageContent(), $this->VALID_MESSAGECONTENT);
 
 	//date to seconds since the beginning of time to avoid round off error
-	$this->assertEquals($pdoMessage->getMessageDate()->getTimestamp(), $this->VALID_MESSAGEDATE->getTimestamp());
+	$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATETIME->getTimestamp());
 
 	$this->assertEquals($pdoMessage->getMessageSubject(), $this->VALID_MESSAGESUBJECT);
 }
@@ -138,7 +138,7 @@ public function testInsertValidMessage() : void {
 public function testInsertInvalidMessage() : void {
 	//create a Message with a non null message id and watch it fail
 
-	$message = new Message(DataDesignTest::INVALID_KEY, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
+	$message = new Message(PetRescueAbqTest::INVALID_KEY, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
 	$message->insert($this->getPDO());
 }
 
@@ -154,12 +154,13 @@ public function testUpdateValidMessage() : void {
 	$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
 	$message->insert($this->getPDO());
 
+	//DO I NEED THIS?
 	//edit the Message and update it in mySQL
 	$message->setMessageContent($this->VALID_MESSAGECONTENT);
+	$message->update($this->getPDO());
 
 	//DO I NEED THIS???
 	$message->setMessageSubject($this->VALID_MESSAGESUBJECT);
-
 	$message->update($this->getPDO());
 
 	//grab the data from mySQL and enforce the fields match our expectations
@@ -172,7 +173,7 @@ public function testUpdateValidMessage() : void {
 	$this->assertEquals($pdoMessage->getMessageContent(), $this->VALID_MESSAGECONTENT);
 
 	//date to seconds since the beginning of time to avoid round off error
-	$this->assertEquals($pdoMessage->getMessageDate()->getTimestamp(), $this->VALID_MESSAGEDATE->getTimestamp());
+	$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATETIME->getTimestamp());
 
 	$this->assertEquals($pdoMessage->getMessageSubject(), $this->VALID_MESSAGESUBJECT);
 }
@@ -185,8 +186,8 @@ public function testUpdateValidMessage() : void {
 public function testUpdateInvalidMessage() : void {
 
 	//create a Message with a non null message id and watch it fail
-	$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
-	$message->insert($this->getPDO());
+	$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
+	$message->update($this->getPDO());
 }
 
 
@@ -198,7 +199,7 @@ public function testDeleteValidMessage() : void {
 	$numRows = $this->getConnection()->getRowCount("message");
 
 	//create a new Message and insert it into mySQL
-	$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
+	$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
 	$message->insert($this->getPDO());
 
 	//delete the Message from mySQL
@@ -218,7 +219,7 @@ public function testDeleteValidMessage() : void {
  */
 public function testDeleteInvalidMessage() : void {
 	//create a Mesage and try to delete it without actually inserting it
-	$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
+	$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
 	$message->delete($this->getPDO());
 }
 
@@ -226,9 +227,9 @@ public function testDeleteInvalidMessage() : void {
 	/**
 	 * test grabbing a message that does not exist
 	 */
-	public function testGetInvalidMessageByMessage() : void {
+	public function testGetInvalidMessageByMessageId() : void {
 		//grab a organization id that exceeds the maximum allowable profile id
-		$message = Message::getMessageByMessageId($this->getPdo(), DataDesignTest::INVALID_KEY);
+		$message = Message::getMessageByMessageId($this->getPdo(), PetRescueAbqTest::INVALID_KEY);
 		$this->asserNull($message);
 	}
 
@@ -240,7 +241,7 @@ public function testDeleteInvalidMessage() : void {
 		$numRows = $this->getConnection()->getRowCount("message");
 
 		//create a new Message and insert into mySQL
-		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
+		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
 		$message->insert($this->getPDO());
 
 		//grab the data from mySQL and enforce the fields match our expectations
@@ -257,19 +258,9 @@ public function testDeleteInvalidMessage() : void {
 		$this->assertEquals($pdoMessage->getMessageContent(), $this->VALID_MESSAGECONTENT);
 
 		//date to seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoMessage->getMessageDate()->getTimestamp(), $this->VALID_MESSAGEDATE->getTimestamp());
+		$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATETIME->getTimestamp());
 
 		$this->assertEquals($pdoMessage->getMessageSubject(), $this->VALID_MESSAGESUBJECT);
-}
-
-
-/**
- * test grabbing a Message by content that does not exist
- */
-public function testGetInvalidMessageByMessageContent() : void {
-	//grab a message by content that does not exist
-	$message = Message::getMessageByMessageContent($this->getPDO(), "Rottweilers are the best animals ever");
-	$this->assertCount(0, $message);
 }
 
 
@@ -281,11 +272,11 @@ public function testGetValidMessageBySunDate() : void {
 	$numRows = $this->getConnection()->getRowCount("message");
 
 	//create a new Message and insert it into the database
-	$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
+	$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
 	$message->insert($this->getPDO());
 
-	// grab the tweet from the database and see if it matches expectations
-	$results = Tweet::getMessageByMessageDate($this->getPDO(), $this->VALID_SUNRISEDATE, $this->VALID_SUNSETDATE);
+	// grab the message from the database and see if it matches expectations
+	$results = Message::getMessageByMessageDateTime($this->getPDO(), $this->VALID_SUNRISEDATE, $this->VALID_SUNSETDATE);
 	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("message"));
 	$this->assertCount(1,$results);
 
@@ -295,12 +286,12 @@ public function testGetValidMessageBySunDate() : void {
 //use the first result to make sure that the inserted message meets expectations
 	$pdoMessage = $results[0];
 	$this->assertEquals($pdoMessage->getMessageId(), $message->getMessageId());
-	$this->assertEquals($pdoMessage->getMessageProfileId(), $message->getProfileId());
-	$this->assertEquals($pdoMessage->getMessageOrganizationId(), $message->getOrganizationId());
+	$this->assertEquals($pdoMessage->getMessageProfileId(), $message->getMessageProfileId());
+	$this->assertEquals($pdoMessage->getMessageOrganizationId(), $message->getMessageOrganizationId());
 
 	$this->assertEquals($pdoMessage->getMessageContent(), $message->getMessageContent());
 
-	$this->assertEquals($pdoMessage->getMessageDate()->getTimestamp(), $this->VALID_MESSAGEDATE->getTimestamp());
+	$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATETIME->getTimestamp());
 
 	$this->assertEquals($pdoMessage->getMessageSubject(), $message->getMessageSubject());
 }
@@ -314,11 +305,11 @@ public function testGetAllValidMessages() : void {
 	$numRows = $this->getConnection->getRowCount("message");
 
 	//create a new Message and insert it into mySQL
-	$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
+	$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
 	$message->insert($this->getPDO());
 
 	//grab the data from mySQL and enforce the fields match our expectations
-	$results = Tweet::getMessageByMessageDate($this->getPDO(), $this->VALID_SUNRISEDATE, $this->VALID_SUNSETDATE);
+	$results = Message::getMessageByMessageDateTime($this->getPDO());
 	$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("message"));
 	$this->assertCount(1,$results);
 	$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetFosterAbq\\Message", $results);
@@ -328,11 +319,11 @@ public function testGetAllValidMessages() : void {
 	 */
 	$pdoMessage = $results[0];
 	$this->assertEquals($pdoMessage->getMessageProfileId(), $this->profile->getProfileId());
-	$this->assertEquals($pdoMessage->getMessageOrganizationId(), $this->organization>getOrganizationId());
+	$this->assertEquals($pdoMessage->getMessageOrganizationId(), $this->organization->getOrganizationId());
 
 	$this->assertEquals($pdoMessage->getMessageContent(), $this->VALID_MESSAGECONTENT);
 
-	$this->assertEquals($pdoMessage->getMessageDate()->getTimestamp(), $this->VALID_MESSAGEDATE->getTimestamp());
+	$this->assertEquals($pdoMessage->getMessageDate()->getTimestamp(), $this->VALID_MESSAGEDATETIME->getTimestamp());
 
 	$this->assertEquals($pdoMessage->getMessageSubject(), $this->VALID_MESSAGESUBJECT);
 }
