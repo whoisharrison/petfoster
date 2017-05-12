@@ -79,7 +79,7 @@ class ProfileTest extends PetRescueAbqTest {
 		$numRows = $this->getConnection()->getRowCount("profile");
 
 		// create a new Profile and insert in mySQL
-		$profile = new Profile(null, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->Valid_Email, $this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT);
+		$profile = new Profile(null, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT);
 
 		//var_dump($profile);
 

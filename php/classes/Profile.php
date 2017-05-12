@@ -304,12 +304,12 @@ class Profile implements \JsonSerializable {
 
 		//enforce the salt is a string representation of a hexadecimal
 		if(!ctype_xdigit($newProfileSalt)) {
-			throw (new \InvalidArgumentException("profile password hash is empty or insecure"));
+			throw (new \InvalidArgumentException("profile password salt is empty or insecure"));
 		}
 
 		//enforce that the salt is 64 characters
 		if(strlen($newProfileSalt) !== 64) {
-			throw(new \RangeException("profile password much be 128 characters"));
+			throw(new \RangeException("profile password salt must be 64 characters"));
 		}
 
 		//store hash

@@ -11,6 +11,7 @@ use Edu\Cnm\PetRescueAbq\ {Profile, Organization, Message};
 //require_once("/etc/apache/capstone-mysql/encrypted-config.php");
 require_once(dirname(__DIR__) . "/autoload.php");
 
+
 //@author RoLopez <llopez165@cnm.edu>
 
 
@@ -77,12 +78,12 @@ class MessageTest extends PetRescueAbqTest {
 		// run the default setUp() method first
 		parent::setUp();
 		$password = "asdfasdf";
-		$this->VALID_SALT = bin2hex(random_bytes(64));
-		$this->VALID__HASH = hash_pbkdf2("sha128", $password, $this->VALID_SALT, 262144);
+		$this->VALID_SALT = bin2hex(random_bytes(128));
+		$this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 262144);
 
 		//ASK ABOUT THIS
 		// create and insert a Profile to own the test Message
-		$this->profile = new Profile(null, null, "@handle", "test@phpunit.de", $this->VALID_HASH, "null", $this->VALID_SALT);
+		$this->profile = new Profile(null, "22222222222222222222222222222222", "@handle", "test@phpunit.de", $this->VALID_HASH, "null", $this->VALID_SALT);
 		$this->profile->insert($this->getPDO());
 
 		//ASK ABOUT THIS DO I NEED THIS?
