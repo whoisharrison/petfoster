@@ -11,23 +11,23 @@ class Image implements \JsonSerializable {
 
 		/**
 		 * id for this class; Image,  this is the primary key
-		 * @var int $ImageId
+		 * @var int $imageId
 		 * all variables will be private
 		 **/
 		private
 		$imageId;
 		/**
 		 * id of the post for this image; this is a foreign key
-		 * @var int $ImagePostId
+		 * @var int $imagePostId
 		 **/
 		private
-		$ImagePostId;
+		$imagePostId;
 		/**
 		 * Id of cloudinary account that placed this picture
-		 * @var string $ImageCloudinaryId
+		 * @var string $imageCloudinaryId
 		 **/
 		private
-		$ImageCloudinaryId;
+		$imageCloudinaryId;
 		/**
 		 * constructor for  Images
 		 *
@@ -40,16 +40,16 @@ class Image implements \JsonSerializable {
 		 * @throws \Exception if some other exception occurs
 		 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 		 **/
-		public
-		function __construct(?int $newImageId, ?int $newImagePostId, ?string $newImageCloudinaryId) {
+		public function __construct(?int $newImageId, ?int $newImagePostId, ?string $newImageCloudinaryId) {
 			try {
 				$this->setImageId($newImageId);
 				$this->setImagePostId($newImagePostId);
 				$this->setImageCloudinaryId($newImageCloudinaryId);
-			} //determine what exception type was thrown
+			}
+			//determine what exception type was thrown
 
-			catch(\InvalidArgumentException |
-			\RangeException | \Exception | \TypeError $exception) {
+			catch(\InvalidArgumentException | \
+			RangeException | \Exception | \TypeError $exception) {
 				$exceptionType = get_class($exception);
 				throw(new $exceptionType($exception->getMessage(), 0, $exception));
 			}
@@ -60,8 +60,8 @@ class Image implements \JsonSerializable {
 		 * @return int|null value of image id
 		 **/
 		public
-		function getImageId(): int {
-			return ($this->ImageId);
+		function getImageId():?int {
+			return ($this->imageId);
 		}
 
 		/**
@@ -71,8 +71,7 @@ class Image implements \JsonSerializable {
 		 * @throws \RangeException if $newImageId is not positive
 		 * @throws \TypeError if $newImageId is not an integer
 		 **/
-		public
-		function setImageId(?int $newImageId): void {
+		public function setImageId(?int $newImageId) : void {
 			//if image id is null immediately return it
 			if($newImageId === null) {
 				$this->imageId = null;
@@ -91,9 +90,8 @@ class Image implements \JsonSerializable {
 		 *
 		 * @return int value of image post id
 		 **/
-		public
-		function getImagePostId(): int {
-			return ($this->ImagePostId);
+		public function getImagePostId(): int{
+			return ($this->imagePostId);
 		}
 
 		/**
@@ -103,11 +101,11 @@ class Image implements \JsonSerializable {
 		 * @throws \RangeException if $newImagePostId is not positive
 		 * @throws \TypeError if $newImagePostId is not an integer
 		 **/
-		public
-		function setImagePostId(int $newImagePostId): void {
+		public function setImagePostId(int $newImagePostId) : void {
 			// verify the profile or post id is positive
 			if($newImagePostId <= 0) {
 				throw(new \RangeException("Image post id is not positive"));
+			}
 				// convert and store the image post id
 				$this->imagePostId = $newImagePostId;
 			}
@@ -116,8 +114,7 @@ class Image implements \JsonSerializable {
 			 *
 			 * @return string value of image cloudinary id
 			 **/
-			public
-			function getImageCloudinaryId(): string {
+			public function getImageCloudinaryId() :string {
 				return ($this->imageCloudinaryId);
 			}
 
@@ -129,22 +126,22 @@ class Image implements \JsonSerializable {
 			 * @throws \RangeException if $newImageCloudinaryId is >32 characters
 			 * @throws \TypeError if $newImageCloudinaryId is not a string
 			 **/
-			public
-			function setImageCloudinaryId(string $newImageCloudinaryId): void {
+			public function setimageCloudinaryId(string $newImageCloudinaryId) : void {
 				// verify the cloudinary image id secure
 				$newImageCloudinaryId = trim($newImageCloudinaryId);
 				$newImageCloudinaryId = filter_var($newImageCloudinaryId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 				if(empty($newImageCloudinaryId) === true) {
-					throw(new \InvalidArgumentException("image cloudinary content id insecure"));
+					throw(new \InvalidArgumentException("image cloudinary id insecure"));
 				}
 				// verify the image cloudinary id will fit in the database, need to check on what size it needs to be, only storing the sting value of the link
 				//With class we only care bout storing the info, we will insert the link in the API's.
-				//if(strlen($newImageCloudinaryId) > 32) {
+				if(strlen($newImageCloudinaryId) > 32) {
+
 				throw(new \RangeException("cloudinary image id too large"));
 			}
+				//store the image cloudinary id
+				$this->imageCloudinaryId = $newImageCloudinaryId;
 
-			// store the cloudinary id for image
-			$this->imageCloudinaryId = $newImageCloudinaryId;
 		}
 
 		/**
@@ -154,16 +151,14 @@ class Image implements \JsonSerializable {
 		 * @throws \PDOException when mySQL related errors occur
 		 * @throws \TypeError if $pdo is not a PDO connection object
 		 **/
-		public
-		function insert(\PDO $pdo): void {
+		public function insert(\PDO $pdo): void {
 			// enforce the imageid is null (i.e., don't insert a image id that already exists)
 			if($this->imageId !== null) {
 				throw(new \PDOException("not a new image id"));
 			}
 			// create query template
-			$query = "INSERT INTO image(imageId, imagePostId) VALUES(imageId, :imagePostId)";
-
-		}
+			$query = "INSERT INTO image(imageId, imagePostId, imageCloudinaryId) VALUES(imageId, :imagePostId, :imageCloudinaryId)";
+			$statment =  $pdo->prepare($query);
 
 // update the null imagaeId with what mySQL just gave us
 		$this->imageId = intval($pdo->lastInsertId());
