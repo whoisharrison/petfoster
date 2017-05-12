@@ -5,6 +5,7 @@
  * Time: 10:25 PM
  **/
 namespace Edu\Cnm\PetRescueAbq\Test;
+use Edu\Cnm\PetRescueAbq\Profile;
 require_once(dirname(__DIR__) . "/autoload.php");
 
 /**
@@ -50,7 +51,7 @@ class ProfileTest extends PetRescueAbqTest {
 	 * valid name to use
 	 * @var string $VALID_NAME
 	 **/
-	protected $VALID_NAME;
+	protected $VALID_NAME = "mikeh";
 
 	/**
 	 * valid salt to use
@@ -93,7 +94,7 @@ class ProfileTest extends PetRescueAbqTest {
 		$this->assertSame($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
 		$this->assertSame($pdoProfile->getProfileHash(), $this->VALID_HASH);
 		$this->assertSame($pdoProfile->getProfileName(), $this->VALID_NAME);
-		$this->assertSame($pdoProfile->getProfileSale(), $this->VALID_SALT);
+		$this->assertSame($pdoProfile->getProfileSalt(), $this->VALID_SALT);
 	}
 
 	/**
