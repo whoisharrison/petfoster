@@ -1,7 +1,6 @@
 <?php
-namespace Edu\Cnm\DataDesign\Test;
-use Edu\Cnm\Petfoster\Test\PetRescueAbqTest;
-use Edu\Cnm\PetRescueAbq\{Profile, Organization};
+namespace Edu\Cnm\PetRescueAbq\Test;
+
 // grab the class under scrutiny
 require_once(dirname(__DIR__) . "/autoload.php");
 /**
@@ -57,7 +56,7 @@ class OrganizationTest extends PetRescueAbqTest {
 	 * valid email to use
 	 * @var string $VALID_EMAIL2
 	 */
-	protected $VALID_EMAIL2 = "testtest@cnm.edu;"
+	protected $VALID_EMAIL2 = "testtest@cnm.edu;";
 	/**
 	 * valid License to use
 	 * @var string $VALID_LICENSE
@@ -140,167 +139,257 @@ class OrganizationTest extends PetRescueAbqTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoOrganization = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
-
-		// stop - return to work here
-
-		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getOrganizationId());
-		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
-		$this->assertEquals($pdoTweet->getTweetContent(), $this->VALID_TWEETCONTENT2);
-		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
-		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
-
-
-
-
-		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoTweet->getTweetDate()->getTimestamp(), $this->VALID_TWEETDATE->getTimestamp());
+		// foreign key
+		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
+		$this->assertEquals($pdoOrganization->getOrganizationAddress2(), $this->VALID_ADDRESS2);
+		$this->assertEquals($pdoOrganization->getOrganizationCity(), $this->VALID_CITY);
+		$this->assertEquals($pdoOrganization->getOrganizationEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoOrganization->getOrganizationLicense(), $this->VALID_LICENSE);
+		$this->assertEquals($pdoOrganization->getOrganizationName(), $this->VALID_NAME);
+		$this->assertEquals($pdoOrganization->getOrganizationPhone(), $this->VALID_PHONE);
+		$this->assertEquals($pdoOrganization->getOrganizationState(), $this->VALID_STATE);
+		$this->assertEquals($pdoOrganization->getOrganizationZip(), $this->VALID_ZIP);
 	}
 	/**
-	 * test updating a Tweet that does not exist
+	 * test updating an Organization that does not exist
 	 *
 	 * @expectedException \PDOException
 	 **/
-	public function testUpdateInvalidTweet() : void {
-		// create a Tweet with a non null tweet id and watch it fail
-		$tweet = new Tweet(null, $this->profile->getProfileId(), $this->VALID_TWEETCONTENT, $this->VALID_TWEETDATE);
-		$tweet->update($this->getPDO());
+	public function testUpdateInvalidOrganization() : void {
+		// create an Organization with a non null Organization id and watch it fail
+		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization->update($this->getPDO());
 	}
 	/**
-	 * test creating a Tweet and then deleting it
+	 * test creating an Organization and then deleting it
 	 **/
-	public function testDeleteValidTweet() : void {
+	public function testDeleteValidOrganization() : void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
-		// create a new Tweet and insert to into mySQL
-		$tweet = new Tweet(null, $this->profile->getProfileId(), $this->VALID_TWEETCONTENT, $this->VALID_TWEETDATE);
-		$tweet->insert($this->getPDO());
+		$numRows = $this->getConnection()->getRowCount("organization");
+		// create a new Organization and insert to into mySQL
+		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization->insert($this->getPDO());
 		// delete the Tweet from mySQL
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
-		$tweet->delete($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
+		$organization->delete($this->getPDO());
 		// grab the data from mySQL and enforce the Tweet does not exist
-		$pdoTweet = Tweet::getTweetByTweetId($this->getPDO(), $tweet->getTweetId());
-		$this->assertNull($pdoTweet);
-		$this->assertEquals($numRows, $this->getConnection()->getRowCount("tweet"));
+		$pdoOrganization = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationId());
+		$this->assertNull($pdoOrganization);
+		$this->assertEquals($numRows, $this->getConnection()->getRowCount("organization"));
 	}
 	/**
-	 * test deleting a Tweet that does not exist
+	 * test deleting an Organization that does not exist
 	 *
 	 * @expectedException \PDOException
 	 **/
-	public function testDeleteInvalidTweet() : void {
-		// create a Tweet and try to delete it without actually inserting it
-		$tweet = new Tweet(null, $this->profile->getProfileId(), $this->VALID_TWEETCONTENT, $this->VALID_TWEETDATE);
-		$tweet->delete($this->getPDO());
+	public function testDeleteInvalidOrganization() : void {
+		// create an Organization and try to delete it without actually inserting it
+		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization->delete($this->getPDO());
 	}
 	/**
-	 * test grabbing a Tweet that does not exist
+	 * test grabbing an Organization that does not exist
 	 **/
-	public function testGetInvalidTweetByTweetId() : void {
-		// grab a profile id that exceeds the maximum allowable profile id
-		$tweet = Tweet::getTweetByTweetId($this->getPDO(), DataDesignTest::INVALID_KEY);
-		$this->assertNull($tweet);
+	public function testGetInvalidOrganizationByOrganizationId() : void {
+		// grab an Organization id that exceeds the maximum allowable Organization id
+		$organization = Organization::getOrganizationByOrganizationId($this->getPDO(), PetRescueAbqTest::INVALID_KEY);
+		$this->assertNull($organization);
 	}
 	/**
-	 * test inserting a Tweet and regrabbing it from mySQL
+	 * test inserting an Organization and re-grabbing it from mySQL
 	 **/
-	public function testGetValidTweetByTweetProfileId() {
+	public function testGetValidOrganizationByOrganizationProfileId() {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
-		// create a new Tweet and insert to into mySQL
-		$tweet = new Tweet(null, $this->profile->getProfileId(), $this->VALID_TWEETCONTENT, $this->VALID_TWEETDATE);
-		$tweet->insert($this->getPDO());
+		$numRows = $this->getConnection()->getRowCount("organization");
+		// create a new Organization and insert to into mySQL
+		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Tweet::getTweetByTweetProfileId($this->getPDO(), $tweet->getTweetProfileId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
+		$results = Organization::getOrganizationByOrganizationProfileId($this->getPDO(), $organization->getOrganizationProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Tweet", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Organization", $results);
+
 		// grab the result from the array and validate it
-		$pdoTweet = $results[0];
-		$this->assertEquals($pdoTweet->getTweetProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoTweet->getTweetContent(), $this->VALID_TWEETCONTENT);
-		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoTweet->getTweetDate()->getTimestamp(), $this->VALID_TWEETDATE->getTimestamp());
+		$pdoOrganization = $results[0];
+		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
+		$this->assertEquals($pdoOrganization->getOrganizationAddress2(), $this->VALID_ADDRESS2);
+		$this->assertEquals($pdoOrganization->getOrganizationCity(), $this->VALID_CITY);
+		$this->assertEquals($pdoOrganization->getOrganizationEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoOrganization->getOrganizationLicense(), $this->VALID_LICENSE);
+		$this->assertEquals($pdoOrganization->getOrganizationName(), $this->VALID_NAME);
+		$this->assertEquals($pdoOrganization->getOrganizationPhone(), $this->VALID_PHONE);
+		$this->assertEquals($pdoOrganization->getOrganizationState(), $this->VALID_STATE);
+		$this->assertEquals($pdoOrganization->getOrganizationZip(), $this->VALID_ZIP);
 	}
-	/**
-	 * test grabbing a Tweet that does not exist
+/**
+	 * test grabbing an Organization that does not exist
 	 **/
-	public function testGetInvalidTweetByTweetProfileId() : void {
+	public function testGetInvalidOrganizationByOrganizationProfileId() : void {
 		// grab a profile id that exceeds the maximum allowable profile id
-		$tweet = Tweet::getTweetByTweetProfileId($this->getPDO(), DataDesignTest::INVALID_KEY);
-		$this->assertCount(0, $tweet);
+		$organization = Organization::getOrganizationByOrganizationProfileId($this->getPDO(), PetRescueAbqTest::INVALID_KEY);
+		$this->assertCount(0, $organization);
 	}
 	/**
-	 * test grabbing a Tweet by tweet content
+	 * test grabbing an Organization by organization email
 	 **/
-	public function testGetValidTweetByTweetContent() : void {
+	public function testGetValidOrganizationByOrganizationEmail() : void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
-		// create a new Tweet and insert to into mySQL
-		$tweet = new Tweet(null, $this->profile->getProfileId(), $this->VALID_TWEETCONTENT, $this->VALID_TWEETDATE);
-		$tweet->insert($this->getPDO());
+		$numRows = $this->getConnection()->getRowCount("organization");
+
+		// create a new Organization and insert to into mySQL
+		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization->insert($this->getPDO());
+
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Tweet::getTweetByTweetContent($this->getPDO(), $tweet->getTweetContent());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
-		$this->assertCount(1, $results);
-		// enforce no other objects are bleeding into the test
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Tweet", $results);
-		// grab the result from the array and validate it
-		$pdoTweet = $results[0];
-		$this->assertEquals($pdoTweet->getTweetProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoTweet->getTweetContent(), $this->VALID_TWEETCONTENT);
-		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoTweet->getTweetDate()->getTimestamp(), $this->VALID_TWEETDATE->getTimestamp());
+		$pdoOrganization = Organization::getOrganizationByOrganizationEmail($this->getPDO(), $organization->getOrganizationEmail());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
+		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
+		$this->assertEquals($pdoOrganization->getOrganizationAddress2(), $this->VALID_ADDRESS2);
+		$this->assertEquals($pdoOrganization->getOrganizationCity(), $this->VALID_CITY);
+		$this->assertEquals($pdoOrganization->getOrganizationEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoOrganization->getOrganizationLicense(), $this->VALID_LICENSE);
+		$this->assertEquals($pdoOrganization->getOrganizationName(), $this->VALID_NAME);
+		$this->assertEquals($pdoOrganization->getOrganizationPhone(), $this->VALID_PHONE);
+		$this->assertEquals($pdoOrganization->getOrganizationState(), $this->VALID_STATE);
+		$this->assertEquals($pdoOrganization->getOrganizationZip(), $this->VALID_ZIP);
 	}
 	/**
-	 * test grabbing a Tweet by content that does not exist
+	 * test grabbing an Organization by email that does not exist
 	 **/
-	public function testGetInvalidTweetByTweetContent() : void {
-		// grab a tweet by content that does not exist
-		$tweet = Tweet::getTweetByTweetContent($this->getPDO(), "Comcast has the best service EVER #comcastLove");
-		$this->assertCount(0, $tweet);
+	public function testGetInvalidOrganizationByEmail() : void {
+		// grab an email that does not exist
+		$organization = Organization::getOrganizationByOrganizationEmail($this->getPDO(), "does@not.exist");
+		$this->assertNull($organization);
 	}
 	/**
-	 * test grabbing a valid Tweet by sunset and sunrise date
-	 *
+	 * test grabbing an Organization by organization license
+	 **/
+	public function testGetValidOrganizationByOrganizationLicense() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("organization");
+
+		// create a new Organization and insert to into mySQL
+		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoOrganization = Organization::getOrganizationByOrganizationLicense($this->getPDO(), $organization->getOrganizationLicense());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
+		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
+		$this->assertEquals($pdoOrganization->getOrganizationAddress2(), $this->VALID_ADDRESS2);
+		$this->assertEquals($pdoOrganization->getOrganizationCity(), $this->VALID_CITY);
+		$this->assertEquals($pdoOrganization->getOrganizationEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoOrganization->getOrganizationLicense(), $this->VALID_LICENSE);
+		$this->assertEquals($pdoOrganization->getOrganizationName(), $this->VALID_NAME);
+		$this->assertEquals($pdoOrganization->getOrganizationPhone(), $this->VALID_PHONE);
+		$this->assertEquals($pdoOrganization->getOrganizationState(), $this->VALID_STATE);
+		$this->assertEquals($pdoOrganization->getOrganizationZip(), $this->VALID_ZIP);
+	}
+	/**
+	 * test grabbing an Organization by license that does not exist
+	 **/
+	public function testGetInvalidOrganizationByLicense() : void {
+		// grab a license that does not exist
+		$organization = Organization::getOrganizationByOrganizationLicense($this->getPDO(), "10941658");
+		$this->assertNull($organization);
+	}
+	/**
+	 * test grabbing an Organization by organization name
+	 **/
+	public function testGetValidOrganizationByOrganizationName() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("organization");
+
+		// create a new Organization and insert to into mySQL
+		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization->insert($this->getPDO());
+
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoOrganization = Organization::getOrganizationByOrganizationLicense($this->getPDO(), $organization->getOrganizationLicense());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
+		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
+		$this->assertEquals($pdoOrganization->getOrganizationAddress2(), $this->VALID_ADDRESS2);
+		$this->assertEquals($pdoOrganization->getOrganizationCity(), $this->VALID_CITY);
+		$this->assertEquals($pdoOrganization->getOrganizationEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoOrganization->getOrganizationLicense(), $this->VALID_LICENSE);
+		$this->assertEquals($pdoOrganization->getOrganizationName(), $this->VALID_NAME);
+		$this->assertEquals($pdoOrganization->getOrganizationPhone(), $this->VALID_PHONE);
+		$this->assertEquals($pdoOrganization->getOrganizationState(), $this->VALID_STATE);
+		$this->assertEquals($pdoOrganization->getOrganizationZip(), $this->VALID_ZIP);
+	}
+	/**
+	 * test grabbing an Organization by name that does not exist
+	 **/
+	public function testGetInvalidOrganizationByName() : void {
+		// grab a name that does not exist
+		$organization = Organization::getOrganizationByOrganizationName($this->getPDO(), "Fake Pet Company");
+		$this->assertNull($organization);
+	}
+	/**
+	 * test grabbing a organization by its activation
 	 */
-	public function testGetValidTweetBySunDate() : void {
-		//count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
-		//create a new Tweet and insert it into the database
-		$tweet = new Tweet(null, $this->profile->getProfileId(), $this->VALID_TWEETCONTENT, $this->VALID_TWEETDATE);
-		$tweet->insert($this->getPDO());
-		// grab the tweet from the database and see if it matches expectations
-		$results = Tweet::getTweetByTweetDate($this->getPDO(), $this->VALID_SUNRISEDATE, $this->VALID_SUNSETDATE);
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
-		$this->assertCount(1,$results);
-		//enforce that no other objects are bleeding into the test
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Tweet", $results);
-		//use the first result to make sure that the inserted tweet meets expectations
-		$pdoTweet = $results[0];
-		$this->assertEquals($pdoTweet->getTweetId(), $tweet->getTweetId());
-		$this->assertEquals($pdoTweet->getTweetProfileId(), $tweet->getTweetProfileId());
-		$this->assertEquals($pdoTweet->getTweetContent(), $tweet->getTweetContent());
-		$this->assertEquals($pdoTweet->getTweetDate()->getTimestamp(), $this->VALID_TWEETDATE->getTimestamp());
+	public function testGetValidOrganizationByActivationToken() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("organization");
+		// create a new Organization and insert to into mySQL
+		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization->insert($this->getPDO());
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoOrganization = Organization::getOrganizationByOrganizationActivationToken($this->getPDO(), $organization->getOrganizationActivationToken());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
+		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
+		$this->assertEquals($pdoOrganization->getOrganizationAddress2(), $this->VALID_ADDRESS2);
+		$this->assertEquals($pdoOrganization->getOrganizationCity(), $this->VALID_CITY);
+		$this->assertEquals($pdoOrganization->getOrganizationEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoOrganization->getOrganizationLicense(), $this->VALID_LICENSE);
+		$this->assertEquals($pdoOrganization->getOrganizationName(), $this->VALID_NAME);
+		$this->assertEquals($pdoOrganization->getOrganizationPhone(), $this->VALID_PHONE);
+		$this->assertEquals($pdoOrganization->getOrganizationState(), $this->VALID_STATE);
+		$this->assertEquals($pdoOrganization->getOrganizationZip(), $this->VALID_ZIP);
 	}
 	/**
-	 * test grabbing all Tweets
+	 * test grabbing an Organization by an activation that does not exist
 	 **/
-	public function testGetAllValidTweets() : void {
+	public function testGetInvalidOrganizationActivation() : void {
+		// grab an Activation Token that does not exist
+		$organization = Organization::getOrganizationByOrganizationActivationToken($this->getPDO(), "5ebc7867885cb8dd25af05b991dd5609");
+		$this->assertNull($organization);
+	}
+	/**
+	 * test grabbing all Organizations
+	 **/
+	public function testGetAllValidOrganizations() : void {
 		// count the number of rows and save it for later
-		$numRows = $this->getConnection()->getRowCount("tweet");
-		// create a new Tweet and insert to into mySQL
-		$tweet = new Tweet(null, $this->profile->getProfileId(), $this->VALID_TWEETCONTENT, $this->VALID_TWEETDATE);
-		$tweet->insert($this->getPDO());
+		$numRows = $this->getConnection()->getRowCount("organization");
+		// create a new Organization and insert to into mySQL
+		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Tweet::getAllTweets($this->getPDO());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("tweet"));
+		$results = Organization::getAllOrganizations($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Tweet", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Organization", $results);
 		// grab the result from the array and validate it
-		$pdoTweet = $results[0];
-		$this->assertEquals($pdoTweet->getTweetProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoTweet->getTweetContent(), $this->VALID_TWEETCONTENT);
-		//format the date too seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoTweet->getTweetDate()->getTimestamp(), $this->VALID_TWEETDATE->getTimestamp());
+		$pdoOrganization = $results[0];
+		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
+		$this->assertEquals($pdoOrganization->getOrganizationAddress2(), $this->VALID_ADDRESS2);
+		$this->assertEquals($pdoOrganization->getOrganizationCity(), $this->VALID_CITY);
+		$this->assertEquals($pdoOrganization->getOrganizationEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoOrganization->getOrganizationLicense(), $this->VALID_LICENSE);
+		$this->assertEquals($pdoOrganization->getOrganizationName(), $this->VALID_NAME);
+		$this->assertEquals($pdoOrganization->getOrganizationPhone(), $this->VALID_PHONE);
+		$this->assertEquals($pdoOrganization->getOrganizationState(), $this->VALID_STATE);
+		$this->assertEquals($pdoOrganization->getOrganizationZip(), $this->VALID_ZIP);
 	}
 }
