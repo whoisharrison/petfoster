@@ -55,10 +55,10 @@ abstract class PetRescueAbqTest extends TestCase {
 		// add all the tables for the project here
 		// THESE TABLES *MUST* BE LISTED IN THE SAME ORDER THEY WERE CREATED!!!!
 		$dataset->addTable("profile");
-		$dataset->addTable("Organization");
-		$dataset->addTable("Post");
-		$dataset->addTable("Message");
-		$dataset->addTable("Image");
+		$dataset->addTable("organization");
+		$dataset->addTable("post");
+		$dataset->addTable("message");
+		$dataset->addTable("image");
 		return($dataset);
 	}
 	/**
