@@ -88,7 +88,7 @@ class ProfileTest extends PetRescueAbqTest {
 
 		//grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
-		$this->assertSame($numRows + 1, $this->getConnecion()->getPDO(), $profile->getProfileID());
+		$this->assertSame($numRows + 1, $this->getConnection()->getPDO(), $profile->getProfileID());
 		$this->assertSame($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertSame($pdoProfile->getProfileAtHandle(), $this->VALID_ATHANDLE);
 		$this->assertSame($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
@@ -131,7 +131,7 @@ class ProfileTest extends PetRescueAbqTest {
 		$this->assertSame($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
 		$this->assertSame($pdoProfile->getProfileHash(), $this->VALID_HASH);
 		$this->assertSame($pdoProfile->getProfileName(), $this->VALID_NAME);
-		$this->assertSame($pdoProfile->getProfileSale(), $this->VALID_SALT);
+		$this->assertSame($pdoProfile->getProfileSalt(), $this->VALID_SALT);
 	}
 
 	/**
@@ -220,7 +220,7 @@ class ProfileTest extends PetRescueAbqTest {
 		$profile->insert($this->getPDO());
 
 		//grab data from mySQL
-		$pdoProfile = Profile::getProfileByProfileEmail($this->getPDO(), $profile->getProfileMEail());
+		$pdoProfile = Profile::getProfileByProfileEmail($this->getPDO(), $profile->getProfileEmail());
 		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertSame($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertSame($pdoProfile->getProfileAtHandle(), $this->VALID_ATHANDLE);
@@ -234,7 +234,7 @@ class ProfileTest extends PetRescueAbqTest {
 	 */
 	public function testGetInvalidProfileActivation() : void {
 		// grab an email that does not exist
-		$profile = Profile::getProfileByProfileByProfileEmail($this->getPDO(), "mharrison@cnm.edu");
+		$profile = Profile::getProfileByProfileEmail($this->getPDO(), "mharrison@cnm.edu");
 		$this->assertNull($profile);
 	}
 
