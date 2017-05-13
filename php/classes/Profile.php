@@ -378,7 +378,7 @@ class Profile implements \JsonSerializable {
 		}
 
 		// create a query template
-		$query = "UPDATE profile SET profileActivationToken = :profileActivationToken, profileAtHandle = :profileAtHandle, profileEmail = :profileEmail, profileHash = :profileHash, profileName = :profileName, profileSalt = :profileSalt";
+		$query = "UPDATE profile SET profileActivationToken = :profileActivationToken, profileAtHandle = :profileAtHandle, profileEmail = :profileEmail, profileHash = :profileHash, profileName = :profileName, profileSalt = :profileSalt WHERE profileId = :profileId";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variable to the place holders in the template
@@ -409,7 +409,7 @@ class Profile implements \JsonSerializable {
 		$parameters = ["profileId" => $profileId];
 		$statement->execute($parameters);
 
-		//grab the Profile from mySQL
+		//get the Profile from mySQL
 		try {
 			$profile = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
