@@ -60,7 +60,7 @@ class OrganizationTest extends PetRescueAbqTest {
 	 * valid email to use
 	 * @var string $VALID_EMAIL2
 	 */
-	protected $VALID_EMAIL2 = "testtest@cnm.edu;";
+	protected $VALID_EMAIL2 = "testtest@cnm.edu";
 	/**
 	 * valid License to use
 	 * @var string $VALID_LICENSE

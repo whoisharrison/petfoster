@@ -25,7 +25,7 @@ class MessageTest extends PetRescueAbqTest {
 
 	/**
 	 * Organization that created the Message, this is for the foreign key
-	 * @var Organization organization
+	 * @var $organization organization
 	 */
 	protected $organization = null;
 
@@ -83,13 +83,13 @@ class MessageTest extends PetRescueAbqTest {
 
 		//ASK ABOUT THIS
 		// create and insert a Profile to own the test Message
-		$this->profile = new Profile(null, "22222222222222222222222222222222", "@handle", "test@phpunit.de", $this->VALID_HASH, "null", $this->VALID_SALT);
+		$this->profile = new Profile(null, "22222222222222222222222222222222", "@handle", "test@phpunit.com", $this->VALID_HASH, "null", $this->VALID_SALT);
 		$this->profile->insert($this->getPDO());
 
 
 		// create and insert a Organization to own the test Message
-	$this->organization = new Organization(null, "22222222222222222222222222222222", "nsdhfbdfbiabfdfdjun", "fthwrthsrt", "Cityname", "whatever@handle.com", "asdfasdfsdcsdc", "Bogusstuff", "15552525566", "NM", "87555");
-	$this->organization->insert($this->getPDO());
+		$this->organization = new Organization(null, null, "22222222222222222222222222222222", "Address 1", "Address 2", "City Name", "test@phpunit.com", "License Num", "Org Name", "5055552525", "NM", 8755);
+		$this->organization->insert($this->getPDO());
 
 	//calculate the date, just use the time the unit test was setup
 	$this->VALID_MESSAGEDATETIME = new \DateTime();
@@ -129,6 +129,8 @@ public function testInsertValidMessage() : void {
 	$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATETIME->getTimestamp());
 
 	$this->assertEquals($pdoMessage->getMessageSubject(), $this->VALID_MESSAGESUBJECT);
+
+
 }
 
 
@@ -152,7 +154,7 @@ public function testUpdateValidMessage() : void {
 	$numRows = $this->getConnection()->getRowCount("message");
 
 	//create a new Message and insert it into mySQL
-	$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
+	$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
 	$message->insert($this->getPDO());
 
 	//DO I NEED THIS?
