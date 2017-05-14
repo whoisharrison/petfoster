@@ -551,6 +551,224 @@ class Organization implements \JsonSerializable {
 		$parameters = ["organizationProfileId" => $this->organizationProfileId, "organizationActivationToken" => $this->organizationActivationToken, "organizationAddress1" => $this->organizationAddress1, "organizationAddress2" => $this->organizationAddress2, "organizationCity" => $this->organizationCity, "organizationEmail" => $this->organizationEmail, "organizationLicense" => $this->organizationLicense, "organizationName" => $this->organizationName, "organizationPhone" => $this->organizationPhone, "organizationState" => $this->organizationState, "organizationZip" => $this->organizationZip, "organizationId" => $this->organizationId];
 		$statement->execute($parameters);
 	}
+	/**
+	 * gets Organizations by organization id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $organizationId organization id to search by
+	 * @return \SplFixedArray SplFixedArray of Organizations found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getOrganizationsByOrganizationId(\PDO $pdo, int $organizationId) : \SplFixedArray {
+		// sanitize the organization id before searching
+		if($organizationId <= 0) {
+			throw(new \RangeException("organization id must be positive"));
+		}
+		// create query template
+		$query = "SELECT organizationId, organizationProfileId, organizationActivationToken, organizationAddress1, organizationAddress2, organizationCity, organizationEmail, organizationLicense, organizationName, organizationPhone, organizationState, organizationZip FROM organization WHERE organizationId = :organizationId";
+		$statement = $pdo->prepare($query);
+		// bind the organization id to the place holder in the template
+		$parameters = ["organizationId" => $organizationId];
+		$statement->execute($parameters);
+		// build an array of organizations
+		$organizations = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$organization = new Organization($row["organizationId"],
+				$row["organizationProfileId"], $row["organizationActivationToken"],
+				$row["organizationAddress1"], $row["organizationAddress2"],
+				$row["organizationCity"], $row["organizationEmail"], $row["organizationLicense"],				$row["organizationName"], $row["organizationPhone"], $row["organizationState"], 				$row["organizationZip"]);
+				$organizations[$organizations->key()] = $organization;
+				$organizations->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($organizations);
+	}
+	/**
+	 * gets Organizations by profile id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $organizationProfileId profile id to search by
+	 * @return \SplFixedArray SplFixedArray of Organizations found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getOrganizationsByOrganizationProfileId(\PDO $pdo, int $organizationProfileId) : \SplFixedArray {
+		// sanitize the profile id before searching
+		if($organizationProfileId <= 0) {
+			throw(new \RangeException("organization profile id must be positive"));
+		}
+		// create query template
+		$query = "SELECT organizationId, organizationProfileId, organizationActivationToken, organizationAddress1, organizationAddress2, organizationCity, organizationEmail, organizationLicense, organizationName, organizationPhone, organizationState, organizationZip FROM organization WHERE organizationProfileId = :organizationProfileId";
+		$statement = $pdo->prepare($query);
+		// bind the organization profile id to the place holder in the template
+		$parameters = ["organizationProfileId" => $organizationProfileId];
+		$statement->execute($parameters);
+		// build an array of organizations
+		$organizations = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$organization = new Organization($row["organizationId"],$row["organizationProfileId"], $row["organizationActivationToken"], $row["organizationAddress1"], $row["organizationAddress2"],$row["organizationCity"],  $row["organizationEmail"], $row["organizationLicense"],$row["organizationName"], $row["organizationPhone"], $row["organizationState"], $row["organizationZip"]);
+				$organizations[$organizations->key()] = $organization;
+				$organizations->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($organizations);
+	}
+
+	/**
+	 * gets Organizations by email
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $organizationEmail organization email to search for
+	 * @return \SplFixedArray SplFixedArray of Organizations found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getOrganizationsByOrganizationEmail(\PDO $pdo, string $organizationEmail) : \SplFixedArray {
+		// sanitize the description before searching
+		$organizationEmail = trim($organizationEmail);
+		$organizationEmail = filter_var($organizationEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($organizationEmail) === true) {
+			throw(new \PDOException("organization email is invalid"));
+		}
+		// create query template
+		$query = "SELECT organizationId, organizationProfileId, organizationActivationToken, organizationAddress1, organizationAddress2, organizationCity, organizationEmail, organizationLicense, organizationName, organizationPhone, organizationState, organizationZip FROM organization WHERE organizationEmail LIKE :organizationEmail";
+		$statement = $pdo->prepare($query);
+		// bind the organization email to the place holder in the template
+		$organizationEmail = "%$organizationEmail%";
+		$parameters = ["organizationEmail" => $organizationEmail];
+		$statement->execute($parameters);
+		// build an array of organizations
+		$organizations = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$organization = new Organization($row["organizationId"], $row["organizationProfileId"], $row["organizationActivationToken"], $row["organizationAddress1"], $row["organizationAddress2"],$row["organizationCity"], $row["organizationEmail"], $row["organizationLicense"], $row["organizationName"], $row["organizationPhone"], $row["organizationState"], $row["organizationZip"]);
+				$organizations[$organizations->key()] = $organization;
+				$organizations->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($organizations);
+	}
+
+	/**
+	 * gets Organizations by license
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $organizationLicense organization license to search for
+	 * @return \SplFixedArray SplFixedArray of Organizations found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getOrganizationsByOrganizationLicense(\PDO $pdo, string $organizationLicense) : \SplFixedArray {
+		// sanitize the description before searching
+		$organizationLicense = trim($organizationLicense);
+		$organizationLicense = filter_var($organizationLicense, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($organizationLicense) === true) {
+			throw(new \PDOException("organization license is invalid"));
+		}
+		// create query template
+		$query = "SELECT organizationId, organizationProfileId, organizationActivationToken, organizationAddress1, organizationAddress2, organizationCity, organizationEmail, organizationLicense, organizationName, organizationPhone, organizationState, organizationZip FROM organization WHERE organizationLicense LIKE :organizationLicense";
+		$statement = $pdo->prepare($query);
+		// bind the organization license to the place holder in the template
+		$organizationLicense = "%$organizationLicense%";
+		$parameters = ["organizationLicense" => $organizationLicense];
+		$statement->execute($parameters);
+		// build an array of organizations
+		$organizations = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$organization = new Organization($row["organizationId"], $row["organizationProfileId"], $row["organizationActivationToken"], $row["organizationAddress1"], $row["organizationAddress2"], $row["organizationCity"], $row["organizationEmail"], $row["organizationLicense"], $row["organizationName"], $row["organizationPhone"], $row["organizationState"], $row["organizationZip"]);
+				$organizations[$organizations->key()] = $organization;
+				$organizations->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($organizations);
+	}
+
+	/**
+	 * gets Organizations by name
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param string $organizationName organization name to search for
+	 * @return \SplFixedArray SplFixedArray of Organizations found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getOrganizationsByOrganizationName(\PDO $pdo, string $organizationName) : \SplFixedArray {
+		// sanitize the description before searching
+		$organizationName = trim($organizationName);
+		$organizationName = filter_var($organizationName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($organizationName) === true) {
+			throw(new \PDOException("organization name is invalid"));
+		}
+		// create query template
+		$query = "SELECT organizationId, organizationProfileId, organizationActivationToken, organizationAddress1, organizationAddress2, organizationCity, organizationEmail, organizationLicense, organizationName, organizationPhone, organizationState, organizationZip FROM organization WHERE organizationName LIKE :organizationName";
+		$statement = $pdo->prepare($query);
+		// bind the organization name to the place holder in the template
+		$organizationName = "%$organizationName%";
+		$parameters = ["organizationName" => $organizationName];
+		$statement->execute($parameters);
+		// build an array of organizations
+		$organizations = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$organization = new Organization($row["organizationId"], $row["organizationProfileId"], $row["organizationActivationToken"], $row["organizationAddress1"], $row["organizationAddress2"], $row["organizationCity"], $row["organizationEmail"], $row["organizationLicense"], $row["organizationName"], $row["organizationPhone"], $row["organizationState"], $row["organizationZip"]);
+				$organizations[$organizations->key()] = $organization;
+				$organizations->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($organizations);
+	}
+	/**
+	 * gets all Organizations
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of Organizations found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllOrganizations(\PDO $pdo) : \SplFixedArray {
+		// create query template
+		$query = "SELECT organizationId, organizationProfileId, organizationActivationToken, organizationAddress1, organizationAddress2, organizationCity, organizationEmail, organizationLicense, organizationName, organizationPhone, organizationState, organizationZip FROM organization";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+		// build an array of organizations
+		$organizations = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$organization = new Organization($row["organizationId"], $row["organizationProfileId"], $row["organizationActivationToken"], $row["organizationAddress1"], $row["organizationAddress2"], $row["organizationCity"], $row["organizationEmail"], $row["organizationLicense"], $row["organizationName"], $row["organizationPhone"], $row["organizationState"], $row["organizationZip"]);
+				$organizations[$organizations->key()] = $organization;
+				$organizations->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($organizations);
+	}
 
 	/**
 	 * formats the state variables for JSON serialization

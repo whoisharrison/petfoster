@@ -93,10 +93,11 @@ class OrganizationTest extends PetRescueAbqTest {
 		// run the default setUp() method first
 		parent::setUp();
 		$password = "A1b2c3";
+		$profileActivationToken = bin2hex(random_bytes(16));
 		$this->VALID_PROFILE_SALT = bin2hex(random_bytes(32));
 		$this->VALID_PROFILE_HASH = hash_pbkdf2("sha512", $password, $this->VALID_PROFILE_SALT, 262144);
 		// create and insert a Profile to own the test Organization
-		$this->profile = new Profile(null, null,"@testOrgHandle", "tester@phpunit.com", $this->VALID_PROFILE_HASH, "Don One", $this->VALID_PROFILE_SALT);
+		$this->profile = new Profile(null, $profileActivationToken,"@testOrgHandle", "tester@phpunit.com", $this->VALID_PROFILE_HASH, "Don One", $this->VALID_PROFILE_SALT);
 		$this->profile->insert($this->getPDO());
 	}
 	/**
