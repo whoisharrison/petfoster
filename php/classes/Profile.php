@@ -83,7 +83,7 @@ class Profile implements \JsonSerializable {
 	 *
 	 * @return int value of profile id (or null if new profile)
 	 **/
-	public function getProfileId(): ?int {
+	public function getProfileId(): int {
 		return ($this->profileId);
 }
 
@@ -94,7 +94,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \RangeException if $newProfileId is not a positive int
 	 * @throws \TypeError if $newProfileId is not an int
 	 **/
-	public function setProfileId(?int $newProfileId): void {
+	public function setProfileId(int $newProfileId): void {
 		if($newProfileId === null) {
 			return;
 		}

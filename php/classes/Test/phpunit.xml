@@ -1,8 +1,8 @@
 <phpunit>
 	<testsuites>
 		<testsuite name="PetRescueAbqTest">
-			<!--<file>ProfileTest.php</file>-->
-			<file>MessageTest.php</file>
+			<file>ProfileTest.php</file>
+			<!--<file>MessageTest.php</file>-->
 			<!--<file>OrganizationTest.php</file>-->
 
 		</testsuite>
