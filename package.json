@@ -5,17 +5,25 @@
   "author": {
     "name": "Michael Harrison",
     "email": "mharrison13@cnm.edu.com",
-    "url": "michaelharrisonwebdev.com"
+    "url": "PetRescueAbq.com"
   },
   "contributors": [
 
     {
-      "name": "George Kephart",
-      "email": "gkephart@cnm.edu"
+      "name": "Jeffrey Cooper",
+      "email": "jcooper37@cnm.edu"
     },
     {
-      "name": "Mason Crane",
-      "email": "mcrane2@cnm.edu"
+      "name": "Jabari Farrar",
+      "email": "jfarrar1@cnm.edu"
+    },
+    {
+      "name": "Amy Skidmore",
+      "email": "askidmore1@cnm.edu"
+    },
+    {
+      "name": "Rob Lopez",
+      "email": "llopez165@cnm.edu"
     }
   ],
   "scripts": {
@@ -23,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/deepdivedylan/angular4-example"
+    "url": "https://github.com/mharrison13/petfoster"
   },
   "dependencies": {
     "@angular/common": "~4.1.1",
