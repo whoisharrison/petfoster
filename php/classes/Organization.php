@@ -561,7 +561,7 @@ class Organization implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getOrganizationsByOrganizationId(\PDO $pdo, int $organizationId) : \SplFixedArray {
+	public static function getOrganizationByOrganizationId(\PDO $pdo, int $organizationId) : ?Organization {
 		// sanitize the organization id before searching
 		if($organizationId <= 0) {
 			throw(new \RangeException("organization id must be positive"));
@@ -572,23 +572,19 @@ class Organization implements \JsonSerializable {
 		// bind the organization id to the place holder in the template
 		$parameters = ["organizationId" => $organizationId];
 		$statement->execute($parameters);
-		// build an array of organizations
-		$organizations = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
+		// grab the organization from mySQL
 			try {
-				$organization = new Organization($row["organizationId"],
-				$row["organizationProfileId"], $row["organizationActivationToken"],
-				$row["organizationAddress1"], $row["organizationAddress2"],
-				$row["organizationCity"], $row["organizationEmail"], $row["organizationLicense"],				$row["organizationName"], $row["organizationPhone"], $row["organizationState"], 				$row["organizationZip"]);
-				$organizations[$organizations->key()] = $organization;
-				$organizations->next();
+				$organization = null;
+				$statement->setFetchMode(\PDO::FETCH_ASSOC);
+				$row = $statement->fetch();
+				if($row !== false) {
+					$organization = new Organization($row["organizationId"], $row["organizationProfileId"], $row["organizationActivationToken"], $row["organizationAddress1"], $row["organizationAddress2"], $row["organizationCity"], $row["organizationEmail"], $row["organizationLicense"], $row["organizationName"], $row["organizationPhone"], $row["organizationState"], $row["organizationZip"]);
+				}
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-		}
-		return($organizations);
+		return($organization);
 	}
 	/**
 	 * gets Organizations by profile id
