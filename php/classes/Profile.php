@@ -564,7 +564,7 @@ class Profile implements \JsonSerializable {
 		}
 
 		//create the query template
-		$query = "SELECT profileID, profileActivationToken, profileAtHandle, profileEmail, profileHash, profileName, profileSalt FROM profile WHERE profileActivationToken = :profileActivationToken";
+		$query = "SELECT profileId, profileActivationToken, profileAtHandle, profileEmail, profileHash, profileName, profileSalt FROM profile WHERE profileActivationToken = :profileActivationToken";
 		$statement = $pdo->prepare($query);
 
 		// grab the Profile from mySQL
