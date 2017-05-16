@@ -214,14 +214,13 @@ class ProfileTest extends PetRescueAbqTest {
 	public function testGetValidProfileByAtHandle() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
-		// create a new Profile and insert to into mySQL
 		$profile = new Profile(null, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT);
 		$profile->insert($this->getPDO());
 		//grab the data from MySQL
 		$results = Profile::getProfileByProfileAtHandle($this->getPDO(), $this->VALID_ATHANDLE);
 		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("profile"));
 		//enforce no other objects are bleeding into profile
-		$this->assertContainsOnlyInstancesOf("Edu\\CNM\\DataDesign\\Profile", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\Cnm\PetRescueAbq\\Profile", $results);
 		//enforce the results meet expectations
 		$pdoProfile = $results[0];
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
@@ -237,7 +236,7 @@ class ProfileTest extends PetRescueAbqTest {
 	 **/
 	public function testGetInvalidProfileByAtHandle() : void {
 		// grab an at handle that does not exist
-		$profile = Profile::getProfileByProfileAtHandle($this->getPDO(), "@doesnotexist");
+		$profile = Profile::getProfileByProfileAtHandle($this->getPDO(), "@badname");
 		$this->assertCount(0, $profile);
 	}
 
