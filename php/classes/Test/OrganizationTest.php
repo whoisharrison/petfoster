@@ -417,7 +417,7 @@ class OrganizationTest extends PetRescueAbqTest {
 		$results = Organization::getAllOrganizations($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\DataDesign\\Organization", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Organization", $results);
 		// grab the result from the array and validate it
 		$pdoOrganization = $results[0];
 		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
