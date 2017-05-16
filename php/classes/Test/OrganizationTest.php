@@ -147,7 +147,7 @@ class OrganizationTest extends PetRescueAbqTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("organization");
 		// create a new Organization and insert it into mySQL
-		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization = new Organization(null, $this->profile->getProfileId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
 		// edit the Organization and update it in mySQL
 		$organization->setOrganizationEmail($this->VALID_EMAIL2);
 		$organization->update($this->getPDO());
@@ -174,7 +174,7 @@ class OrganizationTest extends PetRescueAbqTest {
 	 **/
 	public function testUpdateInvalidOrganization() : void {
 		// create an Organization with a non null Organization id and watch it fail
-		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization = new Organization(null, $this->profile->getProfileId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
 		$organization->update($this->getPDO());
 	}
 	/**
@@ -184,7 +184,7 @@ class OrganizationTest extends PetRescueAbqTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("organization");
 		// create a new Organization and insert to into mySQL
-		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization = new Organization(null, $this->profile->getProfileId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
 		$organization->insert($this->getPDO());
 		// delete the Tweet from mySQL
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
@@ -201,7 +201,7 @@ class OrganizationTest extends PetRescueAbqTest {
 	 **/
 	public function testDeleteInvalidOrganization() : void {
 		// create an Organization and try to delete it without actually inserting it
-		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization = new Organization(null, $this->profile->getProfileId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
 		$organization->delete($this->getPDO());
 	}
 	/**
@@ -219,7 +219,7 @@ class OrganizationTest extends PetRescueAbqTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("organization");
 		// create a new Organization and insert to into mySQL
-		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization = new Organization(null, $this->profile->getProfileId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
 		$organization->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Organization::getOrganizationByOrganizationProfileId($this->getPDO(), $organization->getOrganizationProfileId());
@@ -257,7 +257,7 @@ class OrganizationTest extends PetRescueAbqTest {
 		$numRows = $this->getConnection()->getRowCount("organization");
 
 		// create a new Organization and insert to into mySQL
-		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization = new Organization(null, $this->profile->getProfileId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
 		$organization->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -290,7 +290,7 @@ class OrganizationTest extends PetRescueAbqTest {
 		$numRows = $this->getConnection()->getRowCount("organization");
 
 		// create a new Organization and insert to into mySQL
-		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization = new Organization(null, $this->profile->getProfileId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
 		$organization->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -323,7 +323,7 @@ class OrganizationTest extends PetRescueAbqTest {
 		$numRows = $this->getConnection()->getRowCount("organization");
 
 		// create a new Organization and insert to into mySQL
-		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization = new Organization(null, $this->profile->getProfileId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
 		$organization->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
@@ -354,7 +354,7 @@ class OrganizationTest extends PetRescueAbqTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("organization");
 		// create a new Organization and insert to into mySQL
-		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization = new Organization(null, $this->profile->getProfileId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
 		$organization->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoOrganization = Organization::getOrganizationByOrganizationActivationToken($this->getPDO(), $organization->getOrganizationActivationToken());
@@ -385,7 +385,7 @@ class OrganizationTest extends PetRescueAbqTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("organization");
 		// create a new Organization and insert to into mySQL
-		$organization = new Organization(null, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization = new Organization(null, $this->profile->getProfileId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
 		$organization->insert($this->getPDO());
 		// grab the data from mySQL and enforce the fields match our expectations
 		$results = Organization::getAllOrganizations($this->getPDO());
