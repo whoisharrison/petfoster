@@ -99,7 +99,6 @@ class OrganizationTest extends PetRescueAbqTest {
 		// create and insert a Profile to own the test Organization
 		$this->profile = new Profile(null, $profileActivationToken,"@testOrgHandle", "tester@phpunit.com", $this->VALID_PROFILE_HASH, "Don One", $this->VALID_PROFILE_SALT);
 		$this->profile->insert($this->getPDO());
-
 		$this->VALID_ACTIVATION = $profileActivationToken;
 	}
 	/**
@@ -119,10 +118,16 @@ class OrganizationTest extends PetRescueAbqTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoOrganization = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationId());
 		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ORGANIZATIONADDRESS1);
-		$this->assertEquals($pdoOrganization->getOrganizationAddress2(), $this->VALID_ORGANIZATIONADDRESS2);
-		$this->assertEquals($pdoOrganization->getOrganizationCity(), $this->VALID_ORGANIZATIONCITY);
-		$this->assertEquals($pdoOrganization->getOrganizationEmail(), $this->VALID_ORGANIZATIONEMAIL);
+		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION());
+		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
+		$this->assertEquals($pdoOrganization->getOrganizationAddress2(), $this->VALID_ADDRESS2);
+		$this->assertEquals($pdoOrganization->getOrganizationCity(), $this->VALID_CITY);
+		$this->assertEquals($pdoOrganization->getOrganizationEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoOrganization->getOrganizationLicense(), $this->VALID_LICENSE);
+		$this->assertEquals($pdoOrganization->getOrganizationName(), $this->VALID_NAME);
+		$this->assertEquals($pdoOrganization->getOrganizationPhone(), $this->VALID_PHONE);
+		$this->assertEquals($pdoOrganization->getOrganizationState(), $this->VALID_STATE);
+		$this->assertEquals($pdoOrganization->getOrganizationZip(), $this->VALID_ZIP);
 	}
 
 	/**
