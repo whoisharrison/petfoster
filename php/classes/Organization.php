@@ -101,7 +101,7 @@ class Organization implements \JsonSerializable {
 	public function __construct(?int $newOrganizationId, int $newOrganizationProfileId, ?string $newOrganizationActivationToken, string $newOrganizationAddress1, ?string $newOrganizationAddress2, string $newOrganizationCity, string $newOrganizationEmail, string $newOrganizationLicense, string $newOrganizationName, string $newOrganizationPhone, string $newOrganizationState, string $newOrganizationZip) {
 		try {
 			$this->setOrganizationId($newOrganizationId);
-
+			$this->setOrganizationProfileId($newOrganizationProfileId);
 			$this->setOrganizationActivationToken($newOrganizationActivationToken);
 			$this->setOrganizationAddress1($newOrganizationAddress1);
 			$this->setOrganizationAddress2($newOrganizationAddress2);
