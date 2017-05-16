@@ -161,7 +161,7 @@ class OrganizationTest extends PetRescueAbqTest {
 		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
 		$this->assertEquals($pdoOrganization->getOrganizationAddress2(), $this->VALID_ADDRESS2);
 		$this->assertEquals($pdoOrganization->getOrganizationCity(), $this->VALID_CITY);
-		$this->assertEquals($pdoOrganization->getOrganizationEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoOrganization->getOrganizationEmail(), $this->VALID_EMAIL2);
 		$this->assertEquals($pdoOrganization->getOrganizationLicense(), $this->VALID_LICENSE);
 		$this->assertEquals($pdoOrganization->getOrganizationName(), $this->VALID_NAME);
 		$this->assertEquals($pdoOrganization->getOrganizationPhone(), $this->VALID_PHONE);
