@@ -99,6 +99,8 @@ class OrganizationTest extends PetRescueAbqTest {
 		// create and insert a Profile to own the test Organization
 		$this->profile = new Profile(null, $profileActivationToken,"@testOrgHandle", "tester@phpunit.com", $this->VALID_PROFILE_HASH, "Don One", $this->VALID_PROFILE_SALT);
 		$this->profile->insert($this->getPDO());
+
+		$this->VALID_ACTIVATION = $profileActivationToken;
 	}
 	/**
 	 * test inserting a valid Organization and verify that the actual mySQL data matches
@@ -107,7 +109,10 @@ class OrganizationTest extends PetRescueAbqTest {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("organization");
 		// create a new Organization and insert to into mySQL
-		$organization = new Organization(null, $this->profile->getProfileId(), $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+
+		var_dump($this->profile->getProfileId());
+
+		$organization = new Organization(null, $this->profile->getProfileId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
 		//var_dump($organization);
 		$organization->insert($this->getPDO());
 
