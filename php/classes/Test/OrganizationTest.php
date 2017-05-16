@@ -148,6 +148,7 @@ class OrganizationTest extends PetRescueAbqTest {
 		$numRows = $this->getConnection()->getRowCount("organization");
 		// create a new Organization and insert it into mySQL
 		$organization = new Organization(null, $this->profile->getProfileId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+		$organization->insert($this->getPDO());
 		// edit the Organization and update it in mySQL
 		$organization->setOrganizationEmail($this->VALID_EMAIL2);
 		$organization->update($this->getPDO());
