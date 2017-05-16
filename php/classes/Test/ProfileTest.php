@@ -241,6 +241,26 @@ class ProfileTest extends PetRescueAbqTest {
 	}
 
 	/**
+	 * test grabbing a Profile by name
+	 **/
+	public function testGetValidProfileByName() : void {
+		// count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("profile");
+		// create a new Profile and insert to into mySQL
+		$profile = new Profile(null, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT);
+		$profile->insert($this->getPDO());
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoProfile = Profile::getProfileByProfileName($this->getPDO(), $profile->getProfileNAME());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
+		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
+		$this->assertEquals($pdoProfile->getProfileAtHandle(), $this->VALID_ATHANDLE);
+		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
+		$this->assertEquals($pdoProfile->getProfileHash(), $this->VALID_HASH);
+		$this->assertEquals($pdoProfile->getProfileName(), $this->VALID_NAME);
+		$this->assertEquals($pdoProfile->getProfileSalt(), $this->VALID_SALT);
+	}
+
+	/**
 	 * test grabbing a profile by its activation token
 	 */
 	public function testGetValidProfileByActivationToken() : void {
