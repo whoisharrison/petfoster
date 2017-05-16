@@ -88,19 +88,19 @@ class MessageTest extends PetRescueAbqTest {
 
 
 		// create and insert a Organization to own the test Message
-		$this->organization = new Organization(null, null, "22222222222222222222222222222222", "Address 1", "Address 2", "City Name", "test@phpunit.com", "License Num", "Org Name", "5055552525", "NM", 8755);
+		$this->organization = new Organization(null, $this->profile->getProfileId(), "22222222222222222222222222222222", "Address 1", "Address 2", "City Name", "test@phpunit.com", "License Num", "Org Name", "5055552525", "NM", 8755);
 		$this->organization->insert($this->getPDO());
 
-	//calculate the date, just use the time the unit test was setup
-	$this->VALID_MESSAGEDATETIME = new \DateTime();
+		//calculate the date, just use the time the unit test was setup
+		$this->VALID_MESSAGEDATETIME = new \DateTime();
 
-	//format the sunrise date to use for testing
-	$this->VALID_SUNRISEDATE = new\DateTime();
-	$this->VALID_SUNRISEDATE->sub(new \DateInterval("P10D"));
+		//format the sunrise date to use for testing
+		$this->VALID_SUNRISEDATE = new\DateTime();
+		$this->VALID_SUNRISEDATE->sub(new \DateInterval("P10D"));
 
-	//format the sunset date to use for testing
-	$this->VALID_SUNSETDATE = new\DateTime();
-	$this->VALID_SUNSETDATE->add(new \DateInterval("P10D"));
+		//format the sunset date to use for testing
+		$this->VALID_SUNSETDATE = new\DateTime();
+		$this->VALID_SUNSETDATE->add(new \DateInterval("P10D"));
 	}
 
 
