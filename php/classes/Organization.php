@@ -160,7 +160,7 @@ class Organization implements \JsonSerializable {
 	 * @throws \RangeException is $newOrganizationProfileId is not positive
 	 * @throws \TypeError if %newOrganizationProfileId is not an integer
 	 */
-	public function setMessageProfileId(int $newOrganizationProfileId) : void {
+	public function setOrganizationProfileId(int $newOrganizationProfileId) : void {
 
 		//verify the organization profile id is positive
 		if($newOrganizationProfileId <= 0) {
