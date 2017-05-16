@@ -169,7 +169,7 @@ class ProfileTest extends PetRescueAbqTest {
 	/**
 	 * test deleting a Profile that does not exist
 	 *
-	 * #expectedException \PDOException
+	 * @expectedException \PDOException
 	 **/
 	public function testDeleteInvalidProfile() : void {
 		// create a Profile and try to delete it without actually inserting it
