@@ -389,7 +389,7 @@ class Profile implements \JsonSerializable {
 	/**
 	 * gets the profile by profile id
 	 *
-	 * @param \PDO $pdo PDO connection object
+	 * @param \PDO $pdo $pdo PDO connection object
 	 * @param int $profileId profile id to search for
 	 * @return Profile|null Profile or null if not found
 	 * @throws \PDOException why mySQL related errors occur
