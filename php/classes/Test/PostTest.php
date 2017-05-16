@@ -77,19 +77,19 @@ class PostTest extends PetRescueAbqTest {
 	public final function setUp(): void {
 		parent::setUp();
 		$password = "abc123";
-		$profileActivationToken = "22222222222222222222222222222222";
-		$this->VALID_SALT = bin2hex(random_bytes(64));
-		$this->VALID_HASH = hash_pbkdf2("sha128", $password, $this->VALID_SALT, 262144);
+		$profileActivationToken = bin2hex(random_bytes(16));
+		$this->VALID_SALT = bin2hex(random_bytes(32));
+		$this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 262144);
 
 		/**
 		 * created and insert a Profile to own the test Organization
 		 */
-		$this->profile = new Profile(null, $profileActivationToken, "JamMasterJ", "tmafm1@gmail.com", $this->VALID_HASH, "Jabari", $this->VALID_SALT);
+		$this->profile = new Profile(null, $profileActivationToken, "@handle", "test@phpunit.de", $this->VALID_HASH, "null", $this->VALID_SALT);
 		$this->profile->insert($this->getPDO());
 
 		//created and insert an Organization
-		$this->organization = new Organization(null, null, "@handle", "test@phpunit.de", $this->VALID_HASH, "+15055553333", $this->VALID_SALT);
-//		$this->organization->insert($this->getPDO());
+		$this->organization = new Organization(null, $this->profile->getProfileId(),$profileActivationToken, "nsdhfbdfbiabfdfdjun", "fthwrthsrt", "Cityname", "whatever@handle.com", "asdfasdfsdcsdc", "Bogusstuff", "15552525566", "NM", "87555");
+		$this->organization->insert($this->getPDO());
 	}
 
 	/** test inserting a valid post and verify that the actual mySQL data matches
