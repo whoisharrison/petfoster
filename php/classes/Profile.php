@@ -91,7 +91,7 @@ class Profile implements \JsonSerializable {
 	 * mutator method for profile id
 	 *
 	 * @param int|null $newProfileId value of new profile id
-	 * @throws \RangeException if $newProfileId is not a positive int
+	 * @throws \RangeException if $newProfileId is not positive
 	 * @throws \TypeError if $newProfileId is not an int
 	 **/
 	public function setProfileId(?int $newProfileId): void {
@@ -387,12 +387,12 @@ class Profile implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the profile by profile id
+	 * gets the Profile by profile id
 	 *
 	 * @param \PDO $pdo $pdo PDO connection object
 	 * @param int $profileId profile id to search for
 	 * @return Profile|null Profile or null if not found
-	 * @throws \PDOException why mySQL related errors occur
+	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getProfileByProfileId(\PDO $pdo, int $profileId):?Profile {
@@ -409,7 +409,7 @@ class Profile implements \JsonSerializable {
 		$parameters = ["profileId" => $profileId];
 		$statement->execute($parameters);
 
-		//get the Profile from mySQL
+		//grab the Profile from mySQL
 		try {
 			$profile = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);

@@ -194,7 +194,7 @@ class ProfileTest extends PetRescueAbqTest {
 		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertSame($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertSame($pdoProfile->getProfileAtHandle(), $this->VALID_ATHANDLE);
-		$this->assertSame($pdoProfile->getProfileEmail(), $this->VALID_HASH);
+		$this->assertSame($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
 		$this->assertSame($pdoProfile->getProfileName(), $this->VALID_NAME);
 		$this->assertSame($pdoProfile->getProfileSalt(), $this->VALID_SALT);
 	}
@@ -224,7 +224,7 @@ class ProfileTest extends PetRescueAbqTest {
 		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertSame($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertSame($pdoProfile->getProfileAtHandle(), $this->VALID_ATHANDLE);
-		$this->assertSame($pdoProfile->getProfileEmail(), $this->VALID_HASH);
+		$this->assertSame($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
 		$this->assertSame($pdoProfile->getProfileName(), $this->VALID_NAME);
 		$this->assertSame($pdoProfile->getProfileSalt(), $this->VALID_SALT);
 	}
