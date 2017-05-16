@@ -88,7 +88,7 @@ class ProfileTest extends PetRescueAbqTest {
 
 		//grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileId($this->getPDO(), $profile->getProfileId());
-		$this->assertSame($numRows + 1, $this->getConnection()->getPDO(), $profile->getProfileId());
+		$this->assertSame($numRows + 1, $this->getConnection()->getRowCount(), $profile->getProfileId());
 		$this->assertSame($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertSame($pdoProfile->getProfileAtHandle(), $this->VALID_ATHANDLE);
 		$this->assertSame($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
