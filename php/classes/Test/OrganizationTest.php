@@ -137,7 +137,7 @@ class OrganizationTest extends PetRescueAbqTest {
 	 **/
 	public function testInsertInvalidOrganization() : void {
 		// create an Organization with a non null organization id and watch it fail
-			$organization = new Organization(PetRescueAbqTest::INVALID_KEY, $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
+			$organization = new Organization(PetRescueAbqTest::INVALID_KEY, $this->profile->getProfileId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
 			$organization->insert($this->getPDO());
 	}
 	/**
