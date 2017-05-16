@@ -267,7 +267,10 @@ class OrganizationTest extends PetRescueAbqTest {
 		$this->assertCount(1, $results);
 
 		// enforce no other objects are bleeding into the test
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Organization", $results);
 
+		// grab the result from the array and validate it
+		$pdoOrganization = $results[0];
 		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
@@ -300,8 +303,15 @@ class OrganizationTest extends PetRescueAbqTest {
 		$organization->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoOrganization = Organization::getOrganizationByOrganizationLicense($this->getPDO(), $organization->getOrganizationLicense());
+		$results = Organization::getOrganizationByOrganizationLicense($this->getPDO(), $organization->getOrganizationLicense());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
+		$this->assertCount(1, $results);
+
+		// enforce no other objects are bleeding into the test
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Organization", $results);
+
+		// grab the result from the array and validate it
+		$pdoOrganization = $results[0];
 		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
@@ -334,8 +344,15 @@ class OrganizationTest extends PetRescueAbqTest {
 		$organization->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoOrganization = Organization::getOrganizationByOrganizationName($this->getPDO(), $organization->getOrganizationLicense());
+		$results = Organization::getOrganizationByOrganizationName($this->getPDO(), $organization->getOrganizationName());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
+		$this->assertCount(1, $results);
+
+		// enforce no other objects are bleeding into the test
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Organization", $results);
+
+		// grab the result from the array and validate it
+		$pdoOrganization = $results[0];
 		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
