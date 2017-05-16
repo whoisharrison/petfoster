@@ -3,7 +3,7 @@
 		<testsuite name="PetRescueAbqTest">
 			<!--<file>ProfileTest.php</file>-->
 			<!--<file>MessageTest.php</file>-->
-			<!--<file>OrganizationTest.php</file>-->
+			<file>OrganizationTest.php</file>
 		</testsuite>
 	</testsuites>
 	<filter>
