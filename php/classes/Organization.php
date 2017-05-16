@@ -98,7 +98,7 @@ class Organization implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 *@Documentation https://php.net/manual/en/language.oop5.decon.php
 	 * */
-	public function __construct(?int $newOrganizationId, ?int $newOrganizationProfileId, ?string $newOrganizationActivationToken, string $newOrganizationAddress1, ?string $newOrganizationAddress2, string $newOrganizationCity, string $newOrganizationEmail, string $newOrganizationLicense, string $newOrganizationName, string $newOrganizationPhone, string $newOrganizationState, string $newOrganizationZip) {
+	public function __construct(?int $newOrganizationId, int $newOrganizationProfileId, ?string $newOrganizationActivationToken, string $newOrganizationAddress1, ?string $newOrganizationAddress2, string $newOrganizationCity, string $newOrganizationEmail, string $newOrganizationLicense, string $newOrganizationName, string $newOrganizationPhone, string $newOrganizationState, string $newOrganizationZip) {
 		try {
 			$this->setOrganizationId($newOrganizationId);
 			$this->setOrganizationProfileId($newOrganizationProfileId);
