@@ -286,10 +286,10 @@ class OrganizationTest extends PetRescueAbqTest {
 	/**
 	 * test grabbing an Organization by email that does not exist
 	 **/
-	public function testGetInvalidOrganizationByEmail() : void {
+	public function testGetInvalidOrganizationByOrganizationEmail() : void {
 		// grab an email that does not exist
 		$organization = Organization::getOrganizationByOrganizationEmail($this->getPDO(), "does@not.exist");
-		$this->assertNull($organization);
+		$this->assertCount(0, $organization);
 	}
 	/**
 	 * test grabbing an Organization by organization license
@@ -327,10 +327,10 @@ class OrganizationTest extends PetRescueAbqTest {
 	/**
 	 * test grabbing an Organization by license that does not exist
 	 **/
-	public function testGetInvalidOrganizationByLicense() : void {
+	public function testGetInvalidOrganizationByOrganizationLicense() : void {
 		// grab a license that does not exist
 		$organization = Organization::getOrganizationByOrganizationLicense($this->getPDO(), "10941658");
-		$this->assertNull($organization);
+		$this->assertCount(0, $organization);
 	}
 	/**
 	 * test grabbing an Organization by organization name
@@ -368,10 +368,10 @@ class OrganizationTest extends PetRescueAbqTest {
 	/**
 	 * test grabbing an Organization by name that does not exist
 	 **/
-	public function testGetInvalidOrganizationByName() : void {
+	public function testGetInvalidOrganizationByOrganizationName() : void {
 		// grab a name that does not exist
 		$organization = Organization::getOrganizationByOrganizationName($this->getPDO(), "Fake Pet Company");
-		$this->assertNull($organization);
+		$this->assertCount(0, $organization);
 	}
 	/** test grabbing a organization by its activation
 	 */
