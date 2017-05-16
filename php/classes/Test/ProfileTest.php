@@ -228,7 +228,7 @@ class ProfileTest extends PetRescueAbqTest {
 		$this->assertEquals($pdoProfile->getProfileAtHandle(), $this->VALID_ATHANDLE);
 		$this->assertEquals($pdoProfile->getProfileEmail(), $this->VALID_EMAIL);
 		$this->assertEquals($pdoProfile->getProfileHash(), $this->VALID_HASH);
-		$this->assertEquals($pdoProfile->getProfilePhone(), $this->VALID_NAME);
+		$this->assertEquals($pdoProfile->getProfileName(), $this->VALID_NAME);
 		$this->assertEquals($pdoProfile->getProfileSalt(), $this->VALID_SALT);
 	}
 	/**
