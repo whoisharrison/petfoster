@@ -631,7 +631,7 @@ class Organization implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getOrganizationsByOrganizationEmail(\PDO $pdo, string $organizationEmail) : \SplFixedArray {
+	public static function getOrganizationByOrganizationEmail(\PDO $pdo, string $organizationEmail) : \SplFixedArray {
 		// sanitize the description before searching
 		$organizationEmail = trim($organizationEmail);
 		$organizationEmail = filter_var($organizationEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -670,7 +670,7 @@ class Organization implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getOrganizationsByOrganizationLicense(\PDO $pdo, string $organizationLicense) : \SplFixedArray {
+	public static function getOrganizationByOrganizationLicense(\PDO $pdo, string $organizationLicense) : \SplFixedArray {
 		// sanitize the description before searching
 		$organizationLicense = trim($organizationLicense);
 		$organizationLicense = filter_var($organizationLicense, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -709,7 +709,7 @@ class Organization implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getOrganizationsByOrganizationName(\PDO $pdo, string $organizationName) : \SplFixedArray {
+	public static function getOrganizationByOrganizationName(\PDO $pdo, string $organizationName) : \SplFixedArray {
 		// sanitize the description before searching
 		$organizationName = trim($organizationName);
 		$organizationName = filter_var($organizationName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -737,6 +737,42 @@ class Organization implements \JsonSerializable {
 			}
 		}
 		return($organizations);
+	}
+
+	/**
+	 * gets Organizations by activation token
+	 *
+	 * @param \PDO object $pdo
+	 * @param string $organizationActivationToken
+	 * @return Organization|null Organization or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getOrganizationByOrganizationActivationToken(\PDO $pdo, string $organizationActivationToken) : ?Organization {
+		// make sure Activation Token is in the right format and that it is a string representation of a hexadecimal
+		$organizationActivationToken = trim($organizationActivationToken);
+		if(ctype_xdigit($organizationActivationToken) === false) {
+			throw(new \InvalidArgumentException("organization activation token is empty or in the wrong format"));
+		}
+		// create query template
+		$query = "SELECT organizationId, organizationProfileId, organizationActivationToken, organizationAddress1, organizationAddress2, organizationCity, organizationEmail, organizationLicense, organizationName, organizationPhone, organizationState, organizationZip FROM organization WHERE organizationActivationToken = :organizationActivationToken";
+		$statement = $pdo->prepare($query);
+		// bind the organization activation token to the place holder in the template
+		$parameters = ["organizationActivationToken" => $organizationActivationToken];
+		$statement->execute($parameters);
+		// grab the organization from mySQL
+			try {
+				$organization = null;
+				$statement->setFetchMode(\PDO::FETCH_ASSOC);
+				$row = $statement->fetch();
+				if($row !== false) {
+					$organization = new Organization($row["organizationId"], $row["organizationProfileId"], $row["organizationActivationToken"], $row["organizationAddress1"], $row["organizationAddress2"], $row["organizationCity"], $row["organizationEmail"], $row["organizationLicense"], $row["organizationName"], $row["organizationPhone"], $row["organizationState"], $row["organizationZip"]);
+				}
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		return($organization);
 	}
 	/**
 	 * gets all Organizations
