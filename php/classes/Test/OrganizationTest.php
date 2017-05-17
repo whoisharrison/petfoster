@@ -368,7 +368,7 @@ class OrganizationTest extends PetRescueAbqTest {
 
 		// grab the result from the array and validate it
 		$pdoOrganization = $results[0];
-		$pdoOrganization = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationId());
+//		$pdoOrganization = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationId());
 		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
