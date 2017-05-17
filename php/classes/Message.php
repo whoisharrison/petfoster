@@ -81,7 +81,7 @@ class Message implements \JsonSerializable {
 
 	//do these need to be in the order as in the conceptual model
 
-	public function _construct(?int $newMessageId, int $newMessageProfileId, int $newMessageOrganizationId, string $newMessageContent, $newMessageDateTime =
+	public function __construct(?int $newMessageId, int $newMessageProfileId, int $newMessageOrganizationId, string $newMessageContent, $newMessageDateTime =
 			null, string $newMessageSubject) {
 		try {
 			$this->setMessageId($newMessageId);
