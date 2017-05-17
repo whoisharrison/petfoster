@@ -14,20 +14,17 @@ class Image implements \JsonSerializable {
 		 * @var int $imageId
 		 * all variables will be private
 		 **/
-		private
-		$imageId;
+		private $imageId;
 		/**
 		 * id of the post for this image; this is a foreign key
 		 * @var int $imagePostId
 		 **/
-		private
-		$imagePostId;
+		private $imagePostId;
 		/**
 		 * Id of cloudinary account that placed this picture
 		 * @var string $imageCloudinaryId
 		 **/
-		private
-		$imageCloudinaryId;
+		private $imageCloudinaryId;
 		/**
 		 * constructor for  Images
 		 *
@@ -48,8 +45,7 @@ class Image implements \JsonSerializable {
 			}
 			//determine what exception type was thrown
 
-			catch(\InvalidArgumentException | \
-			RangeException | \Exception | \TypeError $exception) {
+			catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 				$exceptionType = get_class($exception);
 				throw(new $exceptionType($exception->getMessage(), 0, $exception));
 			}
@@ -59,8 +55,7 @@ class Image implements \JsonSerializable {
 		 *
 		 * @return int|null value of image id
 		 **/
-		public
-		function getImageId():?int {
+		public function getImageId():int {
 			return ($this->imageId);
 		}
 
@@ -90,7 +85,7 @@ class Image implements \JsonSerializable {
 		 *
 		 * @return int value of image post id
 		 **/
-		public function getImagePostId(): int{
+		public function getImagePostId(): ?int {
 			return ($this->imagePostId);
 		}
 
@@ -126,7 +121,7 @@ class Image implements \JsonSerializable {
 			 * @throws \RangeException if $newImageCloudinaryId is >32 characters
 			 * @throws \TypeError if $newImageCloudinaryId is not a string
 			 **/
-			public function setimageCloudinaryId(string $newImageCloudinaryId) : void {
+			public function setImageCloudinaryId(string $newImageCloudinaryId) : void {
 				// verify the cloudinary image id secure
 				$newImageCloudinaryId = trim($newImageCloudinaryId);
 				$newImageCloudinaryId = filter_var($newImageCloudinaryId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -152,16 +147,16 @@ class Image implements \JsonSerializable {
 		 * @throws \TypeError if $pdo is not a PDO connection object
 		 **/
 		public function insert(\PDO $pdo): void {
-			// enforce the imageid is null (i.e., don't insert a image id that already exists)
+			// enforce the imageId is null (i.e., don't insert a image id that already exists)
 			if($this->imageId !== null) {
 				throw(new \PDOException("not a new image id"));
 			}
 			// create query template
-			$query = "INSERT INTO image(imageId, imagePostId, imageCloudinaryId) VALUES(imageId, :imagePostId, :imageCloudinaryId)";
-			$statment =  $pdo->prepare($query);
+			$query = "INSERT INTO image(imageId, imagePostId, imageCloudinaryId) VALUES(:imageId, :imagePostId, :imageCloudinaryId)";
+			$statement =  $pdo->prepare($query);
 			//bind member variables to place holders in template
 			$parameters = ["imageId"=> $this->imageId, "imagePostId" => $this->imagePostId, "imageCloudinaryId", $this->$this->imageCloudinaryId];
-			$statment->execute($parameters);
+			$statement->execute($parameters);
 // update the null imageId with what mySQL just gave us
 		$this->imageId = intval($pdo->lastInsertId());
 	}
@@ -210,17 +205,17 @@ class Image implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $imageId image id to search for
-	 * @return image|null Tweet found or null if not found
+	 * @return image|null image found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getImageByImageId(\PDO $pdo, int $imageId) : ?Image {
+	public function getImageByImageId(\PDO $pdo, int $imageId):?image {
 		// sanitize the image and id before searching
 		if($imageId <= 0) {
 			throw(new \PDOException("image id is not positive"));
 			}
 		// create query template
-		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image WHERE imageId = :imageId;
+		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image WHERE imageId = :imageId";
 		$statement = $pdo->prepare($query);
 		
 		// bind the image id to the place holder in the template
