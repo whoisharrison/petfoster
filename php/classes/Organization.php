@@ -561,7 +561,7 @@ class Organization implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getOrganizationByOrganizationId(\PDO $pdo, int $organizationId) : ?Organization {
+	public static function getOrganizationByOrganizationId(\PDO $pdo, int $organizationId):?Organization {
 		// sanitize the organization id before searching
 		if($organizationId <= 0) {
 			throw(new \PDOException("organization id must be positive"));
