@@ -256,7 +256,7 @@ class ProfileTest extends PetRescueAbqTest {
 		//enforce no other objects are bleeding into profile
 		$this->assertContainsOnlyInstancesOf("Edu\Cnm\PetRescueAbq\\Profile", $results);
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoProfile = Profile::getProfileByProfileName($this->getPDO(), $profile->getProfileName());
+		$pdoProfile = $results[0];
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
 		$this->assertEquals($pdoProfile->getProfileActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoProfile->getProfileAtHandle(), $this->VALID_ATHANDLE);
