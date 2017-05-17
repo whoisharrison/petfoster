@@ -110,7 +110,7 @@ class Message implements \JsonSerializable {
 	 * @throws \RangeException if $newMessageId is not positive
 	 * @throws \TypeError if $newMessageId is not an integer
 	 */
-	public function setMessageId(int $newMessageId) : void {
+	public function setMessageId(?int $newMessageId) : void {
 		//if message id is null immediately return it
 		if($newMessageId === null) {
 			$this->messageId = null;
