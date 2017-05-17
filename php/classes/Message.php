@@ -551,7 +551,7 @@ class Message implements \JsonSerializable {
 	 *@throws \TypeError when variables are not the correct data type
 	 */
 
-	public static function getsMessageByMessageOrganizationId(\PDO $pdo, int $messageOrganizationId) : \SplFixedArray {
+	public static function getMessageByMessageOrganizationId(\PDO $pdo, int $messageOrganizationId) : \SplFixedArray {
 		//sanitize the organization id before searching
 		if($messageOrganizationId <= 0) {
 			throw(new \RangeException("message organization id must be positive"));
@@ -607,8 +607,8 @@ class Message implements \JsonSerializable {
 
 		//ensure both dates are in the correct format and are secure
 		try {
-			$sunriseMessageDateTime = self::validateDateTime($sunriseMessageDateTime);
-			$sunsetMessageDateTime = self::validateDateTime($sunsetMessageDateTime);
+			$sunriseMessageDateTime = self::validateDate($sunriseMessageDateTime);
+			$sunsetMessageDateTime = self::validateDate($sunsetMessageDateTime);
 
 		} catch(\InvalidArgumentException | \RangeException $exception) {
 			$exceptionType = get_class($exception);
@@ -621,8 +621,8 @@ class Message implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		//format the dates so that mySQL can use them
-		$formattedSunriseDate = $sunriseMessageDateTime->format("Y-m-d H:i:s");
-		$formattedSunsetDate = $sunsetMessageDateTime->format("Y-m-d H:i:s");
+		$formattedSunriseDate = $sunriseMessageDateTime->format("Y-m-d H:i:s.u");
+		$formattedSunsetDate = $sunsetMessageDateTime->format("Y-m-d H:i:s.u");
 
 		$parameters = ["sunriseMessageDateTime" => $formattedSunriseDate, "sunsetMessageDateTime" => $formattedSunsetDate];
 		$statement->execute($parameters);
@@ -633,15 +633,15 @@ class Message implements \JsonSerializable {
 
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$message = new Message($row["messageId"], $row["messageOrganizationId"], $row["messageProfileId"], $row["messageContent"], $row["messageDateTime"], $row["messageSubject"]);
+				$message = new Message($row["messageId"], $row["messageProfileId"], $row["messageOrganizationId"], $row["messageContent"], $row["messageDateTime"], $row["messageSubject"]);
 				$messages[$messages->key()] = $message;
 				$messages->next();
 
 			} catch(\Exception $exception) {
-				throw (new \PDOException($exception->getMessage(), 0, $exception));
+				throw (new \PDOException($exception->getMessage(),0, $exception));
 			}
 		}
-		return ($messages);
+		return($messages);
 	}
 
 
