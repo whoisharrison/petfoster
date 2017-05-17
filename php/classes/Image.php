@@ -253,8 +253,8 @@ class Image implements \JsonSerializable {
 			}
 		// create query template
 		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image WHERE imagePostId = :imagePostId";
-		$statement == $pdo->prepare($query);
-		// bind the image post id to the place holder in teh template
+		$statement = $pdo->prepare($query);
+		// bind the image post id to the place holder in the template
 		$parameters = ["imagePostId" =>$imagePostId];
 		$statement->execute($parameters);
 		//build and array of images
@@ -262,7 +262,7 @@ class Image implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$image = new Image($row["$imageId"], $row["$imagePostId"], $row["$imageCloudinaryId"]);
+				$image = new Image($row["imageId"], $row["imagePostId"], $row["imageCloudinaryId"]);
 				$images[$images->key()] = $image;
 				$images->next();
 			} catch(\Exception $exception) {
