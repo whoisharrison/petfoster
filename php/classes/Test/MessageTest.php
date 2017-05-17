@@ -53,7 +53,7 @@ class MessageTest extends PetRescueAbqTest {
 	 * timestamp of the Message, this starts as null and is assigned later
 	 * @var \DateTime $VALID_MESSAGEDATE
 	 */
-	protected $VALID_MESSAGEDATETIME = null;
+	protected $VALID_MESSAGEDATE = null;
 
 	/**
 	 *content of subject
@@ -91,11 +91,11 @@ class MessageTest extends PetRescueAbqTest {
 		//var_dump($this->profile->getProfileId());
 
 		// create and insert a Organization to own the test Message
-		$this->organization = new Organization(null, $this->profile->getProfileId(), "22222222222222222222222222222222", "Address 1", "Address 2", "City Name", "test@phpunit.com", "License Num", "Org Name", "5055552525", "NM", 87555);
+		$this->organization = new Organization(null, $this->profile->getProfileId(), "22222222222222222222222222222222", "Address 1", "Address 2", "City Name", "test@phpunit.com", "License Num", "Org Name", "5055552525", "NM", "87555");
 		$this->organization->insert($this->getPDO());
 
 		//calculate the date, just use the time the unit test was setup
-		$this->VALID_MESSAGEDATETIME = new \DateTime();
+		$this->VALID_MESSAGEDATE = new \DateTime();
 
 		//format the sunrise date to use for testing
 		$this->VALID_SUNRISEDATE = new\DateTime();
@@ -115,7 +115,8 @@ class MessageTest extends PetRescueAbqTest {
 		$numRows = $this->getConnection()->getRowCount("message");
 
 		//create a new Message and insert into mySQL
-		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
+		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT,
+			$this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
 		$message->insert($this->getPDO());
 
 		//grab the data from mySQL and enforce the fields match our expectations
@@ -129,7 +130,7 @@ class MessageTest extends PetRescueAbqTest {
 		$this->assertEquals($pdoMessage->getMessageContent(), $this->VALID_MESSAGECONTENT);
 
 		//date to seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATETIME->getTimestamp());
+		$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATE->getTimestamp());
 
 		$this->assertEquals($pdoMessage->getMessageSubject(), $this->VALID_MESSAGESUBJECT);
 
@@ -141,10 +142,11 @@ class MessageTest extends PetRescueAbqTest {
 	 * test inserting a Message that already exists
 	 * @expectedException \PDOException
 	 */
-	public function testInsertInvalidMessage(): void {
+	public function testInsertInvalidMessage() : void {
 		//create a Message with a non null message id and watch it fail
 
-		$message = new Message(PetRescueAbqTest::INVALID_KEY, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
+		$message = new Message(PetRescueAbqTest::INVALID_KEY, $this->profile->getProfileId(), $this->organization->getOrganizationId(),
+			$this->VALID_MESSAGECONTENT,$this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
 		$message->insert($this->getPDO());
 	}
 
@@ -157,7 +159,8 @@ class MessageTest extends PetRescueAbqTest {
 		$numRows = $this->getConnection()->getRowCount("message");
 
 		//create a new Message and insert it into mySQL
-		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
+		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT,
+			$this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
 		$message->insert($this->getPDO());
 
 		//DO I NEED THIS?
@@ -179,7 +182,7 @@ class MessageTest extends PetRescueAbqTest {
 		$this->assertEquals($pdoMessage->getMessageContent(), $this->VALID_MESSAGECONTENT);
 
 		//date to seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATETIME->getTimestamp());
+		$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATE->getTimestamp());
 
 		$this->assertEquals($pdoMessage->getMessageSubject(), $this->VALID_MESSAGESUBJECT);
 	}
@@ -192,7 +195,7 @@ class MessageTest extends PetRescueAbqTest {
 	public function testUpdateInvalidMessage(): void {
 
 		//create a Message with a non null message id and watch it fail
-		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
+		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
 		$message->update($this->getPDO());
 	}
 
@@ -205,7 +208,8 @@ class MessageTest extends PetRescueAbqTest {
 		$numRows = $this->getConnection()->getRowCount("message");
 
 		//create a new Message and insert it into mySQL
-		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
+		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT,
+			$this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
 		$message->insert($this->getPDO());
 
 		//delete the Message from mySQL
@@ -225,7 +229,7 @@ class MessageTest extends PetRescueAbqTest {
 	 */
 	public function testDeleteInvalidMessage(): void {
 		//create a Message and try to delete it without actually inserting it
-		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
+		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
 		$message->delete($this->getPDO());
 	}
 
@@ -247,7 +251,8 @@ class MessageTest extends PetRescueAbqTest {
 		$numRows = $this->getConnection()->getRowCount("message");
 
 		//create a new Message and insert into mySQL
-		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
+		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT,
+			$this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
 		$message->insert($this->getPDO());
 
 		//grab the data from mySQL and enforce the fields match our expectations
@@ -264,7 +269,7 @@ class MessageTest extends PetRescueAbqTest {
 		$this->assertEquals($pdoMessage->getMessageContent(), $this->VALID_MESSAGECONTENT);
 
 		//date to seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATETIME->getTimestamp());
+		$this->assertEquals($pdoMessage->getMessageDate()->getTimestamp(), $this->VALID_MESSAGEDATE->getTimestamp());
 
 		$this->assertEquals($pdoMessage->getMessageSubject(), $this->VALID_MESSAGESUBJECT);
 	}
@@ -278,7 +283,8 @@ class MessageTest extends PetRescueAbqTest {
 		$numRows = $this->getConnection()->getRowCount("message");
 
 		//create a new Message and insert it into the database
-		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
+		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT,
+			$this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
 		$message->insert($this->getPDO());
 
 		// grab the message from the database and see if it matches expectations
@@ -297,7 +303,7 @@ class MessageTest extends PetRescueAbqTest {
 
 		$this->assertEquals($pdoMessage->getMessageContent(), $message->getMessageContent());
 
-		$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATETIME->getTimestamp());
+		$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATE->getTimestamp());
 
 		$this->assertEquals($pdoMessage->getMessageSubject(), $message->getMessageSubject());
 	}
@@ -308,10 +314,10 @@ class MessageTest extends PetRescueAbqTest {
 	 */
 	public function testGetAllValidMessages(): void {
 		//count the number of rows and save it for later
-		$numRows = $this->getConnection->getRowCount("message");
+		$numRows = $this->getConnection()->getRowCount("message");
 
 		//create a new Message and insert it into mySQL
-		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT,$this->VALID_MESSAGEDATETIME, $this->VALID_MESSAGESUBJECT);
+		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT,$this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
 		$message->insert($this->getPDO());
 
 		//grab the data from mySQL and enforce the fields match our expectations
@@ -329,7 +335,7 @@ class MessageTest extends PetRescueAbqTest {
 
 		$this->assertEquals($pdoMessage->getMessageContent(), $this->VALID_MESSAGECONTENT);
 
-		$this->assertEquals($pdoMessage->getMessageDate()->getTimestamp(), $this->VALID_MESSAGEDATETIME->getTimestamp());
+		$this->assertEquals($pdoMessage->getMessageDate()->getTimestamp(), $this->VALID_MESSAGEDATE->getTimestamp());
 
 		$this->assertEquals($pdoMessage->getMessageSubject(), $this->VALID_MESSAGESUBJECT);
 	}

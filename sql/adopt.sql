@@ -42,8 +42,8 @@ DROP TABLE IF EXISTS profile;
 -- create message entity
 CREATE TABLE message (
 	messageId INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	messageOrganizationId INT UNSIGNED NOT NULL,
 	messageProfileId INT UNSIGNED NOT NULL,
+	messageOrganizationId INT UNSIGNED NOT NULL,
 	messageContent VARCHAR(1024),
 	messageDateTime DATETIME (6) NOT NULL,
 	messageSubject VARCHAR (64),
@@ -76,4 +76,31 @@ CREATE TABLE image (
 	FOREIGN KEY (imagePostId) REFERENCES post(postId),
 	PRIMARY KEY(imageId)
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

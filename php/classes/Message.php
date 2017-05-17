@@ -46,7 +46,7 @@ class Message implements \JsonSerializable {
 
 	/**
 	 * date and time for this message, datetime object
-	 * @var /Datetime $messageDateTime
+	 * @var \Datetime $messageDateTime
 	 */
 	private $messageDateTime;
 
@@ -64,8 +64,10 @@ class Message implements \JsonSerializable {
 	 * @param int $newMessageProfileId id of the profile that sent this message
 	 * @param int $newMessageOrganizationId id of the organization that sent this Message
 	 * @param string $newMessageContent string containing the Message data
+	 *	@param \DateTime|string|null $newMessageDateTime date and time Message was sent or a null if set to current date and time
 	 * @param string $newMessageSubject string containing the subject data
-	 * @param \DateTime|string|null $newMessageDateTime date and time Message was sent or a null if set to current date and time
+	 *
+	 *
 	 *
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds
@@ -77,7 +79,8 @@ class Message implements \JsonSerializable {
 
 	//do these need to be in the order as in the conceptual model
 
-	public function _construct(?int $newMessageId, ?int $newMessageProfileId, ?int $newMessageOrganizationId, string $newMessageContent, $newMessageDateTime = null, string $newMessageSubject) {
+	public function _construct(?int $newMessageId, int $newMessageProfileId, int $newMessageOrganizationId, string $newMessageContent, $newMessageDateTime =
+			null, string $newMessageSubject) {
 		try {
 			$this->setMessageId($newMessageId);
 			$this->setMessageProfileId($newMessageProfileId);
@@ -127,7 +130,7 @@ class Message implements \JsonSerializable {
 	 * accessor method for message profile id
 	 * @return int value of the message profile id
 	 **/
-	public function getMessageProfileId(): int {
+	public function getMessageProfileId() : int {
 		return($this->messageProfileId);
 	}
 
@@ -209,7 +212,7 @@ class Message implements \JsonSerializable {
 
 
 	/**
-	 * accessor method for message datetime
+	 * accessor method for message date
 	 * @return \DateTime value for message datetime
 	 */
 	public function getMessageDateTime() : \DateTime {
@@ -291,13 +294,13 @@ class Message implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "INSERT INTO message(messageProfileId, messageOrganizationId, messageContent, messageDateTime, messageSubject) VALUES(:messageProfileId, :messageOrganizationId, :messageContent, :messageDateTime, :messageSubject)";
+		$query = "INSERT INTO message(messageProfileId, messageOrganizationId, messageContent, messageDateTime, messageSubject) VALUES(:messageProfileId,:messageOrganizationId,  :messageContent, :messageDateTime, :messageSubject)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
-		//changed formattedDateTime to formattedDateTime and changed messageDate to messageDateTime
-		$formattedDateTime = $this->messageDateTime->format("Y-m-d H:i:s.u");
-		$parameters = ["messageProfileId" => $this->messageProfileId, "messageOrganizationId" => $this->messageOrganizationId, "messageContent" => $this->messageContent, "messageDateTime" => $formattedDateTime, "messageSubject" => $this->messageSubject];
+		$formattedDate = $this->messageDateTime->format("Y-m-d H:i:s.u");
+		$parameters = ["messageProfileId" => $this->messageProfileId, "messageOrganizationId" => $this->messageOrganizationId, "messageContent" =>
+			$this->messageContent, "messageDateTime" => $formattedDate, "messageSubject" => $this->messageSubject];
 		$statement->execute($parameters);
 
 		//update the null messageId with what mySQL just gave us
@@ -342,12 +345,14 @@ class Message implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "UPDATE message SET messageProfileId = :messageProfileId, messageOrganizationId = :messageOrganizationId, messageContent = :messageContent, messageDateTime = :messageDateTime, messageSubject = :messageSubject WHERE messageId = :messageId";
+		$query = "UPDATE message SET messageProfileId = :messageProfileId, messageOrganizationId = :messageOrganizationId, messageContent = :messageContent, 
+			messageDateTime = :messageDateTime, messageSubject = :messageSubject WHERE messageId = :messageId";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
 		$formattedDate = $this->messageDateTime->format("Y-m-d H:i:s.u");
-		$parameters = ["messageProfileId" => $this->messageProfileId, "messageOrganizationId" => $this->messageOrganizationId, "messageContent" => $this->messageContent, "messageDateTime" => $this->messageDateTime, "messageSubject" => $this->messageSubject];
+ 		$parameters = ["messageProfileId" => $this->messageProfileId, "messageOrganizationId" => $this->messageOrganizationId, "messageContent" =>
+			$this->messageContent, "messageDateTime" => $formattedDate, "messageSubject" => $this->messageSubject, "messageId" => $this->messageId];
 		$statement->execute($parameters);
 	}
 
@@ -451,8 +456,7 @@ class Message implements \JsonSerializable {
 	 */
 
 
-	/**
-	 * gets the Message by messageId
+	/**gets the Message by messageId
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $messageId message id to search for
 	 * @return Message|null Message found or null if not found
@@ -468,7 +472,8 @@ class Message implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "SELECT messageId, messageProfileId, messageOrganizationId, messageContent, messageDateTime, messageSubject FROM message WHERE messageId = :messageId";
+		$query = "SELECT messageId, messageProfileId, messageOrganizationId, messageContent, messageDateTime, messageSubject FROM message WHERE messageId = 
+			:messageId";
 		$statement = $pdo->prepare($query);
 
 		//bind the message id to the place holder in the template
@@ -501,7 +506,7 @@ class Message implements \JsonSerializable {
 	 *@throws \TypeError when variables are not the correct data type
 	 */
 
-	public static function getsMessageByMessageProfileId(\PDO $pdo, int $messageProfileId) : \SplFixedArray {
+	public static function getMessageByMessageProfileId(\PDO $pdo, int $messageProfileId) : \SplFixedArray {
 		//sanitize the profile id before searching
 		if($messageProfileId <= 0) {
 			throw(new \RangeException("message profile id must be positive"));
@@ -587,6 +592,7 @@ class Message implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 * @throws \InvalidArgumentException is either sun dates are in the wrong format
 	 * PROBABLY WILL NOT NEED THIS
+	 * **/
 
 
 	public static function getMessageByMessageDateTime (\PDO $pdo, \DateTime $sunriseMessageDateTime, \DateTime $sunsetMessageDateTime) : \SplFixedArray {
@@ -606,7 +612,8 @@ class Message implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "SELECT messageId, messageOrganizationId, messageProfileId, messageContent, messageDateTime, messageSubject FROM message WHERE messageDateTime >= :sunriseMessageDateTime AND messageDateTime <= :sunsetMessageDateTime";
+		$query = "SELECT messageId, messageProfileId, messageOrganizationId, messageContent, messageDateTime, messageSubject FROM message WHERE messageDateTime 
+			>= :sunriseMessageDateTime AND messageDateTime <= :sunsetMessageDateTime";
 		$statement = $pdo->prepare($query);
 
 		//format the dates so that mySQL can use them
@@ -632,7 +639,7 @@ class Message implements \JsonSerializable {
 		}
 		return ($messages);
 	}
-*/
+
 
 		/**
 		 * get all the messages
@@ -654,7 +661,8 @@ class Message implements \JsonSerializable {
 			while(($row = $statement->fetch()) !== false) {
 
 				try{
-					$message = new Message($row["messageId"], $row["messageProfileId"], $row["messageOrganizationId"], $row["messageContent"], $row["messageDateTime"], $row["messageSubject"]);
+					$message = new Message($row["messageId"], $row["messageProfileId"], $row["messageOrganizationId"], $row["messageContent"],
+						$row["messageDateTime"], $row["messageSubject"]);
 					$messages[$messages->key()] = $message;
 					$messages->next();
 
