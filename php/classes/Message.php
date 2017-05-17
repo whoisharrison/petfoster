@@ -89,7 +89,7 @@ class Message implements \JsonSerializable {
 			$this->setMessageDateTime($newMessageDateTime);
 			$this->setMessageSubject($newMessageSubject);
 
-		}catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
