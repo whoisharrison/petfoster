@@ -379,7 +379,7 @@ class OrganizationTest extends PetRescueAbqTest {
 	public function testGetInvalidOrganizationByOrganizationName() : void {
 		// grab a name that does not exist
 		$organization = Organization::getOrganizationByOrganizationName($this->getPDO(), "Fake Pet Company");
-		$this->assertNull($organization);
+		$this->assertCount(0, $organization);
 	}
 	/** test grabbing a organization by its activation
 	 */
