@@ -273,7 +273,7 @@ class MessageTest extends PetRescueAbqTest {
 		$this->assertEquals($pdoMessage->getMessageContent(), $this->VALID_MESSAGECONTENT);
 
 		//date to seconds since the beginning of time to avoid round off error
-		$this->assertEquals($pdoMessage->getMessageDate()->getTimestamp(), $this->VALID_MESSAGEDATE->getTimestamp());
+		$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATE->getTimestamp());
 
 		$this->assertEquals($pdoMessage->getMessageSubject(), $this->VALID_MESSAGESUBJECT);
 	}
@@ -282,7 +282,7 @@ class MessageTest extends PetRescueAbqTest {
 	/**
 	 * test grabbing a valid Message by sunset and sunrise date
 	 */
-	public function testGetValidMessageBySunDate(): void {
+	public function testGetValidMessageBySunDate() : void {
 		//count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("message");
 
@@ -297,9 +297,9 @@ class MessageTest extends PetRescueAbqTest {
 		$this->assertCount(1, $results);
 
 		//enforce that no other objects are bleeding into the test
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetFosterAbq\\Message", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Message", $results);
 
-//use the first result to make sure that the inserted message meets expectations
+		//use the first result to make sure that the inserted message meets expectations
 		$pdoMessage = $results[0];
 		$this->assertEquals($pdoMessage->getMessageId(), $message->getMessageId());
 		$this->assertEquals($pdoMessage->getMessageProfileId(), $message->getMessageProfileId());
@@ -316,7 +316,7 @@ class MessageTest extends PetRescueAbqTest {
 	/**
 	 * grabbing all the Message
 	 */
-	public function testGetAllValidMessages(): void {
+	public function testGetAllValidMessages() : void {
 		//count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("message");
 
@@ -328,7 +328,7 @@ class MessageTest extends PetRescueAbqTest {
 		$results = Message::getAllMessages($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("message"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetFosterAbq\\Message", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Message", $results);
 
 		/**
 		 * grab the results from the array and validate it
@@ -339,7 +339,7 @@ class MessageTest extends PetRescueAbqTest {
 
 		$this->assertEquals($pdoMessage->getMessageContent(), $this->VALID_MESSAGECONTENT);
 
-		$this->assertEquals($pdoMessage->getMessageDate()->getTimestamp(), $this->VALID_MESSAGEDATE->getTimestamp());
+		$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATE->getTimestamp());
 
 		$this->assertEquals($pdoMessage->getMessageSubject(), $this->VALID_MESSAGESUBJECT);
 	}

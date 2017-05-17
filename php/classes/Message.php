@@ -647,6 +647,7 @@ class Message implements \JsonSerializable {
 	}
 
 
+
 		/**
 		 * get all the messages
 		 * @param \PDO $pdo PDO connection object
