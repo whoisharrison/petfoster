@@ -311,7 +311,7 @@ class OrganizationTest extends PetRescueAbqTest {
 	 **/
 	public function testGetInvalidOrganizationByOrganizationEmail() : void {
 		// grab an email that does not exist
-		$organization = Organization::getOrganizationByOrganizationEmail($this->getPDO(), "does@not.exist");
+		$organization = Organization::getOrganizationByOrganizationEmail($this->getPDO(),  "does@not.exist)");
 		$this->assertNull($organization);
 	}
 	/**
