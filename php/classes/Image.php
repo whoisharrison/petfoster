@@ -289,7 +289,7 @@ class Image implements \JsonSerializable {
 			throw(new \PDOException("image cloudinary id is invalid"));
 		}
 		//create query template
-		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image WHERE imageCloudinaryId = :imageCloudinaryId";
+		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image WHERE imageCloudinaryId LIKE :imageCloudinaryId";
 		$statement = $pdo->prepare($query);
 		// bind the image cloudinary id to the place holder in teh template
 		$imageCloudinaryId = "%imageCloudinaryId%";
