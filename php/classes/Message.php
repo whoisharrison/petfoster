@@ -22,7 +22,7 @@ class Message implements \JsonSerializable {
 
 	/**
 	 * id for this message, this is the primary key
-	 * @var int messageId
+	 * @var int $messageId
 	 */
 	private $messageId;
 
