@@ -297,13 +297,13 @@ class Message implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "INSERT INTO message(messageProfileId, messageOrganizationId, messageContent, messageDateTime, messageSubject) VALUES(:messageProfileId,:messageOrganizationId,  :messageContent, :messageDateTime, :messageSubject)";
+		$query = "INSERT INTO message(messageProfileId, messageOrganizationId, messageContent, messageDateTime, messageSubject) VALUES(:messageProfileId,:messageOrganizationId, :messageContent, :messageDateTime, :messageSubject)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
-		//$formattedDate = $this->messageDateTime->format("Y-m-d H:i:s.u");
+		$formattedDate = $this->messageDateTime->format("Y-m-d H:i:s.u");
 		$parameters = ["messageProfileId" => $this->messageProfileId, "messageOrganizationId" => $this->messageOrganizationId, "messageContent" =>
-			$this->messageContent, "messageDateTime" => $this->messageDateTime, "messageSubject" => $this->messageSubject];
+			$this->messageContent, "messageDateTime" => $formattedDate, "messageSubject" => $this->messageSubject];
 		$statement->execute($parameters);
 
 		//update the null messageId with what mySQL just gave us
@@ -342,7 +342,7 @@ class Message implements \JsonSerializable {
 	 */
 	public function update(\PDO $pdo) : void {
 
-		//enforce the messageId is not null, do not update a message that has not been insertedd
+		//enforce the messageId is not null, do not update a message that has not been inserted
 		if($this->messageId === null) {
 			throw(new \PDOException("unable to update a message that does not exist"));
 		}
@@ -489,7 +489,8 @@ class Message implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$message = new Message($row["messageId"],$row["messageProfileId"], $row["messageOrganizationId"], $row["messageContent"], $row["messageDateTime"], $row["messageSubject"]);
+				$message = new Message($row["messageId"],$row["messageProfileId"], $row["messageOrganizationId"], $row["messageContent"], $row["messageDateTime"],
+					$row["messageSubject"]);
 			}
 
 		} catch(\Exception $exception) {
@@ -516,11 +517,11 @@ class Message implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "SELECT messageId, messageProfileId, messageOrganizationId, messageContent, messageDateTime, messageSubject FROM message WHERE messageProfileId = :messageProfileId";
+		$query = "SELECT messageId, messageProfileId, messageOrganizationId, messageContent, messageDateTime, messageSubject FROM message WHERE messageProfileId 		= :messageProfileId";
 		$statement = $pdo->prepare($query);
 
 		//bind the message profile id to the place holder in the template
-		$parameters = ["$messageProfileId => $messageProfileId"];
+		$parameters = ["messageProfileId" => $messageProfileId];
 		$statement->execute($parameters);
 
 		//build an array of messages
