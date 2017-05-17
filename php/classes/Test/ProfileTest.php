@@ -243,7 +243,7 @@ class ProfileTest extends PetRescueAbqTest {
 	/**
 	 * test grabbing a Profile by name
 	 **/
-	public function testGetValidProfileByName() : void {
+	public function testGetValidProfileByProfileName() : void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 		// create a new Profile and insert to into mySQL
