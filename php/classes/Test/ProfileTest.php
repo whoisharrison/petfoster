@@ -268,7 +268,7 @@ class ProfileTest extends PetRescueAbqTest {
 	/**
 	 * test grabbing a profile by its activation token
 	 */
-	public function testGetValidProfileByActivationToken() : void {
+	public function testGetValidProfileByProfileActivationToken() : void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("profile");
 		// create a new Profile and insert to into mySQL
