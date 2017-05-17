@@ -249,6 +249,11 @@ class ProfileTest extends PetRescueAbqTest {
 		// create a new Profile and insert to into mySQL
 		$profile = new Profile(null, $this->VALID_ACTIVATION, $this->VALID_ATHANDLE, $this->VALID_EMAIL, $this->VALID_HASH, $this->VALID_NAME, $this->VALID_SALT);
 		$profile->insert($this->getPDO());
+		//grab the data from MySQL
+		$results = Profile::getProfileByProfileName($this->getPDO(), $this->VALID_NAME);
+		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("profile"));
+		//enforce no other objects are bleeding into profile
+		$this->assertContainsOnlyInstancesOf("Edu\Cnm\PetRescueAbq\\Profile", $results);
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = Profile::getProfileByProfileName($this->getPDO(), $profile->getProfileName());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));
