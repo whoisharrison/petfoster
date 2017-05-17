@@ -117,6 +117,7 @@ class OrganizationTest extends PetRescueAbqTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoOrganization = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
 		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
@@ -327,6 +328,7 @@ class OrganizationTest extends PetRescueAbqTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 
 		$pdoOrganization = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
 		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
@@ -361,6 +363,7 @@ class OrganizationTest extends PetRescueAbqTest {
 		// grab the data from mySQL and enforce the fields match our expectations
 
 		$pdoOrganization = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationName());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
 		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
