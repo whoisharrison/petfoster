@@ -297,17 +297,19 @@ class Message implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "INSERT INTO message(messageProfileId, messageOrganizationId, messageContent, messageDateTime, messageSubject) VALUES(:messageProfileId,:messageOrganizationId, :messageContent, :messageDateTime, :messageSubject)";
+		$query = "INSERT INTO message(messageProfileId, messageOrganizationId, messageContent, messageSubject) VALUES(:messageProfileId,:messageOrganizationId, :messageContent, :messageSubject)";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
-		$formattedDate = $this->messageDateTime->format("Y-m-d H:i:s.u");
 		$parameters = ["messageProfileId" => $this->messageProfileId, "messageOrganizationId" => $this->messageOrganizationId, "messageContent" =>
-			$this->messageContent, "messageDateTime" => $formattedDate, "messageSubject" => $this->messageSubject];
+			$this->messageContent, "messageSubject" => $this->messageSubject];
 		$statement->execute($parameters);
 
 		//update the null messageId with what mySQL just gave us
 		$this->messageId = intval($pdo->lastInsertId());
+
+		//cheat and fake the timestamp (imperfect, saves a database call)
+		$this->messageDateTime = new \DateTime();
 	}
 
 

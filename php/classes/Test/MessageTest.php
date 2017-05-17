@@ -89,14 +89,14 @@ class MessageTest extends PetRescueAbqTest {
 		//var_dump($this->profile->getProfileId());
 
 		// create and insert a Organization to own the test Message
-		$this->organization = new Organization(null, null, "22222222222222222222222222222222", "Address 1", "Address 2", "City Name", "test@phpunit.com", "License Num", "Org Name", "5055552525", "NM", "87555");
+		$this->organization = new Organization(null, $this->profile->getProfileId(), "22222222222222222222222222222222", "Address 1", "Address 2", "City Name", "test@phpunit.com", "License Num", "Org Name", "5055552525", "NM", "87555");
 		$this->organization->insert($this->getPDO());
 
 		//calculate the date, just use the time the unit test was setup
 		$this->VALID_MESSAGEDATE = new \DateTime();
 
 		//format the sunrise date to use for testing
-		$this->VALID_SUNRISEDATE = new\DateTime();
+		$this->VALID_SUNRISEDATE = new \DateTime();
 		$this->VALID_SUNRISEDATE->sub(new \DateInterval("P10D"));
 
 		//format the sunset date to use for testing
@@ -108,18 +108,19 @@ class MessageTest extends PetRescueAbqTest {
 	/**
 	 * test inserting a valid Message and verify that the actual mySQL data matches
 	 */
-	public function testInsertValidMessage(): void {
+	public function testInsertValidMessage() : void {
 		//count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("message");
 
 		//create a new Message and insert into mySQL
 		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT,
 			$this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
+		$message->insert($this->getPDO());
+
 
 //		$message = new Message(null,$this->profile->getProfileId(),$this->organization->getOrganizationId(),"work dammit",$this->VALID_MESSAGEDATE,"this test 			will pass");
 
 //		var_dump($message);
-		$message->insert($this->getPDO());
 
 
 		//grab the data from mySQL and enforce the fields match our expectations
@@ -149,7 +150,7 @@ class MessageTest extends PetRescueAbqTest {
 		//create a Message with a non null message id and watch it fail
 
 		$message = new Message(PetRescueAbqTest::INVALID_KEY, $this->profile->getProfileId(), $this->organization->getOrganizationId(),
-			$this->VALID_MESSAGECONTENT,$this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
+			$this->VALID_MESSAGECONTENT, $this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
 		$message->insert($this->getPDO());
 	}
 
@@ -157,7 +158,7 @@ class MessageTest extends PetRescueAbqTest {
 	/**
 	 * test inserting a Message, editing it, and then updating it
 	 */
-	public function testUpdateValidMessage(): void {
+	public function testUpdateValidMessage() : void {
 		//count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("message");
 
