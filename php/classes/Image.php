@@ -289,7 +289,7 @@ class Image implements \JsonSerializable {
 			throw(new \PDOException("image cloudinary id is invalid"));
 		}
 		//create query template
-		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image WHERE imageCloudinaryId LIKE :imageCloudinaryId";
+		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image WHERE imageCloudinaryId = :imageCloudinaryId";
 		$statement = $pdo->prepare($query);
 		// bind the image cloudinary id to the place holder in teh template
 		$imageCloudinaryId = "%imageCloudinaryId%";
@@ -300,8 +300,8 @@ class Image implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$images = new Image($row["imageId"], $row["imagePostId"], $row["imageCloudinaryId"]);
-				$images[$images->key()] = $images;
+				$image = new Image($row["imageId"], $row["imagePostId"], $row["imageCloudinaryId"]);
+				$images[$images->key()] = $image;
 				$images->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
