@@ -355,13 +355,10 @@ class OrganizationTest extends PetRescueAbqTest {
 	public function testGetValidOrganizationByOrganizationName() : void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("organization");
-
 		// create a new Organization and insert to into mySQL
 		$organization = new Organization(null, $this->profile->getProfileId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
 		$organization->insert($this->getPDO());
-
 		// grab the data from mySQL and enforce the fields match our expectations
-
 		$pdoOrganization = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
 		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
