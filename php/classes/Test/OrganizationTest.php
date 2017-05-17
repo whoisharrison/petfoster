@@ -381,7 +381,8 @@ class OrganizationTest extends PetRescueAbqTest {
 		$organization = Organization::getOrganizationByOrganizationName($this->getPDO(), "Fake Pet Company");
 		$this->assertCount(0, $organization);
 	}
-	/** test grabbing a organization by its activation
+	/**
+	 * test grabbing a organization by its activation
 	 */
 	public function testGetValidOrganizationByActivationToken() : void {
 		// count the number of rows and save it for later

@@ -621,7 +621,6 @@ class Organization implements \JsonSerializable {
 		}
 		return($organizations);
 	}
-
 	/**
 	 * gets Organizations by email
 	 *
