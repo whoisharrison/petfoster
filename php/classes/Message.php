@@ -141,7 +141,7 @@ class Message implements \JsonSerializable {
 	 * @throws \RangeException is $newProfileId is not positive
 	 * @throws \TypeError if %newProfileId is not an integer
 	 */
-	public function setMessageProfileId(?int $newMessageProfileId) : void {
+	public function setMessageProfileId(int $newMessageProfileId) : void {
 
 		//verify the profile id is positive
 		if($newMessageProfileId <= 0) {
