@@ -102,7 +102,7 @@ class ImageTest extends PetRescueAbqTest {
 
 		// create a new Image and insert into mySQL
 
-		$image = new Image(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->post->getPostId(), $this->VALID_IMAGEID, $this->VALID_IMAGEPOSTID, $this->VALID_IMAGECLOUDINARYID);
+		$image = new Image(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->post->getPostId(), $this->VALID_IMAGEID, $this->VALID_IMAGEPOSTID, $this->VALID_CLOUD_ID);
 		$image->insert($this->getPDO());
 
 		// GET THE DATA from msql and ensure they match
@@ -131,7 +131,7 @@ class ImageTest extends PetRescueAbqTest {
 		$numRows = $this->getConnection()->getRowCount("image");
 
 //create a new image and insert into msql
-		$image = new Image(null, $this->post->getPostId(), $this->VALID_IMAGECLOUDINARYID);
+		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID);
 		$image->insert($this->getPDO());
 
 		//delete image
@@ -147,7 +147,7 @@ class ImageTest extends PetRescueAbqTest {
 	 **/
 	public function testDeleteIvalidImange() {
 		// create a Image and try to delete it without actually inserting it
-		$image = new Image(null, $this->post->getPostId(), $this->VALID_ImageCloudinaryId);
+		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID);
 		$image->delete($this->getPDO());
 	}
 
@@ -155,11 +155,11 @@ class ImageTest extends PetRescueAbqTest {
 	 * Test to get image by Image post id
 	 *
 	 */
-	public function testGetValidImageByImageId() {
+	public function testGetValidImageByImageIdAndImagePostId() : void {
 //count the number of rows and save for later
 		$numRow = $this->getConnection()->getRowCount("image");
 		//create a new image and insert
-		$image = new Image(null, $this->profile->getProfileId(), $this->post->getPostId(), $this->organization->getOrganizationId());
+		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID());
 		$image->insert($this->getPDO());
 
 		//grab the data and enforce the match
@@ -184,7 +184,7 @@ class ImageTest extends PetRescueAbqTest {
 	 */
 	public function testGetInvalidImageByImageId() {
 //grab a image by image that doesn't exist
-		$image = Image::getImageByImageId($this->getPDO(),parent::
+		$image = Image::getImageByImageIdAndImagePostId($this->getPDO(),$this->getPDO(),
 
 
 	}
@@ -213,7 +213,7 @@ class ImageTest extends PetRescueAbqTest {
 //grab the result from the array and validate
 		$pdoImage = $results [0];
 		$this->assertEquals($pdoImage->getImageId(), $this->post->getPostId());
-		$this->assertEquals($pdoImage->getImageCloudinaryId(), $this->VALID_IMAGECLOUDINARYID);
+		$this->assertEquals($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUD_ID);
 
 	}
 

@@ -206,7 +206,7 @@ class Image implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the Image by imageId and imagePostId
+	 * gets the Image by imageId
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $imageId image id to search for
@@ -214,22 +214,21 @@ class Image implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getImageByImageIdAndImagePostId(\PDO $pdo, int $imageId, int $imagePostId) : ?image {
-		// sanitize the image and post ids before searching
+	public static function getImageByImageId(\PDO $pdo, int $imageId) : ?Image {
+		// sanitize the image and id before searching
 		if($imageId <= 0) {
 			throw(new \PDOException("image id is not positive"));
-		}
-			if($imagePostId <= 0) {
-				throw(new \PDOException("image post id not positive"));
 			}
 		// create query template
-		$query = "SELECT imageId, imagePostId FROM image WHERE imageId = :imageId AND imagePostId = :imagePostId";
+		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image WHERE imageId = :imageId;
 		$statement = $pdo->prepare($query);
-		// bind the image id and post id to the place holder in the template
-		$parameters = ["imageId" => $imageId, "imagePostId" => $imagePostId];
+		
+		// bind the image id to the place holder in the template
+		$parameters = ["imageId" => $imageId];
 		$statement->execute($parameters);
-
-// grab the image from mySQL
+		
+		// grab the image from mySQL
+		
 		try {
 			$image = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
@@ -239,12 +238,48 @@ class Image implements \JsonSerializable {
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
-			throw(new \PDOException($exception->getMessage(), 0, $exception));
+			throw(new \PDOException($exception->getImage(), 0, $exception));
 		}
 		return($image);
 	}
+/**
+*gets the Imge by post id
+* @param \PDO $pdo PDO connection object
+* @paramint $imagePostId post id to search
+* @return \SplFixedArray SplFixedArray of Images
+* @throws \PDOException when mySql related errors occur
+* @throws \TypeError when variables are not the correct data type
+**/
+
+	public static function getImageByImagePostId(\PDO $pdo, int $imagePostId) : \SPLFixedArray {
+		// sanitized the profile id before searching
+		if($imagePostId <= 0) {
+			throw(new \RangeException("image post id must be positive"));
+			}
+		// create query template
+		$query = "SELECT imageId, imagePostId, ImageCloudinaryId FROM image WHERE imagePostId = :imagePostId";
+		$statement == $pdo->prepare($query);
+		// bind the image post id to the place holder in teh template
+		$parameters = ["imagePostId" =>$imagePostId];
+		$statement->execute($parameters);
+		//build and array of images
+		$images = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$image = new Image($row["$imageId"], $row["$imagePostId"], $row["$imageCloudinaryId"]);
+				$images[$images->key()] = $image;
+				$images->next();
+			{ catch(\Exception $exception) {
+				//if the row couldn't be converted, rethrow it
+				throw(new\PDOException($exception->getImage(), 0, $exception));
+				}
+			}
+			return($images);
+		}
+
 	/**
-	 * //gets image by image cloudinary id
+	 * gets image by image cloudinary id
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $imageCloudinaryId
 	 * @return \SplFixedArray
