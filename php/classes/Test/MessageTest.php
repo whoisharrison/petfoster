@@ -4,9 +4,7 @@ namespace Edu\Cnm\PetRescueAbq\Test;
 
 //grab the encrypted property files
 
-use Edu\Cnm\PetRescueAbq\ {
-	Profile, Organization, Message
-};
+use Edu\Cnm\PetRescueAbq\ {Profile, Organization, Message};
 
 
 //do I need this??
@@ -27,7 +25,7 @@ class MessageTest extends PetRescueAbqTest {
 
 	/**
 	 * Organization that created the Message, this is for the foreign key
-	 * @var $organization organization
+	 * @var organization organization
 	 */
 	protected $organization = null;
 
@@ -75,7 +73,7 @@ class MessageTest extends PetRescueAbqTest {
 	/**
 	 * create dependent objects before running each test
 	 */
-	public final function setUp(): void {
+	public final function setUp() : void {
 
 		// run the default setUp() method first
 		parent::setUp();
@@ -91,7 +89,7 @@ class MessageTest extends PetRescueAbqTest {
 		//var_dump($this->profile->getProfileId());
 
 		// create and insert a Organization to own the test Message
-		$this->organization = new Organization(null, $this->profile->getProfileId(), "22222222222222222222222222222222", "Address 1", "Address 2", "City Name", "test@phpunit.com", "License Num", "Org Name", "5055552525", "NM", "87555");
+		$this->organization = new Organization(null, null, "22222222222222222222222222222222", "Address 1", "Address 2", "City Name", "test@phpunit.com", "License Num", "Org Name", "5055552525", "NM", "87555");
 		$this->organization->insert($this->getPDO());
 
 		//calculate the date, just use the time the unit test was setup
