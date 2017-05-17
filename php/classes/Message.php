@@ -100,7 +100,7 @@ class Message implements \JsonSerializable {
 	 * accessor method for messageId
 	 * @return int|null value of messageId
 	 */
-	public function getMessageId(): int {
+	public function getMessageId(): ?int {
 		return ($this->messageId);
 	}
 
