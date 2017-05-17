@@ -117,7 +117,12 @@ class MessageTest extends PetRescueAbqTest {
 		//create a new Message and insert into mySQL
 		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT,
 			$this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
+
+//		$message = new Message(null,$this->profile->getProfileId(),$this->organization->getOrganizationId(),"work dammit",$this->VALID_MESSAGEDATE,"this test 			will pass");
+
+//		var_dump($message);
 		$message->insert($this->getPDO());
+
 
 		//grab the data from mySQL and enforce the fields match our expectations
 		$pdoMessage = Message::getMessageByMessageId($this->getPDO(), $message->getMessageId());
@@ -139,7 +144,7 @@ class MessageTest extends PetRescueAbqTest {
 
 
 	/**
-	 * test inserting a Message that already exists
+//	 * test inserting a Message that already exists
 	 * @expectedException \PDOException
 	 */
 	public function testInsertInvalidMessage() : void {

@@ -4,7 +4,7 @@ namespace Edu\Cnm\PetRescueAbq;
 
 
 
-require("autoload.php");
+require_once("autoload.php");
 
 /**
  * message section for PetRescueAbq
@@ -298,9 +298,9 @@ class Message implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
-		$formattedDate = $this->messageDateTime->format("Y-m-d H:i:s.u");
+		//$formattedDate = $this->messageDateTime->format("Y-m-d H:i:s.u");
 		$parameters = ["messageProfileId" => $this->messageProfileId, "messageOrganizationId" => $this->messageOrganizationId, "messageContent" =>
-			$this->messageContent, "messageDateTime" => $formattedDate, "messageSubject" => $this->messageSubject];
+			$this->messageContent, "messageDateTime" => $this->messageDateTime, "messageSubject" => $this->messageSubject];
 		$statement->execute($parameters);
 
 		//update the null messageId with what mySQL just gave us
