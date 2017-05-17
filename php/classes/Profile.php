@@ -17,7 +17,7 @@ class Profile implements \JsonSerializable {
 	private $profileId;
 	/**
 	 * this is the Profile Activation Token for profileId
-	 * @var string $profileActivationToken
+	 * @var $profileActivationToken
 	 */
 	private $profileActivationToken;
 	/**
