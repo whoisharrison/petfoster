@@ -205,7 +205,7 @@ class Image implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $imageId image id to search for
-	 * @return image|null image found or null if not found
+	 * @return Image|null image found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
@@ -238,9 +238,9 @@ class Image implements \JsonSerializable {
 		return($image);
 	}
 /**
-*gets the Imge by post id
+*gets the Image by post id
 * @param \PDO $pdo PDO connection object
-* @paramint $imagePostId post id to search
+* @param int $imagePostId post id to search
 * @return \SplFixedArray SplFixedArray of Images
 * @throws \PDOException when mySql related errors occur
 * @throws \TypeError when variables are not the correct data type
@@ -252,7 +252,7 @@ class Image implements \JsonSerializable {
 			throw(new \RangeException("image post id must be positive"));
 			}
 		// create query template
-		$query = "SELECT imageId, imagePostId, ImageCloudinaryId FROM image WHERE imagePostId = :imagePostId";
+		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image WHERE imagePostId = :imagePostId";
 		$statement == $pdo->prepare($query);
 		// bind the image post id to the place holder in teh template
 		$parameters = ["imagePostId" =>$imagePostId];
@@ -265,7 +265,7 @@ class Image implements \JsonSerializable {
 				$image = new Image($row["$imageId"], $row["$imagePostId"], $row["$imageCloudinaryId"]);
 				$images[$images->key()] = $image;
 				$images->next();
-			{ catch(\Exception $exception) {
+			} catch(\Exception $exception) {
 				//if the row couldn't be converted, rethrow it
 				throw(new\PDOException($exception->getImage(), 0, $exception));
 				}
