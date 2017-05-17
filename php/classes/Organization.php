@@ -556,15 +556,15 @@ class Organization implements \JsonSerializable {
 	 * gets Organizations by organization id
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param int $organizationId organization id to search by
-	 * @return \SplFixedArray SplFixedArray of Organizations found
+	 * @param int $organizationId organization id to search for
+	 * @return Organization|null Organization found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public static function getOrganizationByOrganizationId(\PDO $pdo, int $organizationId) : ?Organization {
 		// sanitize the organization id before searching
 		if($organizationId <= 0) {
-			throw(new \RangeException("organization id must be positive"));
+			throw(new \PDOException("organization id must be positive"));
 		}
 		// create query template
 		$query = "SELECT organizationId, organizationProfileId, organizationActivationToken, organizationAddress1, organizationAddress2, organizationCity, organizationEmail, organizationLicense, organizationName, organizationPhone, organizationState, organizationZip FROM organization WHERE organizationId = :organizationId";
