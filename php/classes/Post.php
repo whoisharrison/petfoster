@@ -58,7 +58,7 @@ class Post implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 * */
 
-	public function __construct(int $newPostId, int $newPostOrganizationId, string $newPostBreed, string $newPostDescription, string $newPostSex, string $newPostType) {
+	public function __construct(?int $newPostId, int $newPostOrganizationId, string $newPostBreed, string $newPostDescription, string $newPostSex, string $newPostType) {
 		try {
 			$this->setPostId($newPostId);
 			$this->setPostOrganizationId($newPostOrganizationId);
@@ -90,7 +90,7 @@ class Post implements \JsonSerializable {
 	 * @throws \TypeError if $newPostId is not an integer
 	 **/
 
-	public function setPostId(int $newPostId): void {
+	public function setPostId(?int $newPostId): void {
 		if($newPostId === null) {
 			$this->postId = null;
 			return;
@@ -179,17 +179,19 @@ class Post implements \JsonSerializable {
 	 * @throws \RangeException if $newPostDescription is > 255 characters
 	 * @throws \TypeError if $newPostDescription is not a string
 	 **/
-	public function setPostDescription($newPostDescription): void {
+	public function setPostDescription(string $newPostDescription): void {
 		$this->postDescription = $newPostDescription;
 		//verify that the post description is secure
+
 		$newPostDescription = trim($newPostDescription);
-		$newPostDescription = filter_var($newPostDescription, FILTER_FLAG_NO_ENCODE_QUOTES);
+		$newPostDescription = filter_var($newPostDescription, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
 		if(empty($newPostDescription) === true) {
 			throw(new \InvalidArgumentException("post description is empty or insecure"));
 		}
 
 		//verify the post description will fit in the database
-		if(strlen($newPostDescription) > 255) {
+		if(strlen($newPostDescription) > 1024) {
 			throw(new \RangeException("Description is too large"));
 		}
 		// store this description
@@ -221,7 +223,7 @@ class Post implements \JsonSerializable {
 			throw(new \InvalidArgumentException("The sex is empty or insecure."));
 		}
 		if(strlen($newPostSex) > 1) {
-			throw(new \RangeException("You can only use one letter"));
+			throw(new \RangeException("You can only use M or F for sex"));
 		}
 		$this->postSex = $newPostSex;
 	}
@@ -250,7 +252,7 @@ class Post implements \JsonSerializable {
 			throw(new \InvalidArgumentException("The post type is empty or insecure."));
 		}
 		if(strlen($newPostType) > 1) {
-			throw(new \RangeException("You can only use one letter"));
+			throw(new \RangeException("can only say C or D"));
 		}
 		$this->postType = $newPostType;
 	}
@@ -312,7 +314,7 @@ class Post implements \JsonSerializable {
 			throw(new \PDOException("Can't update a profile that does not exist"));
 		}
 		//create query template
-		$query = "UPDATE post SET postId = :postId, postOrganizationId = :postOrganizationId, postBreed = :postBreed, postDescription = :postDescription, postSex = :postSex, postType = :postType";
+		$query = "UPDATE post SET  postOrganizationId = :postOrganizationId, postBreed = :postBreed, postDescription = :postDescription, postSex = :postSex, postType = :postType";
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the place holders in the template
@@ -331,13 +333,13 @@ class Post implements \JsonSerializable {
 	 * @throws \TypeError when variables are not the correct data type
 	 *
 	 **/
-	public static function getPostByPostId(\PDO $pdo, int $postId): Post {
+	public static function getPostByPostId(\PDO $pdo, int $postId): ?Post {
 		//sanitize the postId before searching
 		if($postId <= 0) {
 			throw(new\PDOException("post id is not positive"));
 		}
 		// create query template
-		$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post WHERE postId = :postID";
+		$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post WHERE postId = :postId";
 		$statement = $pdo->prepare($query);
 
 		//bind the post id to the place holder in the template
@@ -442,7 +444,46 @@ class Post implements \JsonSerializable {
 		return ($posts);
 	}
 
+	/**
+	 *gets the Posts by post sex
+	 *
+	 * @param \PDO $pdo PDO connection Object
+	 * @param string $postSex to search for
+	 * @return \SplFixedArray SplFixedArray of Posts found
+	 * @throws \ PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not correct data type
+	 **/
+	public static function getPostByPostSex(\PDO $pdo, string $postSex) : \SplFixedArray {
+		// sanitize the description before searching
+		$postSex = trim($postSex);
+		$postSex = filter_var($postSex, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($postSex) === true) {
+			throw(new \PDOException("post sex is invalid"));
+		}
+		// create query template
+		$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post WHERE postSex = :postSex";
+		$statement = $pdo->prepare($query);
 
+		// bind the Post Sex to the place holder in the template
+		$postSex = "%$postSex%";
+		$parameters = ["postSex" => $postSex];
+		$statement->execute($parameters);
+
+		// build an array of Posts
+		$posts = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
+				$posts [$posts->key()] = $post;
+				$posts->next();
+			} catch(\Exception $exception) {
+				//if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($posts);
+	}
 	/**
 	 *gets the Post by post type
 	 *
@@ -504,7 +545,7 @@ class Post implements \JsonSerializable {
 		while(($row = $statement->fetch()) !== false) {
 
 			try {
-				$post = new Post($row["postId"], $row["postOrganizationId"], $row["postDescription"], $row["postSex"], $row["postBreed"], $row["postType"]);
+				$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"],$row["postDescription"], $row["postSex"], $row["postType"]);
 				$posts[$posts->key()] = $post;
 				$posts->next();
 
