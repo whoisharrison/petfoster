@@ -261,8 +261,10 @@ class MessageTest extends PetRescueAbqTest {
 	}
 
 
-	/**
-	 * test inserting a Message and regrabbing it from mySQL - organizationId
+
+	 /**
+	  * test inserting a Message and regrabbing it from mySQL - organizationId
+	  * */
 
 	public function testGetValidMessageByMessageOrganizationId() {
 		//count the number of rows and save it for later
@@ -291,7 +293,7 @@ class MessageTest extends PetRescueAbqTest {
 
 		$this->assertEquals($pdoMessage->getMessageSubject(), $this->VALID_MESSAGESUBJECT);
 	}
-	**/
+
 
 	/**
 	 * test inserting a Message and regrabbing it from mySQL - profileId

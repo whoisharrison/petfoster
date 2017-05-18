@@ -564,7 +564,7 @@ class Message implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		//bind the message organization id to the place holder in the template
-		$parameters = ["$messageOrganizationId" => $messageOrganizationId];
+		$parameters = ["messageOrganizationId" => $messageOrganizationId];
 		$statement->execute($parameters);
 
 		//build an array of messages
