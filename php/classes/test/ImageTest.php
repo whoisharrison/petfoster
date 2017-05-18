@@ -70,7 +70,7 @@ class ImageTest extends PetRescueAbqTest {
 		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
 
 		//create and insert the mocked profile
-		$this->profile = new Profile(null, null, "@handle:", "test@phpunit.de", $this->VALID_PROFILE_HASH, "leighton myers", $this->VALID_SALT, "4792873", $this->VALID_SALT);
+		$this->profile = new Profile(null, null, "@handle:", "test@phpunit.de", $this->VALID_PROFILE_HASH, "leighton myers", $this->VALID_SALT);
 		$this->profile->insert($this->getPDO());
 
 //create and insert the mock Organization
@@ -81,16 +81,6 @@ class ImageTest extends PetRescueAbqTest {
 		$this->post = new Post(null, null, "Yorkshire", "tricolor", "male", "lalk");
 		$this->post->insert($this->getPDO());
 
-		//calculate the date (just use the time the unit test was setup)
-		$this->VALID_IMAGEDATE = new\DateTime();
-
-		//format the sunrise date to use for testing
-		$this->VALID_SUNRISEDATE = new\DateTime();
-		$this->VALID_SUNRISEDATE->sub(new \DateInterval("P10D"));
-
-		//format the sunset date to use for testing
-		$this->VALID_SUNSETDATE = new\DateTime();
-		$this->VALID_SUNSETDATE->add(new \DateInterval("P10D"));
 	}
 
 	/**
@@ -102,16 +92,14 @@ class ImageTest extends PetRescueAbqTest {
 
 		// create a new Image and insert into mySQL
 
-		$image = new Image(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->post->getPostId(), $this->VALID_IMAGEID, $this->VALID_IMAGEPOSTID, $this->VALID_CLOUD_ID);
+		$image = new Image(null, $this->post->getPostId(), $this->VALID_IMAGEID, $this->VALID_IMAGEPOSTID, $this->VALID_CLOUD_ID);
 		$image->insert($this->getPDO());
 
 		// GET THE DATA from msql and ensure they match
-		$pdoImage = Image::getImageByImageIdAndImagePostId($this->getPDO(), $image->getImageId(), $image->getImagePostId());
+		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
 		$this->assertsEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertEquals($pdoImage->getImageId(), $this->post->getPostId());
-		$this->assertEquals($pdoImage->getImageId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoImage->getImageId(), $this->organization->getOrganizationId());
-		$pdoImage = Image::getImageByImageCloudinaryId($this->getPDO(), "amy skdfj");
+		$this->assertEquals($pdoImage->getImageId(), $this->VALID_CLOUD_ID);
 
 	}
 
@@ -151,40 +139,67 @@ class ImageTest extends PetRescueAbqTest {
 		$image->delete($this->getPDO());
 	}
 
+
 	/**
-	 * Test to get image by Image post id
+	 * Test to get image by Image id
 	 *
-	 */
-	public function testGetValidImageByImageIdAndImagePostId() : void {
-//count the number of rows and save for later
+	**/
+	public function testGetValidImageByImageId() {
+
+		//count the number of rows and save for later
 		$numRow = $this->getConnection()->getRowCount("image");
+
 		//create a new image and insert
 		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID());
 		$image->insert($this->getPDO());
 
 		//grab the data and enforce the match
-		$results = Image::getImageByImageId($this->getPDO(), $image->getImageId());
+		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
 		$this->assertEquals($numRow + 1, $this->getConnection()->getRowCount("image"));
-		$this->assertCount(1, $results);
-
-		//enforce that no other objects are bleeding into the test
-		$this->assertContainsOnlyInstancesOf("Edu//Cnm//PetRescueAbq", $results);
-
-		//grab the result from the array and validate it
-		$pdoImage = $results[0];
-		$this->assertEquals($pdoImage->getProfileId(), $this->profile->getProfileId());
-		$this->assertEquals($pdoImage->getImageId(), $this->VALID_IMAGEID);
+		$this->assertEquals($pdoImage->getImagePostId(), $this->post->getPostId());
+		$this->assertEquals($pdoImage->getImageCloudinaryId());
 
 	}
-
 
 	/**
 	 * get invalid image by imageid
 	 * @expectedException \PDOException
 	 */
 	public function testGetInvalidImageByImageId() {
-//grab a image by image that doesn't exist
-		$image = Image::getImageByImageIdAndImagePostId($this->getPDO(),$this->getPDO(),
+
+		//grab a image id that exceeds the maximum allowable profile id
+		$image = Image::getImageByImageId($this->getPDO(), PetRescueAbqTest::INVALID_KEY);
+		$this->assertNull($image);
+	}
+	/**
+	 * Test to get image by Image post id
+	 *
+	 */
+	public function testGetValidImageByImagePostId() {
+
+		//count the number of rows and save for later
+		$numRow = $this->getConnection()->getRowCount("image");
+
+		//create a new image and insert
+		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID());
+		$image->insert($this->getPDO());
+
+		//grab the data and enforce the match
+		$results = Image::getImageByImagePostId($this->getPDO(), $image->getImagePostId());
+		$this->assertEquals($numRow + 1, $this->getConnection()->getRowCount("image"));
+		$this->assertEquals($pdoImage->getImagePostId(), $this->post->getPostId(),
+		$this->assertEquals($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUD_ID));
+
+
+	}
+	/**
+	 * get invalid image by image post id
+	 * @expectedException \PDOException
+	 */
+	public function testGetInvalidImageByImagePostId() {
+//grab a image by image post id that doesn't exist
+		$image = Image::getImageByImagePostId($this->getPDO(), PetRescueAbqTest::INVALID_KEY);
+		$this->assertCount(0, $image);
 
 
 	}
@@ -193,7 +208,8 @@ class ImageTest extends PetRescueAbqTest {
 	 *
 	 */
 
-	public function testGetValidImageByImageCloudinaryId(): void {
+	public function testGetValidImageByImageCloudinaryId() {
+
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("image");
 
@@ -203,16 +219,9 @@ class ImageTest extends PetRescueAbqTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 
-		$results = Image::getImageByImageCloudinaryId(($this->getPDO()), $image->getImageCloudinaryId());
-		$this->assertEquals($numRows = 1, $this->getConnection()("image"));
-		$this->assertCount(1, $results);
-
-//enforce no other objects are bleeding into the test
-		$this->assertContainsOnlyInstancesO("Edu\\Cnm\\PetFosterAbq\\Image", $results);
-
-//grab the result from the array and validate
-		$pdoImage = $results [0];
-		$this->assertEquals($pdoImage->getImageId(), $this->post->getPostId());
+		$pdoImage = Image::getImageByImageCloudinaryId(($this->getPDO()), $image->getImageCloudinaryId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
+		$this->assertEquals($pdoImage->getImagePostId(), $this->post->getPostId());
 		$this->assertEquals($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUD_ID);
 
 	}
