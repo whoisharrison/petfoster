@@ -246,20 +246,17 @@ class OrganizationTest extends PetRescueAbqTest {
 	/**
 	 * test inserting an Organization and re-grabbing it from mySQL
 	 **/
-	public function testGetValidOrganizationByOrganizationProfileId() {
+	public function testGetValidOrganizationByOrganizationProfileId() : void {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("organization");
+
 		// create a new Organization and insert to into mySQL
 		$organization = new Organization(null, $this->profile->getProfileId(), $this->VALID_ACTIVATION, $this->VALID_ADDRESS1, $this->VALID_ADDRESS2, $this->VALID_CITY, $this->VALID_EMAIL, $this->VALID_LICENSE, $this->VALID_NAME, $this->VALID_PHONE, $this->VALID_STATE, $this->VALID_ZIP);
 		$organization->insert($this->getPDO());
-		// grab the data from mySQL and enforce the fields match our expectations
-		$results = Organization::getOrganizationByOrganizationProfileId($this->getPDO(), $organization->getOrganizationProfileId());
-		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
-		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Organization", $results);
 
-		// grab the result from the array and validate it
-		$pdoOrganization = $results[0];
+		// grab the data from mySQL and enforce the fields match our expectations
+		$pdoOrganization = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
 		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
 		$this->assertEquals($pdoOrganization->getOrganizationAddress1(), $this->VALID_ADDRESS1);
@@ -278,7 +275,7 @@ class OrganizationTest extends PetRescueAbqTest {
 	public function testGetInvalidOrganizationByOrganizationProfileId() : void {
 		// grab a profile id that exceeds the maximum allowable profile id
 		$organization = Organization::getOrganizationByOrganizationProfileId($this->getPDO(), PetRescueAbqTest::INVALID_KEY);
-		$this->assertCount(0, $organization);
+		$this->assertNull($organization);
 	}
 	/**
 	 * test grabbing an Organization by organization email
