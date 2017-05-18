@@ -89,7 +89,7 @@ class MessageTest extends PetRescueAbqTest {
 		//var_dump($this->profile->getProfileId());
 
 		// create and insert a Organization to own the test Message
-		$this->organization = new Organization(null, $this->profile->getProfileId(), "22222222222222222222222222222222", "Address 1", "Address 2", "City Name", "test@phpunit.com", "License Num", "Org Name", "5055552525", "NM", "87555");
+		$this->organization = new Organization(null, $this->profile->getProfileId(), "22222222222222222222222222222222", "123 Fourth Street NW", "2nd Floor, Suite 789", "Albuq", "test@phpunit.com", "00941657", "Org Name", "5055552525", "NM", "87101");
 		$this->organization->insert($this->getPDO());
 
 		//calculate the date, just use the time the unit test was setup
