@@ -506,7 +506,7 @@ class Post implements \JsonSerializable {
 
 		// bind the Post Type to the place holder in the template
 		$postType = "%$postType%";
-		$parameters = ["postSex" => $postType];
+		$parameters = ["postType" => $postType];
 		$statement->execute($parameters);
 
 		// build an array of Posts

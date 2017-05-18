@@ -55,7 +55,7 @@ class PostTest extends PetRescueAbqTest {
 
 	/**
 	 * valid postSex to use toe create the Post
-	 * @var string $VALID_ POSTSEX
+	 * @var string $VALID_POSTSEX
 	 */
 	protected $VALID_POSTSEX = "M";
 
@@ -283,9 +283,10 @@ class PostTest extends PetRescueAbqTest {
 			//grab the results from the array and validate it
 
 			$pdoPost = $results[0];
+			$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
 			$this->assertEquals($pdoPost->getPostOrganizationId(), $this->organization->getOrganizationId());
-			$this->assertEquals($pdoPost->getPostDescription(), $this->VALID_POSTDESCRIPTION);
 			$this->assertEquals($pdoPost->getPostBreed(), $this->VALID_POSTBREED);
+			$this->assertEquals($pdoPost->getPostDescription(), $this->VALID_POSTDESCRIPTION);
 			$this->assertEquals($pdoPost->getPostSex(), $this->VALID_POSTSEX);
 			$this->assertEquals($pdoPost->getPostType(), $this->VALID_POSTTYPE);
 
@@ -315,8 +316,8 @@ class PostTest extends PetRescueAbqTest {
 
 		$pdoPost = $results[0];
 		$this->assertEquals($pdoPost->getPostOrganizationId(), $this->organization->getOrganizationId());
-		$this->assertEquals($pdoPost->getPostDescription(), $this->VALID_POSTDESCRIPTION);
 		$this->assertEquals($pdoPost->getPostBreed(), $this->VALID_POSTBREED);
+		$this->assertEquals($pdoPost->getPostDescription(), $this->VALID_POSTDESCRIPTION);
 		$this->assertEquals($pdoPost->getPostSex(), $this->VALID_POSTSEX);
 		$this->assertEquals($pdoPost->getPostType(), $this->VALID_POSTTYPE);
 
