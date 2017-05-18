@@ -2,7 +2,7 @@
 
 namespace Edu\Cnm\PetRescueAbq\Test;
 
-use Edu\Cnm\PetRescueAbq\{
+use Edu\Cnm\PetRescueAbq\ {
 	 Profile, Organization, Post, Image
 };
 
@@ -18,6 +18,7 @@ require_once(dirname(__DIR__) . "/autoload.php");
  * @see Image
  * @author Amy Skidmore <askidmore1@cnm.edu>
  */
+
 class ImageTest extends PetRescueAbqTest {
 
 	/**

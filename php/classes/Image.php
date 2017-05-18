@@ -195,7 +195,7 @@ class Image implements \JsonSerializable {
 // create query template
 		$query = "UPDATE image SET imagePostId = :imagePostId, imageCloudinaryId = :imageCloudinaryId WHERE imageId = :imageId";
 		$statement = $pdo->prepare($query);
-		//bind variabale in template
+		//bind variable in template
 		$parameters = ["imageId" => $this->imageId, "imagePostId" => $this->imagePostId, "imageCloudinaryId" => $this->imageCloudinaryId];
 		$statement->execute($parameters);
 	}
@@ -281,7 +281,7 @@ class Image implements \JsonSerializable {
 	 * @throws \PDOException when msql related errors occur
 	 * @throws \TypeError when variables are not the correct data
 	 **/
-	public static function getImageByImageCloudinaryId(\PDO$pdo, string $imageCloudinaryId) {
+	public static function getImageByImageCloudinaryId(\PDO$pdo, string $imageCloudinaryId) : \SplFixedArray {
 		// sanitize the description before searching
 		$imageCloudinaryId = trim($imageCloudinaryId);
 		$imageCloudinaryId = filter_var($imageCloudinaryId,FILTER_FLAG_NO_ENCODE_QUOTES);
