@@ -117,6 +117,8 @@ class MessageTest extends PetRescueAbqTest {
 			$this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
 		$message->insert($this->getPDO());
 
+//the work of a fallen warrior @kephart
+
 
 //		$message = new Message(null,$this->profile->getProfileId(),$this->organization->getOrganizationId(),"work dammit",$this->VALID_MESSAGEDATE,"this test 			will pass");
 
@@ -248,7 +250,7 @@ class MessageTest extends PetRescueAbqTest {
 	}
 
 	/**
-	 * test inserting a Message and regrabbing it from mySQL
+	 * test inserting a Message and regrabbing it from mySQL - profileId
 	 */
 	public function testGetValidMessageByMessageProfileId() {
 		//count the number of rows and save it for later
@@ -261,6 +263,37 @@ class MessageTest extends PetRescueAbqTest {
 
 		//grab the data from mySQL and enforce the fields match our expectations
 		$results = Message::getMessageByMessageProfileId($this->getPDO(), $message->getMessageProfileId());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("message"));
+		$this->assertCount(1, $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Message", $results);
+
+		//grab the result from the array and validate it
+		$pdoMessage = $results[0];
+		$this->assertEquals($pdoMessage->getMessageProfileId(), $this->profile->getProfileId());
+		$this->assertEquals($pdoMessage->getMessageOrganizationId(), $this->organization->getOrganizationId());
+
+		$this->assertEquals($pdoMessage->getMessageContent(), $this->VALID_MESSAGECONTENT);
+
+		//date to seconds since the beginning of time to avoid round off error
+		$this->assertEquals($pdoMessage->getMessageDateTime()->getTimestamp(), $this->VALID_MESSAGEDATE->getTimestamp());
+
+		$this->assertEquals($pdoMessage->getMessageSubject(), $this->VALID_MESSAGESUBJECT);
+	}
+
+	/**
+	 * test inserting a Message and regrabbing it from mySQL - organizationId
+	 */
+	public function testGetValidMessageByMessageOrganizationId() {
+		//count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("message");
+
+		//create a new Message and insert into mySQL
+		$message = new Message(null, $this->profile->getProfileId(), $this->organization->getOrganizationId(), $this->VALID_MESSAGECONTENT,
+			$this->VALID_MESSAGEDATE, $this->VALID_MESSAGESUBJECT);
+		$message->insert($this->getPDO());
+
+		//grab the data from mySQL and enforce the fields match our expectations
+		$results = Message::getMessageByMessageOrganizationId($this->getPDO(), $message->getMessageProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("message"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Message", $results);
