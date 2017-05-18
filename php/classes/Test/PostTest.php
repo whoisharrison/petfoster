@@ -53,7 +53,6 @@ class PostTest extends PetRescueAbqTest {
 	 */
 	protected $VALID_POSTDESCRIPTION = "this is a brown dog";
 
-
 	/**
 	 * valid postSex to use toe create the Post
 	 * @var string $VALID_ POSTSEX
@@ -292,6 +291,36 @@ class PostTest extends PetRescueAbqTest {
 
 
 		}
+	/**
+	 * test grabbing the post by post type
+	 */
+
+	public function testGetValidPostsByPostType() : void {
+		//count the number of rows and save it for later
+		$numRows = $this->getConnection()->getRowCount("post");
+
+		//create a new Post and insert into mySQL
+		$post = new Post(null, $this->organization->getOrganizationId(), $this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
+		$post->insert($this->getPDO());
+
+		//grab the data from mySQL and enforce the fields match our expectations
+		$results = Post::getPostByPostType($this->getPDO(), $post->getPostType());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("post"));
+		$this->assertCount(1, $results);
+
+		//enforce no other objects are bleeding into the test
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Post", $results);
+
+		//grab the results from the array and validate it
+
+		$pdoPost = $results[0];
+		$this->assertEquals($pdoPost->getPostOrganizationId(), $this->organization->getOrganizationId());
+		$this->assertEquals($pdoPost->getPostDescription(), $this->VALID_POSTDESCRIPTION);
+		$this->assertEquals($pdoPost->getPostBreed(), $this->VALID_POSTBREED);
+		$this->assertEquals($pdoPost->getPostSex(), $this->VALID_POSTSEX);
+		$this->assertEquals($pdoPost->getPostType(), $this->VALID_POSTTYPE);
+
+	}
 }
 
 
