@@ -265,12 +265,12 @@ class PostTest extends PetRescueAbqTest {
 		 * test grabbing the post by post sex
 		 */
 
-		public function testGetValidPostbyPostSex() : void {
+		public function testGetValidPostByPostSex() : void {
 			//count the number of rows and save it for later
 			$numRows = $this->getConnection()->getRowCount("post");
 
 			//create a new Post and insert into mySQL
-			$post = new Post(null, $this->organization->getOrganizationId(),$this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE );
+			$post = new Post(null, $this->organization->getOrganizationId(),$this->VALID_POSTBREED, $this->VALID_POSTDESCRIPTION, $this->VALID_POSTSEX, $this->VALID_POSTTYPE);
 			$post->insert($this->getPDO());
 
 			//grab the data from mySQL and enforce the fields match our expectations
