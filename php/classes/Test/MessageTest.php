@@ -250,9 +250,20 @@ class MessageTest extends PetRescueAbqTest {
 	}
 
 
+
+	/**
+	 * test grabbing a message that does not exist
+	 */
+	public function testGetInvalidMessageByOrganizationId(): void {
+		//grab a organization id that exceeds the maximum allowable profile id
+		$message = Message::getMessageByMessageId($this->getPdo(), PetRescueAbqTest::INVALID_KEY);
+		$this->assertNull($message);
+	}
+
+
 	/**
 	 * test inserting a Message and regrabbing it from mySQL - organizationId
-	 */
+
 	public function testGetValidMessageByMessageOrganizationId() {
 		//count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("message");
@@ -280,6 +291,7 @@ class MessageTest extends PetRescueAbqTest {
 
 		$this->assertEquals($pdoMessage->getMessageSubject(), $this->VALID_MESSAGESUBJECT);
 	}
+	**/
 
 	/**
 	 * test inserting a Message and regrabbing it from mySQL - profileId
