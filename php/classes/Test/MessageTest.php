@@ -293,7 +293,7 @@ class MessageTest extends PetRescueAbqTest {
 		$message->insert($this->getPDO());
 
 		//grab the data from mySQL and enforce the fields match our expectations
-		$results = Message::getMessageByMessageOrganizationId($this->getPDO(), $message->getMessageProfileId());
+		$results = Message::getMessageByMessageOrganizationId($this->getPDO(), $message->getMessageOrganizationId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("message"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Message", $results);
