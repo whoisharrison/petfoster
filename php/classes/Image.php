@@ -292,7 +292,7 @@ class Image implements \JsonSerializable {
 		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image WHERE imageCloudinaryId = :imageCloudinaryId";
 		$statement = $pdo->prepare($query);
 		// bind the image cloudinary id to the place holder in teh template
-		$imageCloudinaryId = "%imageCloudinaryId%";
+		$imageCloudinaryId = "imageCloudinaryId";
 		$parameters = ["imageCloudinaryId" => $imageCloudinaryId];
 		$statement->execute($parameters);
 		// build an array of images
