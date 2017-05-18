@@ -158,7 +158,7 @@ class ImageTest extends PetRescueAbqTest {
 		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
 		$this->assertEquals($numRow + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertEquals($pdoImage->getImagePostId(), $this->post->getPostId());
-		$this->assertEquals($pdoImage->getImageCloudinaryId());
+		$this->assertEquals($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUD_ID);
 
 	}
 
@@ -176,7 +176,7 @@ class ImageTest extends PetRescueAbqTest {
 	 * Test to get image by Image post id
 	 *
 	 */
-	public function testGetValidImageByImagePostId() {
+	public function testGetValidImageByImagePostId() : void {
 
 		//count the number of rows and save for later
 		$numRow = $this->getConnection()->getRowCount("image");
@@ -186,10 +186,13 @@ class ImageTest extends PetRescueAbqTest {
 		$image->insert($this->getPDO());
 
 		//grab the data and enforce the match
-		$results = Image::getImageByImagePostId($this->getPDO(), $image->getImagePostId());
+		$pdoImage = Image::getImageByImagePostId($this->getPDO(), $image->getImagePostId());
 		$this->assertEquals($numRow + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertEquals($pdoImage->getImageId(), $this->ImageId());
-		$this->assertEquals($pdoImage->getImagePostId(), $this->post->getPostId())
+		$this->assertEquals($pdoImage->getImagePostId(), $this->post->getPostId());
+		$this->assertEquals($pdoImage->getImagePostId(), $this->post->getPostId());
+		$this->assertEquals($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUD_ID);
+
 
 	}
 	/**

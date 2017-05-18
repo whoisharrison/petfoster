@@ -157,7 +157,7 @@ class Image implements \JsonSerializable {
 			//bind member variables to place holders in template
 			$parameters = ["imageId"=> $this->imageId, "imagePostId" => $this->imagePostId, "imageCloudinaryId", $this->$this->imageCloudinaryId];
 			$statement->execute($parameters);
-// update the null imageId with what mySQL just gave us
+	// update the null imageId with what mySQL just gave us
 		$this->imageId = intval($pdo->lastInsertId());
 	}
 
@@ -180,25 +180,6 @@ class Image implements \JsonSerializable {
 	$parameters = ["imageId" => $this->imageId];
 	$statement->execute($parameters);
 }
-/**
- * updates this Image in mySQL
- *
- * @param \PDO $pdo PDO connection object
- * @throws \PDOException when mySQL related errors occur
- * @throws \TypeError if $pdo is not a PDO connection object
- **/
-	public function update(\PDO $pdo) : void {
-		// enforce the imageId is not null (i.e., don't update a image that hasn't been inserted)
-		if($this->imageId === null) {
-			throw(new \PDOException("unable to update a image that does not exist"));
-		}
-// create query template
-		$query = "UPDATE image SET imagePostId = :imagePostId, imageCloudinaryId = :imageCloudinaryId WHERE imageId = :imageId";
-		$statement = $pdo->prepare($query);
-		//bind variable in template
-		$parameters = ["imageId" => $this->imageId, "imagePostId" => $this->imagePostId, "imageCloudinaryId" => $this->imageCloudinaryId];
-		$statement->execute($parameters);
-	}
 
 	/**
 	 * gets the Image by imageId
