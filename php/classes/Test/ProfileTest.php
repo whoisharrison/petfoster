@@ -254,7 +254,7 @@ class ProfileTest extends PetRescueAbqTest {
 		$this->assertEquals($numRows +1, $this->getConnection()->getRowCount("profile"));
 		$this->assertCount(1, $results);
 		//enforce no other objects are bleeding into profile
-		$this->assertContainsOnlyInstancesOf("Edu\Cnm\PetRescueAbq\\Profile", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Profile", $results);
 		// grab the data from mySQL and enforce the fields match our expectations
 		$pdoProfile = $results[0];
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("profile"));

@@ -189,9 +189,7 @@ class ImageTest extends PetRescueAbqTest {
 		$results = Image::getImageByImagePostId($this->getPDO(), $image->getImagePostId());
 		$this->assertEquals($numRow + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertEquals($pdoImage->getImageId(), $this->ImageId());
-		$this->assertEquals($pdoImage->getImagePostId(), $this->post->getPostId(),
-
-
+		$this->assertEquals($pdoImage->getImagePostId(), $this->post->getPostId())
 
 	}
 	/**
