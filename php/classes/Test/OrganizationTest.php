@@ -255,7 +255,7 @@ class OrganizationTest extends PetRescueAbqTest {
 		$organization->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoOrganization = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationId());
+		$pdoOrganization = Organization::getOrganizationByOrganizationProfileId($this->getPDO(), $organization->getOrganizationProfileId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
 		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
@@ -289,7 +289,7 @@ class OrganizationTest extends PetRescueAbqTest {
 		$organization->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
-		$pdoOrganization = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationId());
+		$pdoOrganization = Organization::getOrganizationByOrganizationEmail($this->getPDO(), $organization->getOrganizationEmail());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
 		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
@@ -324,7 +324,7 @@ class OrganizationTest extends PetRescueAbqTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 
-		$pdoOrganization = Organization::getOrganizationByOrganizationId($this->getPDO(), $organization->getOrganizationId());
+		$pdoOrganization = Organization::getOrganizationByOrganizationLicense($this->getPDO(), $organization->getOrganizationLicense());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("organization"));
 		$this->assertEquals($pdoOrganization->getOrganizationProfileId(), $this->profile->getProfileId());
 		$this->assertEquals($pdoOrganization->getOrganizationActivationToken(), $this->VALID_ACTIVATION);
@@ -413,7 +413,7 @@ class OrganizationTest extends PetRescueAbqTest {
 	/**
 	 * test grabbing an Organization by an activation that does not exist
 	 **/
-	public function testGetInvalidOrganizationActivation() : void {
+	public function testGetInvalidOrganizationActivationToken() : void {
 		// grab an Activation Token that does not exist
 		$organization = Organization::getOrganizationByOrganizationActivationToken($this->getPDO(), "5ebc7867885cb8dd25af05b991dd5609");
 		$this->assertNull($organization);
