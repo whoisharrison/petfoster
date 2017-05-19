@@ -4,8 +4,8 @@
 			 <!--<file>ProfileTest.php</file>-->
 			<!--<file>MessageTest.php</file>-->
 			 <!--<file>OrganizationTest.php</file>-->
-			 <file>PostTest.php</file>
-			 <!--<file>ImageTest.php</file>-->
+			 <!--PostTest.php</file>-->
+			 <file>ImageTest.php</file>
 		</testsuite>
 	</testsuites>
 	<filter>
