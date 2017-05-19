@@ -271,7 +271,7 @@ class Post implements \JsonSerializable {
 			throw (new \PDOException("not a new post"));
 		}
 		//create query template
-		$query = "INSERT INTO post(postOrganizationId, postBreed, postDescription, postSex, postType) VALUES( :postOrganizationId, :postDescription, :postBreed, :postSex, :postType)";
+		$query = "INSERT INTO post(postOrganizationId, postBreed, postDescription, postSex, postType) VALUES( :postOrganizationId, :postBreed, :postDescription, :postSex, :postType)";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
@@ -412,7 +412,7 @@ class Post implements \JsonSerializable {
 	 * @throws \ PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not correct data type
 	 **/
-	public static function getPostByPostBreed(\PDO $pdo, string $postBreed) : \SplFixedArray {
+	public static function getPostsByPostBreed(\PDO $pdo, string $postBreed) : \SplFixedArray {
 		// sanitize the description before searching
 		$postBreed = trim($postBreed);
 		$postBreed = filter_var($postBreed, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -420,7 +420,7 @@ class Post implements \JsonSerializable {
 			throw(new \PDOException("post breed is invalid"));
 		}
 		// create query template
-		$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post WHERE postBreed = :postBreed";
+		$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post WHERE postBreed LIKE :postBreed";
 		$statement = $pdo->prepare($query);
 
 		// bind the Post Breed to the place holder in the template
@@ -443,7 +443,46 @@ class Post implements \JsonSerializable {
 		}
 		return ($posts);
 	}
+	/**
+	 *gets the Posts by post Description
+	 *
+	 * @param \PDO $pdo PDO connection Object
+	 * @param string $postDescription to search for
+	 * @return \SplFixedArray SplFixedArray of Posts found
+	 * @throws \ PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not correct data type
+	 **/
+	public static function getPostByPostDescription(\PDO $pdo, string $postDescription) : \SplFixedArray {
+		// sanitize the description before searching
+		$postDescription = trim($postDescription);
+		$postDescription = filter_var($postDescription, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($postDescription) === true) {
+			throw(new \PDOException("post description is invalid"));
+		}
+		// create query template
+		$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post WHERE postDescription LIKE :postDescription";
+		$statement = $pdo->prepare($query);
 
+		// bind the Post Description to the place holder in the template
+		$postDescription = "%$postDescription%";
+		$parameters = ["postDescription" => $postDescription];
+		$statement->execute($parameters);
+
+		// build an array of Posts
+		$posts = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
+				$posts[$posts->key()] = $post;
+				$posts->next();
+			} catch(\Exception $exception) {
+				//if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($posts);
+	}
 	/**
 	 *gets the Posts by post sex
 	 *
@@ -461,7 +500,7 @@ class Post implements \JsonSerializable {
 			throw(new \PDOException("post sex is invalid"));
 		}
 		// create query template
-		$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post WHERE postSex = :postSex";
+		$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post WHERE postSex LIKE :postSex";
 		$statement = $pdo->prepare($query);
 
 		// bind the Post Sex to the place holder in the template
@@ -475,7 +514,7 @@ class Post implements \JsonSerializable {
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
-				$posts [$posts->key()] = $post;
+				$posts[$posts->key()] = $post;
 				$posts->next();
 			} catch(\Exception $exception) {
 				//if the row couldn't be converted, rethrow it
@@ -501,7 +540,7 @@ class Post implements \JsonSerializable {
 			throw(new \PDOException("post description is invalid"));
 		}
 		// create query template
-		$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post WHERE postType  = :postType";
+		$query = "SELECT postId, postOrganizationId, postBreed, postDescription, postSex, postType FROM post WHERE postType LIKE :postType";
 		$statement = $pdo->prepare($query);
 
 		// bind the Post Type to the place holder in the template
@@ -515,7 +554,7 @@ class Post implements \JsonSerializable {
 		while(($row = $statement->fetch()) !== false) {
 			try {
 				$post = new Post($row["postId"], $row["postOrganizationId"], $row["postBreed"], $row["postDescription"], $row["postSex"], $row["postType"]);
-				$posts [$posts->key()] = $post;
+				$posts[$posts->key()] = $post;
 				$posts->next();
 			} catch(\Exception $exception) {
 				//if the row couldn't be converted, rethrow it
