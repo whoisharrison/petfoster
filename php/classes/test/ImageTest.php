@@ -92,14 +92,15 @@ class ImageTest extends PetRescueAbqTest {
 
 		// create a new Image and insert into mySQL
 
-		$image = new Image(null, $this->profile->getProfileId(), $this->post->getPostId(), $this->VALID_CLOUD_ID);
+		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID);
+		//$var_dump($image);
 		$image->insert($this->getPDO());
 
 		// GET THE DATA from msql and ensure they match
 		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
-		$this->assertsEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
-		$this->assertEquals($pdoImage->getImageId(), $this->post->getPostId());
-		$this->assertEquals($pdoImage->getImageId(), $this->VALID_CLOUD_ID);
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
+		$this->assertEquals($pdoImage->getImagePostId(), $this->post->getPostId());
+		$this->assertEquals($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUD_ID);
 
 
 	}
