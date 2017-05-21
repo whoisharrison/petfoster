@@ -38,7 +38,7 @@ class Image implements \JsonSerializable {
 		 * @throws \Exception if some other exception occurs
 		 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 		 **/
-		public function __construct(?int $ImageId, ?int $newImagePostId, string $newImageCloudinaryId) {
+		public function __construct(?int $newImageId, ?int $newImagePostId, string $newImageCloudinaryId) {
 			try {
 				$this->setImageId($newImageId);
 				$this->setImagePostId($newImagePostId);
