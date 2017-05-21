@@ -25,7 +25,7 @@ class ImageTest extends PetRescueAbqTest {
 	 * Profile that created the Post which posted the image; this is for foreign key relations
 	 * @var Profile $profile
 	 */
-	protected $profile;
+	protected $profile = null;
 	/**
 	 * Organization that created the image post, this is for foreign key relations..don't understand, ask? org/ image not foreign key
 	 * @var Organization $organization ;
@@ -39,7 +39,7 @@ class ImageTest extends PetRescueAbqTest {
 	protected $post = null;
 	/**
 	 * Account that uploaded and saved image
-	 * @var
+	 * @var $VALID_CLOUD_ID
 	 */
 	 protected $VALID_CLOUD_ID = "1234567890123456789012345678";
 	/**
@@ -60,27 +60,25 @@ class ImageTest extends PetRescueAbqTest {
 	 * set up create dependent objects before running each test
 	 *
 	 */
-	public final function setUp(): void {
+	public final function setUp() : void {
 		//run the default setUp() method first
-		parent::setUp();
-
 		//create a salt and hash for the mocked profile
+		parent::setUp();
 		$password = "abc123";
+		$profileActivationToken = bin2hex(random_bytes(16));
 		$this->VALID_SALT = bin2hex(random_bytes(32));
 		$this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 262144);
-		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
-
 
 		//create and insert the mocked profile
-		$this->profile = new Profile($this->profile->getProfileId(), 34957803488540, "@handle:", "test@phpunit.de", $this->VALID_HASH,"leighton", $this->VALID_SALT);
+		$this->profile = new Profile(null, $profileActivationToken, "@handle:", "test@phpunit.de", $this->VALID_HASH,"leighton", $this->VALID_SALT);
 		$this->profile->insert($this->getPDO());
-
+		$this->VALID_ACTIVATION = $profileActivationToken;
 //create and insert the mock Organization
-		$this->organization = new Organization(null, $this->profile->getProfileId(), "31482093iok", "540 Wildcat lane", "112 Wildcat Rd", "Lexington", "wildcatsrule@php.com", "12489ky", "Kentucky Pet Help", "3345952089", "KY", "40801");
+		$this->organization = new Organization(null, $this->profile->getProfileId(), "31482093333222228888888888888888", "540 Wildcat lane", "112 Wildcat Rd", "Lexington", "wildcatsrule@php.com", "12489ky", "Kentucky Pet Help", "3345952089", "KY", "40801");
 		$this->organization->insert($this->getPDO());
 
 		//create and insert the mock Post
-		$this->post = new Post(null, $this->organization->getOrganizationId(), "Yorkshire", "tricolor", "male", "lalk");
+		$this->post = new Post(null, $this->organization->getOrganizationId(), "Yorkshire", "tricolor", "M", "D");
 		$this->post->insert($this->getPDO());
 
 	}
@@ -94,7 +92,7 @@ class ImageTest extends PetRescueAbqTest {
 
 		// create a new Image and insert into mySQL
 
-		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID);
+		$image = new Image(null, $this->profile->getProfileId(), $this->post->getPostId(), $this->VALID_CLOUD_ID);
 		$image->insert($this->getPDO());
 
 		// GET THE DATA from msql and ensure they match
@@ -111,7 +109,7 @@ class ImageTest extends PetRescueAbqTest {
 	 */
 	public function testInsertInvalidImage() {
 //create a Image with a nono mull image id
-		$image = new Image(PetRescueAbqTest::INVALID_KEY, null, null);
+		$image = new Image(PetRescueAbqTest::INVALID_KEY, $this->post->getPostId(),$this->VALID_CLOUD_ID);
 		$image->insert($this->getPDO());
 
 	}
@@ -165,13 +163,13 @@ class ImageTest extends PetRescueAbqTest {
 	}
 
 	/**
-	 * get invalid image by imageid
+	 * get invalid image by imageId
 	 * @expectedException \PDOException
 	 */
 	public function testGetInvalidImageByImageId() {
 
 		//grab a image id that exceeds the maximum allowable profile id
-		$image = Image::getImageByImageId($this->getPDO(), PetRescueAbqTest::INVALID_KEY);
+		$image = Image::getImageByImageId($this->profile->getProfileId(), PetRescueAbqTest::INVALID_KEY, $this->post->getPostId(), $this->VALID_CLOUD_ID);
 		$this->assertNull($image);
 	}
 	/**

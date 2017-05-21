@@ -64,11 +64,12 @@ class Image implements \JsonSerializable {
 		/**
 		 * mutator method for image id
 		 *
-		 * @param int|null $newImageId new value of image id
+		 * @param int|null $newImageId value of new image id
 		 * @throws \RangeException if $newImageId is not positive
 		 * @throws \TypeError if $newImageId is not an integer
 		 **/
 		public function setImageId(?int $newImageId): void {
+
 			//if image id is null immediately return it
 			if($newImageId === null) {
 				return;
