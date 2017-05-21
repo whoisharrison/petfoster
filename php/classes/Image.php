@@ -185,7 +185,7 @@ class Image implements \JsonSerializable {
 }
 
 	/**
-	 * gets the Image by imageId
+	 * gets the Image by image id
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $imageId image id to search for
