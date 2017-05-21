@@ -37,7 +37,7 @@ class Image implements \JsonSerializable {
 		 * @throws \Exception if some other exception occurs
 		 * @Documentation https://php.net/manual/en/language.oop5.decon.php
 		 **/
-		public function __construct(?int $newImageId, ?int $newImagePostId, ?string $newImageCloudinaryId) {
+		public function __construct(?int $ImageId, ?int $newImagePostId, string $newImageCloudinaryId) {
 			try {
 				$this->setImageId($newImageId);
 				$this->setImagePostId($newImagePostId);
@@ -55,7 +55,7 @@ class Image implements \JsonSerializable {
 		 *
 		 * @return int|null value of image id
 		 **/
-		public function getImageId():int {
+		public function getImageId(): ?int {
 			return ($this->imageId);
 		}
 
@@ -66,10 +66,9 @@ class Image implements \JsonSerializable {
 		 * @throws \RangeException if $newImageId is not positive
 		 * @throws \TypeError if $newImageId is not an integer
 		 **/
-		public function setImageId(?int $newImageId) : void {
+		public function setImageId(?int $newImageId): void {
 			//if image id is null immediately return it
 			if($newImageId === null) {
-				$this->imageId = null;
 				return;
 			}
 			// verify the image id is positive
@@ -78,6 +77,7 @@ class Image implements \JsonSerializable {
 			}
 			// convert and store the image id
 			$this->imageId = $newImageId;
+
 		}
 
 		/**
@@ -155,7 +155,7 @@ class Image implements \JsonSerializable {
 			$query = "INSERT INTO image(imageId, imagePostId, imageCloudinaryId) VALUES(:imageId, :imagePostId, :imageCloudinaryId)";
 			$statement =  $pdo->prepare($query);
 			//bind member variables to place holders in template
-			$parameters = ["imageId"=> $this->imageId, "imagePostId" => $this->imagePostId, "imageCloudinaryId", $this->$this->imageCloudinaryId];
+			$parameters = ["imageId"=> $this->imageId, "imagePostId" => $this->imagePostId, "imageCloudinaryId"=> $this->imageCloudinaryId,];
 			$statement->execute($parameters);
 	// update the null imageId with what mySQL just gave us
 		$this->imageId = intval($pdo->lastInsertId());

@@ -47,7 +47,7 @@ class ImageTest extends PetRescueAbqTest {
 	 * @var $VALID_HASH
 	 *
 	 */
-	protected $VALID_PROFILE_HASH;
+	protected $VALID_HASH;
 	/**
 	 * valid salt to use to create the profile object to own the test
 	 * @var string $VALID_SALT
@@ -62,7 +62,7 @@ class ImageTest extends PetRescueAbqTest {
 	 */
 	public final function setUp(): void {
 		//run the default setUp() method first
-		parent::getSetUpOperation();
+		parent::setUp();
 
 		//create a salt and hash for the mocked profile
 		$password = "abc123";
@@ -70,16 +70,17 @@ class ImageTest extends PetRescueAbqTest {
 		$this->VALID_HASH = hash_pbkdf2("sha512", $password, $this->VALID_SALT, 262144);
 		$this->VALID_ACTIVATION = bin2hex(random_bytes(16));
 
+
 		//create and insert the mocked profile
-		$this->profile = new Profile(null, null, "@handle:", "test@phpunit.de", $this->VALID_PROFILE_HASH, "leighton myers", $this->VALID_SALT);
+		$this->profile = new Profile(null, 34957803488540, "@handle:", "test@phpunit.de", $this->VALID_HASH,leighton, $this->VALID_SALT);
 		$this->profile->insert($this->getPDO());
 
 //create and insert the mock Organization
-		$this->organization = new Organization(null, 31243243, "31482093iok", "540 Wildcat lane", "112 Wildcat Rd", "Lexington", "wildcatsrule@php.com", "12489ky", "Kentucky Pet Help", "3345952089", "KY", "40801");
+		$this->organization = new Organization(null, $this->profile->getProfileId(), "31482093iok", "540 Wildcat lane", "112 Wildcat Rd", "Lexington", "wildcatsrule@php.com", "12489ky", "Kentucky Pet Help", "3345952089", "KY", "40801");
 		$this->organization->insert($this->getPDO());
 
 		//create and insert the mock Post
-		$this->post = new Post(null, null, "Yorkshire", "tricolor", "male", "lalk");
+		$this->post = new Post(null, $this->organization->getOrganizationId(), "Yorkshire", "tricolor", "male", "lalk");
 		$this->post->insert($this->getPDO());
 
 	}
@@ -93,7 +94,7 @@ class ImageTest extends PetRescueAbqTest {
 
 		// create a new Image and insert into mySQL
 
-		$image = new Image(null, $this->post->getPostId(), $this->VALID_IMAGEID, $this->VALID_IMAGEPOSTID, $this->VALID_CLOUD_ID);
+		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID);
 		$image->insert($this->getPDO());
 
 		// GET THE DATA from msql and ensure they match
@@ -101,6 +102,7 @@ class ImageTest extends PetRescueAbqTest {
 		$this->assertsEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertEquals($pdoImage->getImageId(), $this->post->getPostId());
 		$this->assertEquals($pdoImage->getImageId(), $this->VALID_CLOUD_ID);
+
 
 	}
 
@@ -151,7 +153,7 @@ class ImageTest extends PetRescueAbqTest {
 		$numRow = $this->getConnection()->getRowCount("image");
 
 		//create a new image and insert
-		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID());
+		$image = new Image(null, $this->profile->getProfileId(), $this->post->getPostId(), $this->VALID_CLOUD_ID());
 		$image->insert($this->getPDO());
 
 		//grab the data and enforce the match
@@ -182,14 +184,13 @@ class ImageTest extends PetRescueAbqTest {
 		$numRow = $this->getConnection()->getRowCount("image");
 
 		//create a new image and insert
-		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID());
+		$image = new Image(null, $this->profile->getProfileId(),$this->post->getPostId(), $this->VALID_CLOUD_ID());
 		$image->insert($this->getPDO());
 
 		//grab the data and enforce the match
 		$pdoImage = Image::getImageByImagePostId($this->getPDO(), $image->getImagePostId());
 		$this->assertEquals($numRow + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertEquals($pdoImage->getImageId(), $this->ImageId());
-		$this->assertEquals($pdoImage->getImagePostId(), $this->post->getPostId());
 		$this->assertEquals($pdoImage->getImagePostId(), $this->post->getPostId());
 		$this->assertEquals($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUD_ID);
 
@@ -201,7 +202,7 @@ class ImageTest extends PetRescueAbqTest {
 	 */
 	public function testGetInvalidImageByImagePostId() {
 //grab a image by image post id that doesn't exist
-		$image = Image::getImageByImagePostId($this->getPDO(), PetRescueAbqTest::INVALID_KEY);
+		$image = Image::getImageByImagePostId($this->getPDO(),$this->profile->getProfileId(), PetRescueAbqTest::INVALID_KEY);
 		$this->assertCount(0, $image);
 
 
@@ -222,7 +223,7 @@ class ImageTest extends PetRescueAbqTest {
 
 		// grab the data from mySQL and enforce the fields match our expectations
 
-		$pdoImage = Image::getImageByImageCloudinaryId(($this->getPDO()), $image->getImageCloudinaryId());
+		$pdoImage = Image::getImageByImageCloudinaryId(($this->getPDO()),$this->profile->getProfileId(), $image->getImageCloudinaryId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertEquals($pdoImage->getImagePostId(), $this->post->getPostId());
 		$this->assertEquals($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUD_ID);
@@ -250,7 +251,7 @@ class ImageTest extends PetRescueAbqTest {
 //count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("image");
 		// create an new image and insert
-		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID);
+		$image = new Image(null, $this->profile->getProfileId(),$this->post->getPostId(), $this->VALID_CLOUD_ID);
 		$image->insert($this->getPDO());
 
 		//grab the data and enforce the fields match
