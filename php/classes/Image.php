@@ -10,7 +10,7 @@ class Image implements \JsonSerializable {
 		use ValidateDate;
 
 		/**
-		 * id for this class; Image, this is the primary key
+		 * id for this class; image, this is the primary key
 		 * @var int $imageId
 		 * all variables will be private
 		 **/
@@ -31,6 +31,7 @@ class Image implements \JsonSerializable {
 		 * @param int|null $newImageId id of this image or null if a new image
 		 * @param int $newImagePostId id of the organization that placed image
 		 * @param string $newImageCloudinaryId id of the cloudinary account of image
+		 *
 		 * @throws \InvalidArgumentException if data types are not valid
 		 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 		 * @throws \TypeError if data types violate type hints
@@ -46,6 +47,7 @@ class Image implements \JsonSerializable {
 			//determine what exception type was thrown
 
 			catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+				// determine what exception was thrown
 				$exceptionType = get_class($exception);
 				throw(new $exceptionType($exception->getMessage(), 0, $exception));
 			}
