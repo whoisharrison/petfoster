@@ -232,7 +232,7 @@ class Profile implements \JsonSerializable {
 		$newProfileHash = trim($newProfileHash);
 		$newProfileHash = strtolower($newProfileHash);
 
-		//enforce that the hash is a sting representation of a hexadecimal
+		//enforce that the hash is a string representation of a hexadecimal
 		if(!ctype_xdigit($newProfileHash)) {
 			throw(new \InvalidArgumentException("profile password hash is empty or insecure"));
 		}

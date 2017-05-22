@@ -109,7 +109,7 @@ class ImageTest extends PetRescueAbqTest {
 	 * @expectedException \PDOException
 	 */
 	public function testInsertInvalidImage() {
-//create a Image with a nono mull image id
+//create a Image with a non null image id
 		$image = new Image(PetRescueAbqTest::INVALID_KEY, $this->post->getPostId(),$this->VALID_CLOUD_ID);
 		$image->insert($this->getPDO());
 
@@ -120,7 +120,7 @@ class ImageTest extends PetRescueAbqTest {
 //Count the number of rows and save for later
 		$numRows = $this->getConnection()->getRowCount("image");
 
-//create a new image and insert into msql
+//create a new image and insert into mysql
 		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID);
 		$image->insert($this->getPDO());
 
