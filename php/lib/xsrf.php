@@ -1,5 +1,4 @@
 <?php
-// xsrf.php entered by Jeffrey Cooper from template on DataDesign
 /**
  * this if block exists because apache_request_headers() is not portable across web servers
  * this will clone apache_request_headers()'s functionality if the web server doesn't support apache_request_headers()
