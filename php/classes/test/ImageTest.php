@@ -169,9 +169,9 @@ class ImageTest extends PetRescueAbqTest {
 	 */
 	public function testGetInvalidImageByImageId() {
 
-		//grab a image id that exceeds the maximum allowable profile id
-		$image = Image::getImageByImageId($this->profile->getProfileId(), PetRescueAbqTest::INVALID_KEY, $this->post->getPostId(), $this->VALID_CLOUD_ID);
-		$this->assertNull($image);
+		//grab a image that doesn't exist
+		$image = Image::getImageByImageId($this->getPDO(),PetRescueAbqTest::INVALID_KEY);
+		$this->assertCount(0, $image);
 	}
 	/**
 	 * Test to get image by Image post id
@@ -183,7 +183,7 @@ class ImageTest extends PetRescueAbqTest {
 		$numRow = $this->getConnection()->getRowCount("image");
 
 		//create a new image and insert
-		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID());
+		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID);
 		$image->insert($this->getPDO());
 
 		//grab the data and enforce the match
@@ -199,9 +199,10 @@ class ImageTest extends PetRescueAbqTest {
 	 * get invalid image by image post id
 	 * @expectedException \PDOException
 	 */
+	//grab a image by image post id that doesn't exist
 	public function testGetInvalidImageByImagePostId() {
-//grab a image by image post id that doesn't exist
-		$image = Image::getImageByImagePostId($this->getPDO(),$this->post->getPostId(), PetRescueAbqTest::INVALID_KEY);
+
+		$image = Image::getImageByImagePostId($this->getPDO(), PetRescueAbqTest::INVALID_KEY);
 		$this->assertCount(0, $image);
 
 
@@ -259,7 +260,7 @@ class ImageTest extends PetRescueAbqTest {
 		$results = Image::getAllImages($this->getPDO());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetFosterAbq\\Image", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Images))", $results);
 
 		//grab the result from array and validate
 		$pdoImage = $results[0];
