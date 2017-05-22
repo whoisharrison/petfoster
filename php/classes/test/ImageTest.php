@@ -41,7 +41,7 @@ class ImageTest extends PetRescueAbqTest {
 	 * Account that uploaded and saved image
 	 * @var $VALID_CLOUD_ID
 	 */
-	 protected $VALID_CLOUD_ID = "1234567890123456789012345678";
+	protected $VALID_CLOUD_ID = "1234567890123456789012345678";
 	/**
 	 * valid hash to use
 	 * @var $VALID_HASH
@@ -232,7 +232,7 @@ class ImageTest extends PetRescueAbqTest {
 	}
 
 	/**
-	 * grabbing a image by imagecloudinaryid that doesn't exist
+	 * grabbing a image by imageCloudinaryId that doesn't exist
 	 * @expectedException \PDOException
 	 *
 	 */
