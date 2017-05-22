@@ -28,6 +28,16 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
+		//profile users full name is a required field
+		if (empty($requestObject->profileName) === true) {
+			throw(new \InvalidArgumentException("Please enter your full name", 405));
+		}
+
+		//profile organization name is a required field
+		if (empty($requestObject->organizationName) === true) {
+			throw(new \InvalidArgumentException("Please enter your organization's name", 405));
+		}
+
 		//profile at handle is a required field
 		if(empty($requestObject->profileAtHandle) === true) {
 			throw(new \InvalidArgumentException("Please enter a handle", 405));
@@ -37,6 +47,32 @@ try {
 		if(empty($requestObject->profileEmail) === true) {
 			throw(new \InvalidArgumentException("Please enter a valid email", 405));
 		}
+
+		//verify that profile password is present
+		if(empty($requestObject->profilePassword) === true) {
+			throw(new \InvalidArgumentException("Please enter a valid Password", 405));
+		}
+
+		//verify that organization ID is present
+		if(empty($requestObject->organizationLicense) === true) {
+			throw(new \InvalidArgumentException("Please enter a valid Organization Adoption License", 405));
+		}
+
+		//verify that address is present
+		if(empty($requestObject->organizationAddress1) === true) {
+			throw(new \InvalidArgumentException("Please enter a valid address", 405));
+		}
+
+		//if phone is empty set it to null
+		if(empty($requestObject->profilePhone) === true) {
+			$requestObject->profilePhone = null;
+		}
+
+		//make sure the password and confirm password match
+		if ($requestObject->profilePassword !== $requestObject->profilePasswordConfirm) {
+			throw(new \InvalidArgumentException("Passwords do not match"));
+		}
+		$salt =
 	}
 
 }
