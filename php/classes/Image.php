@@ -273,7 +273,7 @@ class Image implements \JsonSerializable {
 	 * @throws \PDOException when msql related errors occur
 	 * @throws \TypeError when variables are not the correct data
 	 **/
-	public static function getImageByImageCloudinaryId(\PDO$pdo, string $imageCloudinaryId) : ?Image {
+	public static function getImageByImageCloudinaryId(\PDO $pdo, string $imageCloudinaryId) : ?Image {
 		// sanitize the description before searching
 		$imageCloudinaryId = trim($imageCloudinaryId);
 		$imageCloudinaryId = filter_var($imageCloudinaryId,FILTER_FLAG_NO_ENCODE_QUOTES);
