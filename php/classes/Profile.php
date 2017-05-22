@@ -91,8 +91,8 @@ class Profile implements \JsonSerializable {
 	 * mutator method for profile id
 	 *
 	 * @param int|null $newProfileId value of new profile id
-	 * @throws \RangeException if $newProfileId is not positive
-	 * @throws \TypeError if $newProfileId is not an int
+//	 * @throws \RangeException if $newProfileId is not positive
+//	 * @throws \TypeError if $newProfileId is not an int
 	 **/
 	public function setProfileId(?int $newProfileId): void {
 		if($newProfileId === null) {

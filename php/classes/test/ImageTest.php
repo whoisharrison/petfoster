@@ -96,7 +96,7 @@ class ImageTest extends PetRescueAbqTest {
 		//$var_dump($image);
 		$image->insert($this->getPDO());
 
-		// GET THE DATA from msql and ensure they match
+		// GET THE DATA from mysql and ensure they match
 		$pdoImage = Image::getImageByImageId($this->getPDO(), $image->getImageId());
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertEquals($pdoImage->getImagePostId(), $this->post->getPostId());
@@ -135,7 +135,7 @@ class ImageTest extends PetRescueAbqTest {
 	 *
 	 * @expectedException |PDOException
 	 **/
-	public function testDeleteIvalidImange() {
+	public function testDeleteInvalidImage() {
 		// create a Image and try to delete it without actually inserting it
 		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID);
 		$image->delete($this->getPDO());
