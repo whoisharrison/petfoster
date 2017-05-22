@@ -194,7 +194,7 @@ class Image implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getImageByImageId(\PDO $pdo, int $imageId):?Image {
+	public static function getImageByImageId(\PDO $pdo, int $imageId): ?Image {
 		// sanitize the image and id before searching
 		if($imageId <= 0) {
 			throw(new \PDOException("image id must be positive"));
@@ -222,51 +222,56 @@ class Image implements \JsonSerializable {
 		}
 		return($image);
 	}
-/**
-*gets the Image by post id
-* @param \PDO $pdo PDO connection object
-* @param int $imagePostId post id to search
-* @return \SplFixedArray SplFixedArray of Images
-* @throws \PDOException when mySql related errors occur
-* @throws \TypeError when variables are not the correct data type
-**/
 
-	public static function getImageByImagePostId(\PDO $pdo, int $imagePostId) : \SPLFixedArray {
+	/**
+	 *gets the Image by post id
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $imagePostId post id to search
+	 * @throws \RangeException if $newImagePostId is not positive
+	 * @throws \PDOException when mySql related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+
+	public static function getImageByImagePostId(\PDO $pdo, int $imagePostId) : ?Image {
 		// sanitized the profile id before searching
 		if($imagePostId <= 0) {
 			throw(new \RangeException("image post id must be positive"));
 			}
-		// create query template
+
+			// create query template
 		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image WHERE imagePostId = :imagePostId";
 		$statement = $pdo->prepare($query);
+
 		// bind the image post id to the place holder in the template
-		$parameters = ["imagePostId" =>$imagePostId];
+		$parameters = ["imagePostId" => $imagePostId];
 		$statement->execute($parameters);
-		//build and array of images
-		$images = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
+
+		//grab the Image from mySql
+
 			try {
-				$image = new Image($row["imageId"], $row["imagePostId"], $row["imageCloudinaryId"]);
-				$images[$images->key()] = $image;
-				$images->next();
+
+				$image = null;
+				$statement->setFetchMode(\PDO::FETCH_ASSOC);
+				$row = $statement->fetch();
+				if($row !== false) {
+					$image = new Image($row["imageId"], $row["imagePost"], $row["imageCloudinaryId"]);
+				}
 			} catch(\Exception $exception) {
 				//if the row couldn't be converted, rethrow it
 				throw(new\PDOException($exception->getMessage(), 0, $exception));
-				}
+
 			}
-			return($images);
+			return($image);
 		}
 
 	/**
 	 * gets image by image cloudinary id
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $imageCloudinaryId
-	 * @return \SplFixedArray
 	 * @throws \PDOException when msql related errors occur
 	 * @throws \TypeError when variables are not the correct data
 	 **/
-	public static function getImageByImageCloudinaryId(\PDO$pdo, string $imageCloudinaryId) : \SplFixedArray {
+	public static function getImageByImageCloudinaryId(\PDO$pdo, string $imageCloudinaryId) : ?Image {
 		// sanitize the description before searching
 		$imageCloudinaryId = trim($imageCloudinaryId);
 		$imageCloudinaryId = filter_var($imageCloudinaryId,FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -276,24 +281,24 @@ class Image implements \JsonSerializable {
 		//create query template
 		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image WHERE imageCloudinaryId = :imageCloudinaryId";
 		$statement = $pdo->prepare($query);
-		// bind the image cloudinary id to the place holder in teh template
-		$imageCloudinaryId = "imageCloudinaryId";
+
+		// bind the image cloudinary id to the place holder in the template
 		$parameters = ["imageCloudinaryId" => $imageCloudinaryId];
 		$statement->execute($parameters);
-		// build an array of images
-		$images = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
+
+		// grab the Image from mSql
 			try {
-				$image = new Image($row["imageId"], $row["imagePostId"], $row["imageCloudinaryId"]);
-				$images[$images->key()] = $image;
-				$images->next();
+				$image = null;
+				$statement->setFetchMode(\PDO::FETCH_ASSOC);
+				$row = $statement->fetch();
+				if($row !== false) {
+					$image = new Image($row["imageId"], ["imagePostId"], $row["imageCloudinaryId"]);
+				}
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
 				throw(new \PDOException($exception->getMessage(), 0, $exception));
 			}
-		}
-		return ($images);
+		return ($image);
 	}
 	/**
 	 * gets all Images

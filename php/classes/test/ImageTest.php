@@ -133,7 +133,7 @@ class ImageTest extends PetRescueAbqTest {
 	/**
 	 * //delete an image that doesn't exit
 	 *
-	 * @expectedException |PDOException
+	 * @expectedException \PDOException
 	 **/
 	public function testDeleteInvalidImage() {
 		// create a Image and try to delete it without actually inserting it
@@ -170,7 +170,7 @@ class ImageTest extends PetRescueAbqTest {
 	public function testGetInvalidImageByImageId() {
 
 		//grab a image that doesn't exist
-		$image = Image::getInvalidImageByImageId($this->getPDO(),PetRescueAbqTest::INVALID_KEY);
+		$image = Image::getImageByImageId($this->getPDO(), petRescueAbqTest::INVALID_KEY);
 		$this->assertNull($image);
 	}
 	/**
@@ -233,7 +233,7 @@ class ImageTest extends PetRescueAbqTest {
 
 	/**
 	 * grabbing a image by imagecloudinaryid that doesn't exist
-	 * @expectedException
+	 * @expectedException \PDOException
 	 *
 	 */
 	public function testGetInvalidImageByImageCloudinaryId() {
