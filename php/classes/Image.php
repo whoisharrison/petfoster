@@ -189,14 +189,14 @@ class Image implements \JsonSerializable {
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $imageId image id to search for
-	 * @return Image|null image found or null if not found
+	 * @return Image|null Image, if image is found or null if not found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
 	public function getImageByImageId(\PDO $pdo, int $imageId):?Image {
 		// sanitize the image and id before searching
 		if($imageId <= 0) {
-			throw(new \PDOException("image id is not positive"));
+			throw(new \PDOException("image id must be positive"));
 			}
 		// create query template
 		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image WHERE imageId = :imageId";

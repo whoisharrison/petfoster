@@ -183,7 +183,7 @@ class ImageTest extends PetRescueAbqTest {
 		$numRow = $this->getConnection()->getRowCount("image");
 
 		//create a new image and insert
-		$image = new Image(null, $this->post->getPostId(), $this->Valid_Cloud_ID());
+		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID());
 		$image->insert($this->getPDO());
 
 		//grab the data and enforce the match
@@ -247,7 +247,7 @@ class ImageTest extends PetRescueAbqTest {
 	 * new image template per george's instructions:
 	 *
 	 */
-	public function testGetAllValidImages() {
+	public function testGetAllValidImages(): void {
 //count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("image");
 		// create an new image and insert
@@ -257,6 +257,7 @@ class ImageTest extends PetRescueAbqTest {
 		//grab the data and enforce the fields match
 
 		$results = Image::getAllImages($this->getPDO());
+		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetFosterAbq\\Image", $results);
 
