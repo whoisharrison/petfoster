@@ -305,7 +305,7 @@ class Image implements \JsonSerializable {
 	 **/
 	public static function getAllImages(\PDO $pdo) : \SPLFixedArray {
 		// create query template
-		$query = "SELECT imageId, imagePostId, imagePostId FROM image";
+		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 		//build an array of images
