@@ -2,6 +2,8 @@
 
 namespace Edu\Cnm\PetRescueAbq;
 
+use Zend\Cache\Exception\UnexpectedValueException;
+
 require_once("autoload.php");
 
 /**
@@ -222,9 +224,12 @@ class Post implements \JsonSerializable {
 		if(empty($newPostSex) === true) {
 			throw(new \InvalidArgumentException("The sex is empty or insecure."));
 		}
-		if(strlen($newPostSex) > 1) {
-			throw(new \RangeException("You can only use M or F for sex"));
+		if($newPostSex != "M" && $newPostSex != "F") {
+			throw(new UnexpectedValueException("Value has to be either M or F"));
 		}
+//		if(strlen($newPostSex) > 1) {
+//			throw(new \RangeException("You can only use M or F for sex"));
+//		}
 		$this->postSex = $newPostSex;
 	}
 
@@ -251,9 +256,12 @@ class Post implements \JsonSerializable {
 		if(empty($newPostType) === true) {
 			throw(new \InvalidArgumentException("The post type is empty or insecure."));
 		}
-		if(strlen($newPostType) > 1) {
-			throw(new \RangeException("can only say C or D"));
+		if($newPostType != "C" && $newPostType != "D") {
+			throw(new UnexpectedValueException("Value has to be either M or F"));
 		}
+//		if(strlen($newPostType) > 1) {
+//			throw(new \RangeException("can only say C or D"));
+//		}
 		$this->postType = $newPostType;
 	}
 
