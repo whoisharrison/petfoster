@@ -169,8 +169,7 @@ EOF;
 			// the $failedRecipients parameter passed in the send() method now contains contains an array of the Emails that failed
 			throw(new RuntimeException("unable to send email"));
 		}
-		// update reply
-		$reply->message = "Thank you for creating a profile with Very Bad Etsy";
+
 	} else {
 		throw (new InvalidArgumentException("invalid http request"));
 	}
@@ -230,13 +229,10 @@ EOF;
 			// the $failedRecipients parameter passed in the send() method now contains contains an array of the Emails that failed
 			throw(new RuntimeException("unable to send email"));
 		}
-		// update reply
-		$reply->message = "Thank you for creating a profile with Very Bad Etsy";
-	} else {
-		throw (new InvalidArgumentException("invalid http request"));
-	}
 
 		// success message
+		$reply->message = "Thank you for creating a profile Pet Rescue Abq!";
+
 	} else {
 		throw (new InvalidArgumentException("invalid http request"));
 	}
