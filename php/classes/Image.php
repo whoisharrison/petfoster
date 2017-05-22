@@ -227,6 +227,7 @@ class Image implements \JsonSerializable {
 	 *gets the Image by post id
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $imagePostId post id to search
+	 * @return image|null image or null if not found
 	 * @throws \RangeException if $newImagePostId is not positive
 	 * @throws \PDOException when mySql related errors occur
 	 * @throws \TypeError when variables are not the correct data type
@@ -268,6 +269,7 @@ class Image implements \JsonSerializable {
 	 * gets image by image cloudinary id
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $imageCloudinaryId
+	 * @return image|null image or null if not found
 	 * @throws \PDOException when msql related errors occur
 	 * @throws \TypeError when variables are not the correct data
 	 **/
