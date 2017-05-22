@@ -10,7 +10,7 @@ class Image implements \JsonSerializable {
 		use ValidateDate;
 
 		/**
-		 * id for this class; image, this is the primary key
+		 * id for the image; this is the primary key
 		 * @var int $imageId
 		 * all variables will be private
 		 **/
