@@ -170,7 +170,7 @@ class ImageTest extends PetRescueAbqTest {
 	public function testGetInvalidImageByImageId() {
 
 		//grab a image that doesn't exist
-		$image = Image::getImageByImageId($this->getPDO(), petRescueAbqTest::INVALID_KEY);
+		$image = Image::getImageByImageId($this->getPDO(), 1234567899);
 		$this->assertNull($image);
 	}
 	/**
