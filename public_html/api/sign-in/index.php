@@ -39,11 +39,68 @@ try {
 		verifyXsrf();
 
 		//process the request content and decode the json object into a php object
-		$requestContent = file_get_contents("php://input"):
+		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-		//check to make sure the password and emial field is not empty
-		if(empty($requestObject->profile))
+		//check to make sure the password and email field is not empty
+		if(empty($requestObject->profileEmail) === true) {
+			throw(new \InvalidArgumentException("Wrong email address.", 401));
+
+		} else {
+			$profileEmail = filter_var($requestObject->profileEmail, FILTER_SANITIZE_EMAIL);
+		}
+
+		if(empty($requestObject->profilePassword) === true) {
+			throw(new \InvalidArgumentException("Must enter password", 401));
+
+		} else {
+			$profilePassword = $requestObject->profilePassword;
+		}
+
+		//grab te profile from the databse by the email provided
+		$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
+		if(empty($profile) === true) {
+			throw(new \InvalidArgumentException("Invalid Email", 401));
+		}
+
+		/**
+		 * $organization = profile::getOrganizationProfileByOrganizationProfileId($pdo, $profileEmail):
+		 * if(empty($organization) === true {
+		 * throw new \InvalidArgumentException("Invalid Email", 401));
+		 * }
+		 */
+
+		//if the profile activation is not null throw an error
+		if($profile->getProfileActivationToken() !== null) {
+			throw(new \InvalidArgumentException("you are not allowed to sign in unless you have activated your account", 403));
+		}
+
+		//has the password given to make sure it matches
+		$hash = hash_pbkdf2("sha512", $profilePassword, $profile->getProfileSalt(), 262144);
+
+		//verify hash is correct
+		if($hash !== $profile->getProfileHash()) {
+			throw(new \InvalidArgumentException("Password or  email is incorrect"));
+		}
+
+		//gran the profile from database and put into session
+		$profile = Profile::getProfileByProfileId($pdo, $profile->getProfileId());
+		$_SESSION["profile"] = $profile;
+		$reply->message = "Sign in was successful";
+
+	} else {
+		throw(new \InvalidArgumentException("Invalid HTTP method request"));
 	}
 
+	//if an exception is thrown update the
+} catch(Exception $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+
+} catch(TypeError $typeError) {
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
 }
+
+header("Content-type: application/json");
+echo json_encode($reply);
