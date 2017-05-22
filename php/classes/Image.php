@@ -194,7 +194,7 @@ class Image implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public function getImageByImageId(\PDO $pdo, int $imageId):?Image {
+	public static function getImageByImageId(\PDO $pdo, int $imageId):?Image {
 		// sanitize the image and id before searching
 		if($imageId <= 0) {
 			throw(new \PDOException("image id must be positive"));

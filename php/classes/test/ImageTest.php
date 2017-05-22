@@ -86,7 +86,7 @@ class ImageTest extends PetRescueAbqTest {
 	/**
 	 * test that inserts a valid image and verifies that the actual mySQL data matches
 	 **/
-	public function testInsertValidImage(): void {
+	public function testInsertValidImage() {
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("image");
 
@@ -146,13 +146,13 @@ class ImageTest extends PetRescueAbqTest {
 	 * Test to get image by Image id
 	 *
 	**/
-	public function testGetValidImageByImageId() {
+	public function testGetValidImageByImageId(): void {
 
 		//count the number of rows and save for later
 		$numRow = $this->getConnection()->getRowCount("image");
 
 		//create a new image and insert
-		$image = new Image(null, $this->profile->getProfileId(), $this->post->getPostId(), $this->VALID_CLOUD_ID());
+		$image = new Image(null, $this->post->getPostId(),$this->VALID_CLOUD_ID());
 		$image->insert($this->getPDO());
 
 		//grab the data and enforce the match
@@ -170,8 +170,8 @@ class ImageTest extends PetRescueAbqTest {
 	public function testGetInvalidImageByImageId() {
 
 		//grab a image that doesn't exist
-		$image = Image::getImageByImageId($this->getPDO(),PetRescueAbqTest::INVALID_KEY);
-		$this->assertCount(0, $image);
+		$image = Image::getInvalidImageByImageId($this->getPDO(),PetRescueAbqTest::INVALID_KEY);
+		$this->assertNull($image);
 	}
 	/**
 	 * Test to get image by Image post id
@@ -212,12 +212,12 @@ class ImageTest extends PetRescueAbqTest {
 	 *
 	 */
 
-	public function testGetValidImageByImageCloudinaryId() {
+	public function testGetValidImageByImageCloudinaryId(): void {
 
 		// count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("image");
 
-		// create a new image and insert to into mySQL
+		// create a new cloudinary id and insert to into mySQL
 		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID);
 		$image->insert($this->getPDO());
 
@@ -239,7 +239,7 @@ class ImageTest extends PetRescueAbqTest {
 	public function testGetInvalidImageByImageCloudinaryId() {
 //grab a image by id that doesn't exits
 		$image = Image::getImageByImageCloudinaryId($this->getPDO(), $this->VALID_CLOUD_ID);
-		$this->assertCount(0, $image);
+		$this->assertNull($image);
 	}
 
 
@@ -252,7 +252,7 @@ class ImageTest extends PetRescueAbqTest {
 //count the number of rows and save it for later
 		$numRows = $this->getConnection()->getRowCount("image");
 		// create an new image and insert
-		$image = new Image(null,$this->post->getPostId(), $this->VALID_CLOUD_ID);
+		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID);
 		$image->insert($this->getPDO());
 
 		//grab the data and enforce the fields match
@@ -264,6 +264,7 @@ class ImageTest extends PetRescueAbqTest {
 
 		//grab the result from array and validate
 		$pdoImage = $results[0];
+		$this->assertEquals($pdoImage->getImageId(), $image->getImageId());
 		$this->assertEquals($pdoImage->getImagePostId(), $image->getImagePostId());
 		$this->assertEquals($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUD_ID);
 	}
