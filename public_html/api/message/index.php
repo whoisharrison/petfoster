@@ -131,27 +131,33 @@ try {
 				throw(new \InvalidArgumentException("You must be logged in to post messages", 403));
 			}
 
+			//create new message and insert it into the database
+			//IS THIS THE SAME THING AS MODIFY??
+			$message = new Message(null, $requestObject->messageProfileId, $requestObject->messageOrganizationId, $requestObject->messageContent,
+				null);
+			$message->insert($pdo);
 
+			//update reply
+			$reply->message = "Message created ok";
 		}
 
-
-
+	} else {
+		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+	//update the $reply->status $reply->message
+} catch(\Exception | \TypeError $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
 }
+
+header("Content-type: application/json");
+if($reply->date === null) {
+	unset($reply->date);
+}
+
+//encode and return reply to the front end called
+echo json_encode($reply);
 
 
 
