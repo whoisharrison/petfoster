@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(_DIT_, 3) . "/vendor/autoload.php";
+require_once dirname(_DIR_, 3) . "/vendor/autoload.php";
 require_once dirname (_DIR_, 3) . "php/classes/autoload. php";
 require_once dirname (_DIR_, 3) . "php/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
@@ -8,9 +8,8 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 use Edu\Cnm\PetRescueAbq\{
 	Message,
 	//only use profile class for testing purpose
-	Profile
+	Profile, Organization
 	//do I use organization also for testing purposes?
-	//Organization
 };
 
 /**
