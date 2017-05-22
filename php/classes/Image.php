@@ -303,7 +303,7 @@ class Image implements \JsonSerializable {
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 **/
-	public static function getAllImages(\PDO $pdo) : \SPLFixedArray {
+	public static function getAllImages(\PDO $pdo) : \SplFixedArray {
 		// create query template
 		$query = "SELECT imageId, imagePostId, imageCloudinaryId FROM image";
 		$statement = $pdo->prepare($query);
@@ -313,7 +313,8 @@ class Image implements \JsonSerializable {
 	$statement->setFetchMode(\PDO::FETCH_ASSOC);
 	while(($row = $statement->fetch()) !== false) {
 		try {
-			$images[$images->key()] = $images;
+			$image =  new Image($row["imageId"], $row["imagePostId"], $row["imageCloudinaryId"]);
+			$images[$images->key()] = $image;
 			$images->next();
 		} catch(\Exception$exception){
 			//if the row couldn't be converted, rethrow it

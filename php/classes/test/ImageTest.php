@@ -244,7 +244,7 @@ class ImageTest extends PetRescueAbqTest {
 
 
 	/**
-	 * test to grab all Images
+	 * test to grab all Image
 	 * new image template per george's instructions:
 	 *
 	 */
@@ -258,9 +258,10 @@ class ImageTest extends PetRescueAbqTest {
 		//grab the data and enforce the fields match
 
 		$results = Image::getAllImages($this->getPDO());
+		var_dump($results);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertCount(1, $results);
-		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Images))", $results);
+		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Image", $results);
 
 		//grab the result from array and validate
 		$pdoImage = $results[0];
