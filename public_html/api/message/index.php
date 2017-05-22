@@ -50,7 +50,7 @@ try {
 	$messageSubject = filter_input(INPUT_GET, "messageSubject", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 	//make sure the id is valid for the methods that require it
-	//DO I NEED THIS?
+	//DO I NEED THIS, NO YOU DO NOT NEED THIS!!!
 	/**
 	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
@@ -75,15 +75,66 @@ try {
 				$reply->data = $message;
 			}
 
-		} else if(empty($messageOrganizationId) === false) {
+		}else if(empty($messageOrganizationId) === false) {
 			$message = Message::getMessageByMessageOrganizationId($pdo, $messageOrganizationId)->toArray();
 			if($message !==null) {
 				$reply->data = $message;
 			}
 
-		} else if(empty($messageContentId) === false) {
-			$message = Message::getMessageByMessageContentId($pdo, $messa)
+		}else {
+			$messages = Message::getAllMessages($pdo)->toArray();
+			if($messages !== null) {
+				$reply->data = $messages;
+			}
 		}
+
+	} else if($method === "POST") {
+
+		verifyXsrf();
+		$requestContent = file_get_contents("php://input");
+		// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the
+		//front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream
+		// that allows raw data to be read from the front end request which is, in this case, a JSON package.
+		$requestObject = json_decode($requestContent);
+		//this line decodes the JSON package and stors that result in $requestObject
+
+		//make sure message content is available (required field)
+		//is messageContent going to mess with my attribute messageContent
+		if(empty($requestObject->messageContent) === true) {
+			throw(new \InvalidArgumentException("No content for Message.",405));
+		}
+
+		//make sure message date is accurate
+		if(empty($requestObject->messageDateTime) === true) {
+			$requestObject->messageDateTime = null;
+		}
+
+		//make sure profileId is available
+		if(empty($requestObject->messageProfileId) === true) {
+			throw(new \InvalidArgumentException("No profile Id.", 405));
+		}
+
+		//ADDED ORGANIZATION?
+		if(empty($requestObject->messageOrganizationId) === true) {
+			throw(new \InvalidArgumentException("No organization Id.", 405));
+		}
+
+		if ($method === "POST") {
+
+			//enforce the user is signed in
+			if(empty($_SESSION["profile"]) === true) {
+				throw(new \InvalidArgumentException("You must be logged in to post messages", 403));
+			}
+
+			//ADDED ORGANIZATION
+			if(empty($_SESSION["organization"]) === true) {
+				throw(new \InvalidArgumentException("You must be logged in to post messages", 403));
+			}
+
+
+		}
+
+
 
 	}
 
