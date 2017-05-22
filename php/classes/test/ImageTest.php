@@ -152,7 +152,7 @@ class ImageTest extends PetRescueAbqTest {
 		$numRow = $this->getConnection()->getRowCount("image");
 
 		//create a new image and insert
-		$image = new Image(null, $this->post->getPostId(),$this->VALID_CLOUD_ID());
+		$image = new Image(null, $this->post->getPostId(),$this->VALID_CLOUD_ID);
 		$image->insert($this->getPDO());
 
 		//grab the data and enforce the match
@@ -165,12 +165,11 @@ class ImageTest extends PetRescueAbqTest {
 
 	/**
 	 * get invalid image by imageId
-	 * @expectedException \PDOException
-	 */
+	 **/
 	public function testGetInvalidImageByImageId() {
 
 		//grab a image that doesn't exist
-		$image = Image::getImageByImageId($this->getPDO(), 1234567899);
+		$image = Image::getImageByImageId($this->getPDO(),6868686868686);
 		$this->assertNull($image);
 	}
 	/**
@@ -189,7 +188,6 @@ class ImageTest extends PetRescueAbqTest {
 		//grab the data and enforce the match
 		$pdoImage = Image::getImageByImagePostId($this->getPDO(), $image->getImagePostId());
 		$this->assertEquals($numRow + 1, $this->getConnection()->getRowCount("image"));
-		$this->assertEquals($pdoImage->getImageId(), $this->ImageId());
 		$this->assertEquals($pdoImage->getImagePostId(), $this->post->getPostId());
 		$this->assertEquals($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUD_ID);
 
@@ -197,13 +195,14 @@ class ImageTest extends PetRescueAbqTest {
 	}
 	/**
 	 * get invalid image by image post id
-	 * @expectedException \PDOException
-	 */
+	 * @expectedException
+	 **/
+
 	//grab a image by image post id that doesn't exist
 	public function testGetInvalidImageByImagePostId() {
 
 		$image = Image::getImageByImagePostId($this->getPDO(), PetRescueAbqTest::INVALID_KEY);
-		$this->assertCount(0, $image);
+		$this->assertNull($image);
 
 
 	}
@@ -218,15 +217,14 @@ class ImageTest extends PetRescueAbqTest {
 		$numRows = $this->getConnection()->getRowCount("image");
 
 		// create a new cloudinary id and insert to into mySQL
-		$image = new Image(null, $this->post->getPostId(), $this->VALID_CLOUD_ID);
+		$image = new Image(null, $this->post->getPostId(),$this->VALID_CLOUD_ID);
 		$image->insert($this->getPDO());
 
 		// grab the data from mySQL and enforce the fields match our expectations
 
-		$pdoImage = Image::getImageByImageCloudinaryId(($this->getPDO()), $image->getImageCloudinaryId());
+		$pdoImage = Image::getImageByImageCloudinaryId($this->getPDO(), $this->VALID_CLOUD_ID);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
-		$this->assertEquals($pdoImage->getImageId(), $image->getImageId());
-		$this->assertEquals($pdoImage->getImagePostId(), $image->getImagePostId());
+		$this->assertEquals($pdoImage->getImagePostId(), $this->post->getPostId());
 		$this->assertEquals($pdoImage->getImageCloudinaryId(), $this->VALID_CLOUD_ID);
 
 	}
@@ -244,7 +242,7 @@ class ImageTest extends PetRescueAbqTest {
 
 
 	/**
-	 * test to grab all Image
+	 * test to grab all Images
 	 * new image template per george's instructions:
 	 *
 	 */
@@ -258,7 +256,7 @@ class ImageTest extends PetRescueAbqTest {
 		//grab the data and enforce the fields match
 
 		$results = Image::getAllImages($this->getPDO());
-		var_dump($results);
+		//var_dump($results);
 		$this->assertEquals($numRows + 1, $this->getConnection()->getRowCount("image"));
 		$this->assertCount(1, $results);
 		$this->assertContainsOnlyInstancesOf("Edu\\Cnm\\PetRescueAbq\\Image", $results);
