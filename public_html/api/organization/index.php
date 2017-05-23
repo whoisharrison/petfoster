@@ -7,7 +7,7 @@ require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once("/etc/apache2/~jcooper37/public_html/petadopt/encrypted-config.php");
 
-use Edu\Cnm\PetFosterAbq\{
+use Edu\Cnm\PetFosterAbq\ {
 	Organization,
 	// testing with
 	Profile
