@@ -81,7 +81,13 @@ try {
 
 		 $organization = Organization::getOrganizationByOrganizationId($pdo, $profile->getProfileId());
 		  if(empty($organization) === false) {
-			//TODO: make sure organizatoin activation token is null
+
+		  		//make sure organizatoin activation token is null
+			  if($profile->getProfileActivationToken() === null) {
+				  throw(new \InvalidArgumentException("you are not allowed to sign in unless you have activated your account", 403));
+			  }
+
+
 		  	$_SESSION["organization"] = $organization;
 			 $_SESSION["profile"] = $profile;
 			  $reply->message = "Sign in was successful";
