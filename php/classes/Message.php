@@ -189,6 +189,7 @@ class Message implements \JsonSerializable {
 
 	/**
 	 * mutator method for message content
+	 *
 	 * @param string $newMessageContent new value of message content
 	 * @throws \InvalidArgumentException if $newMessageContent is not a string ot insecure
 	 * @throws \RangeException if $newMessageContent is > 505 characters

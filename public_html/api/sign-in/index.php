@@ -4,7 +4,7 @@ require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once ("/etc/apache2/capstone-mysql/encrypted-config.php");
 
-use Edu\Cnm\PetRescueAbq\Profile;
+use Edu\Cnm\PetRescueAbq\{Profile, Organization};
 
 //ADDED ORGANIZATION
 //use Edu\Cnm\PetRescueAbq\Organization;
@@ -63,13 +63,6 @@ try {
 			throw(new \InvalidArgumentException("Invalid Email", 401));
 		}
 
-		/**
-		 * $organization = profile::getOrganizationProfileByOrganizationProfileId($pdo, $profileEmail):
-		 * if(empty($organization) === true {
-		 * throw new \InvalidArgumentException("Invalid Email", 401));
-		 * }
-		 */
-
 		//if the profile activation is not null throw an error
 		if($profile->getProfileActivationToken() !== null) {
 			throw(new \InvalidArgumentException("you are not allowed to sign in unless you have activated your account", 403));
@@ -85,8 +78,19 @@ try {
 
 		//gran the profile from database and put into session
 		$profile = Profile::getProfileByProfileId($pdo, $profile->getProfileId());
-		$_SESSION["profile"] = $profile;
-		$reply->message = "Sign in was successful";
+
+		 $organization = Organization::getOrganizationByOrganizationId($pdo, $profile->getProfileId());
+		  if(empty($organization) === false) {
+			//TODO: make sure organizatoin activation token is null
+		  	$_SESSION["organization"] = $organization;
+			 $_SESSION["profile"] = $profile;
+			  $reply->message = "Sign in was successful";
+		  } else {
+			  $_SESSION["profile"] = $profile;
+			  $reply->message = "Sign in was successful";
+		  }
+
+
 
 	} else {
 		throw(new \InvalidArgumentException("Invalid HTTP method request"));

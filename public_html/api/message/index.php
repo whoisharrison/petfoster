@@ -51,10 +51,10 @@ try {
 	//make sure the id is valid for the methods that require it
 	//DO I NEED THIS, NO YOU DO NOT NEED THIS!!!
 	/**
-	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
-		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
-	}
-	**/
+	 * if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
+	 * throw(new InvalidArgumentException("id cannot be empty or negative", 405));
+	 * }
+	 **/
 
 	//handle GET request - if id is present, that message is returned, otherwise all messages are returned
 	if($method === "GET") {
@@ -68,19 +68,25 @@ try {
 				$reply->data = $message;
 			}
 
-		}else if(empty($messageProfileId) === false) {
+		} else if(empty($messageProfileId) === false) {
 			$message = Message::getMessageByMessageProfileId($pdo, $messageProfileId)->toArray();
+			if($message !== null) {
+
+				//ADDED ORGANIZATION - put in get
+				if(empty($_SESSION["organization"]) === true) {
+					throw(new \InvalidArgumentException("You must be logged in to post messages", 403));
+				}
+
+				$reply->data = $message;
+			}
+
+		} else if(empty($messageOrganizationId) === false) {
+			$message = Message::getMessageByMessageOrganizationId($pdo, $messageOrganizationId)->toArray();
 			if($message !== null) {
 				$reply->data = $message;
 			}
 
-		}else if(empty($messageOrganizationId) === false) {
-			$message = Message::getMessageByMessageOrganizationId($pdo, $messageOrganizationId)->toArray();
-			if($message !==null) {
-				$reply->data = $message;
-			}
-
-		}else {
+		} else {
 			$messages = Message::getAllMessages($pdo)->toArray();
 			if($messages !== null) {
 				$reply->data = $messages;
@@ -100,7 +106,7 @@ try {
 		//make sure message content is available (required field)
 		//is messageContent going to mess with my attribute messageContent
 		if(empty($requestObject->messageContent) === true) {
-			throw(new \InvalidArgumentException("No content for Message.",405));
+			throw(new \InvalidArgumentException("No content for Message.", 405));
 		}
 
 		//make sure message date is accurate
@@ -118,20 +124,18 @@ try {
 			throw(new \InvalidArgumentException("No organization Id.", 405));
 		}
 
-		if ($method === "POST") {
+		if($method === "POST") {
 
 			//enforce the user is signed in
 			if(empty($_SESSION["profile"]) === true) {
 				throw(new \InvalidArgumentException("You must be logged in to post messages", 403));
 			}
 
-			//ADDED ORGANIZATION
-			if(empty($_SESSION["organization"]) === true) {
-				throw(new \InvalidArgumentException("You must be logged in to post messages", 403));
-			}
+
+
 
 			//create new message and insert it into the database
-			//IS THIS THE SAME THING AS MODIFY??
+
 			$message = new Message(null, $requestObject->messageProfileId, $requestObject->messageOrganizationId, $requestObject->messageContent,
 				null);
 			$message->insert($pdo);
@@ -144,19 +148,22 @@ try {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
 
-	//update the $reply->status $reply->message
-} catch(\Exception | \TypeError $exception) {
-	$reply->status = $exception->getCode();
-	$reply->message = $exception->getMessage();
-}
+	//update the $reply->status $reply->message, probably not gonna need
 
-header("Content-type: application/json");
-if($reply->date === null) {
-	unset($reply->date);
-}
+	 } catch(\Exception | \TypeError $exception) {
+	 //$reply->status = $exception->getCode();
+	 // $reply->message = $exception->getMessage();
+	 }
+
+
+	header("Content-type: application/json");
+	if($reply->date === null) {
+		unset($reply->date);
+	}
 
 //encode and return reply to the front end called
-echo json_encode($reply);
+	echo json_encode($reply);
+
 
 
 
