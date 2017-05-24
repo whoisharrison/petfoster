@@ -86,12 +86,16 @@ try {
 				$reply->data = $message;
 			}
 
-		} else {
+		}
+			//DELETED THIS
+			/**
+			{
 			$messages = Message::getAllMessages($pdo)->toArray();
 			if($messages !== null) {
 				$reply->data = $messages;
 			}
 		}
+			 **/
 
 	} else if($method === "POST") {
 

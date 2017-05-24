@@ -82,7 +82,7 @@ try {
 		 $organization = Organization::getOrganizationByOrganizationId($pdo, $profile->getProfileId());
 		  if(empty($organization) === false) {
 
-		  		//make sure organizatoin activation token is null
+		  		//make sure organization activation token is null, I added this
 			  if($profile->getProfileActivationToken() === null) {
 				  throw(new \InvalidArgumentException("you are not allowed to sign in unless you have activated your account", 403));
 			  }
