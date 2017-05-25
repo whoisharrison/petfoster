@@ -7,7 +7,7 @@ require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once("/etc/apache2/~jcooper37/public_html/petadopt/encrypted-config.php");
 
-use Edu\Cnm\PetFosterAbq\ {
+use Edu\Cnm\PetRescueAbq\ {
 	Organization,
 	// testing with
 	Profile
@@ -40,3 +40,4 @@ try {
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+}
