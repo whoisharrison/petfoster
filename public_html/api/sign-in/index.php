@@ -96,8 +96,6 @@ try {
 			  $reply->message = "Sign in was successful";
 		  }
 
-
-
 	} else {
 		throw(new \InvalidArgumentException("Invalid HTTP method request"));
 	}
