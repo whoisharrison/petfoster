@@ -13,7 +13,7 @@ use Edu\Cnm\PetRescueAbq\ {
 	Profile
 };
 
-
+// TODO: ENABLE ALL FOR GOD MODE. WAIT FOR PROFILE IDs AND HARD CODE THEM.
 /**
  * api for the Admin panel
  *
