@@ -10,7 +10,8 @@ require_once("/etc/apache2/~jcooper37/public_html/petadopt/encrypted-config.php"
 use Edu\Cnm\PetRescueAbq\ {
 	Organization,
 	// testing with
-	Profile
+	Profile,
+	Post
 };
 
 // TODO: ENABLE ALL FOR GOD MODE. WAIT FOR PROFILE IDs AND HARD CODE THEM.
@@ -44,7 +45,7 @@ try {
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$organizationProfileId = filter_input(INPUT_GET, "organizationProfileId", FILTER_VALIDATE_INT);
-	// ??Auth Token included???
+	$organizationActivationToken = filter_input(INPUT_GET, "organizationActivationToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$organizationAddress1 = filter_input(INPUT_GET, "organizationAddress1", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$organizationAddress2 = filter_input(INPUT_GET, "organizationAddress2", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$organizationCity = filter_input(INPUT_GET, "organizationCity", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -54,6 +55,15 @@ try {
 	$organizationPhone = filter_input(INPUT_GET, "organizationPhone", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$organizationState = filter_input(INPUT_GET, "organizationState", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$organizationZip = filter_input(INPUT_GET, "organizationZip", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$organizationZip = filter_input(INPUT_GET, "organizationZip", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$profileActivationToken = filter_input(INPUT_GET, "profileActivationToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$profileAtHandle = filter_input(INPUT_GET, "profileAtHandle", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$profileName = filter_input(INPUT_GET, "profileName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postBreed = filter_input(INPUT_GET, "profileBreed", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postDescription = filter_input(INPUT_GET, "postDescription", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postSex = filter_input(INPUT_GET, "postSex", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$postType = filter_input(INPUT_GET, "postType", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 
 
@@ -129,8 +139,48 @@ try {
 			if($organization !== null) {
 				$reply->data = $organization;
 			}
+		} else if(empty($profileActivationToken) === false) {
+			$profile = Profile::getProfileByProfileActivationToken($pdo, $profileActivationToken);
+			if($profile !== null) {
+				$reply->data = $profile;
+			}
+		} else if(empty($profileAtHandle) === false) {
+			$profile = Profile::getProfileByProfileAtHandle($pdo, $profileAtHandle);
+			if($profile !== null) {
+				$reply->data = $profile;
+			}
+		} else if(empty($profileEmail) === false) {
+			$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
+			if($profile !== null) {
+				$reply->data = $profile;
+			}
+		} else if(empty($profileName) === false) {
+			$profile = Profile::getProfileByProfileName($pdo, $profileName);
+			if($profile !== null) {
+				$reply->data = $profile;
+			}
+		} else if(empty($postBreed) === false) {
+			$post = Post::getPostByPostBreed($pdo, $postBreed);
+			if($post !== null) {
+				$reply->data = $post;
+			}
+		} else if(empty($postDescription) === false) {
+			$post = Post::getPostByPostDescription($pdo, $postDescription);
+			if($post !== null) {
+				$reply->data = $post;
+			}
+	} else if(empty($postSex) === false) {
+			$post = Post::getPostByPostSex($pdo, $postSex);
+			if($post !== null) {
+				$reply->data = $post;
+			}
+		} else if(empty($postType) === false) {
+			$post = Post::getPostByPostType($pdo, $postType);
+			if($post !== null) {
+				$reply->data = $post;
+			}
 		}
-	} else if($method === "PUT") {
+	else if($method === "PUT") {
 
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
@@ -142,28 +192,49 @@ try {
 			throw(new \InvalidArgumentException ("No associated profile is listed or available.", 405));
 		}
 		if(empty($requestObject->organizationAddress1) === true) {
-			throw(new \InvalidArgumentException ("No address is listed or available.", 405));
+			throw(new \InvalidArgumentException ("No organization address is listed or available.", 405));
 		}
 		if(empty($requestObject->organizationCity) === true) {
-			throw(new \InvalidArgumentException ("No city is listed or available.", 405));
+			throw(new \InvalidArgumentException ("No organization city is listed or available.", 405));
 		}
 		if(empty($requestObject->organizationEmail) === true) {
-			throw(new \InvalidArgumentException ("No email listed or available.", 405));
+			throw(new \InvalidArgumentException ("No organization email listed or available.", 405));
 		}
 		if(empty($requestObject->organizationLicense) === true) {
-			throw(new \InvalidArgumentException ("No license is listed or available.", 405));
+			throw(new \InvalidArgumentException ("No organization license is listed or available.", 405));
 		}
 		if(empty($requestObject->organizationName) === true) {
-			throw(new \InvalidArgumentException ("No name is listed or available.", 405));
+			throw(new \InvalidArgumentException ("No organization name is listed or available.", 405));
 		}
 		if(empty($requestObject->organizationPhone) === true) {
-			throw(new \InvalidArgumentException ("No phone number is listed or available.", 405));
+			throw(new \InvalidArgumentException ("No organization phone number is listed or available.", 405));
 		}
 		if(empty($requestObject->organizationState) === true) {
-			throw(new \InvalidArgumentException ("No state is listed or available.", 405));
+			throw(new \InvalidArgumentException ("No organization state is listed or available.", 405));
 		}
 		if(empty($requestObject->organizationZip) === true) {
-			throw(new \InvalidArgumentException ("No zip code is listed or available.", 405));
+			throw(new \InvalidArgumentException ("No organization zip code is listed or available.", 405));
+		}
+		if(empty($requestObject->profileAtHandle) === true) {
+			throw(new \InvalidArgumentException ("No @Handle is listed or available.", 405));
+		}
+		if(empty($requestObject->profileEmail) === true) {
+			throw(new \InvalidArgumentException ("No profile email is listed or available.", 405));
+		}
+		if(empty($requestObject->profileName) === true) {
+			throw(new \InvalidArgumentException ("No profile name is listed or available.", 405));
+		}
+		if(empty($requestObject->postBreed) === true) {
+			throw(new \InvalidArgumentException ("No post breed is listed or available.", 405));
+		}
+		if(empty($requestObject->postDescription) === true) {
+			throw(new \InvalidArgumentException ("No post description is listed or available.", 405));
+		}
+		if(empty($requestObject->postSex) === true) {
+			throw(new \InvalidArgumentException ("No post sex is listed or available.", 405));
+		}
+		if(empty($requestObject->postType) === true) {
+			throw(new \InvalidArgumentException ("No post type is listed or available.", 405));
 		}
 
 		//  !!!!make sure profileId is not null

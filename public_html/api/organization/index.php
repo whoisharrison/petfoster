@@ -44,7 +44,7 @@ try {
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$organizationProfileId = filter_input(INPUT_GET, "organizationProfileId", FILTER_VALIDATE_INT);
-	// ??Auth Token included???
+	// TODO: ??Auth Token included???
 	$organizationAddress1 = filter_input(INPUT_GET, "organizationAddress1", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$organizationAddress2 = filter_input(INPUT_GET, "organizationAddress2", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$organizationCity = filter_input(INPUT_GET, "organizationCity", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
