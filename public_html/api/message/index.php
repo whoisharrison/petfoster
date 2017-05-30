@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(_DIR_, 3) . "/vendor/autoload.php";
-require_once dirname (_DIR_, 3) . "php/classes/autoload. php";
-require_once dirname (_DIR_, 3) . "php/lib/xsrf.php";
+
+require_once dirname (__DIR__, 3) . "/php/classes/autoload.php";
+require_once dirname (__DIR__, 3) . "/php/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\PetRescueAbq\{
@@ -30,7 +30,7 @@ $reply->data = null;
 try {
 	//grab the mySQL connection
 	//do I need this or should it be something else?
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/ddctwiiter.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
 
 	//mock a logged in user by mocking the session and assigning a specific user to it
 	//this is the only for testin purposes and should not be in the live code
@@ -135,9 +135,6 @@ try {
 				throw(new \InvalidArgumentException("You must be logged in to post messages", 403));
 			}
 
-
-
-
 			//create new message and insert it into the database
 
 			$message = new Message(null, $requestObject->messageProfileId, $requestObject->messageOrganizationId, $requestObject->messageContent,
@@ -161,8 +158,8 @@ try {
 
 
 	header("Content-type: application/json");
-	if($reply->date === null) {
-		unset($reply->date);
+	if($reply->dateTime === null) {
+		unset($reply->dateTime);
 	}
 
 //encode and return reply to the front end called
