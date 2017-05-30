@@ -65,7 +65,6 @@ try {
 	$postType = filter_input(INPUT_GET, "postType", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 
-
 	//make sure the id is valid for methods that require it
 	if(($method === "GET" || $method === "PUT") && (empty($id) === true || $id < 0)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
@@ -168,7 +167,7 @@ try {
 			if($post !== null) {
 				$reply->data = $post;
 			}
-	} else if(empty($postSex) === false) {
+		} else if(empty($postSex) === false) {
 			$post = Post::getPostByPostSex($pdo, $postSex);
 			if($post !== null) {
 				$reply->data = $post;
@@ -178,150 +177,156 @@ try {
 			if($post !== null) {
 				$reply->data = $post;
 			}
-		}
-	else if($method === "PUT") {
+		} else if($method === "PUT") {
 
-		verifyXsrf();
-		$requestContent = file_get_contents("php://input");
-		// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
-		$requestObject = json_decode($requestContent);
-		// This Line then decodes the JSON package and stores that result in $requestObject
-		//make sure organization email is available (required field) (no id, token or Add2)
-		if(empty($requestObject->organizationProfileId) === true) {
-			throw(new \InvalidArgumentException ("No associated profile is listed or available.", 405));
-		}
-		if(empty($requestObject->organizationAddress1) === true) {
-			throw(new \InvalidArgumentException ("No organization address is listed or available.", 405));
-		}
-		if(empty($requestObject->organizationCity) === true) {
-			throw(new \InvalidArgumentException ("No organization city is listed or available.", 405));
-		}
-		if(empty($requestObject->organizationEmail) === true) {
-			throw(new \InvalidArgumentException ("No organization email listed or available.", 405));
-		}
-		if(empty($requestObject->organizationLicense) === true) {
-			throw(new \InvalidArgumentException ("No organization license is listed or available.", 405));
-		}
-		if(empty($requestObject->organizationName) === true) {
-			throw(new \InvalidArgumentException ("No organization name is listed or available.", 405));
-		}
-		if(empty($requestObject->organizationPhone) === true) {
-			throw(new \InvalidArgumentException ("No organization phone number is listed or available.", 405));
-		}
-		if(empty($requestObject->organizationState) === true) {
-			throw(new \InvalidArgumentException ("No organization state is listed or available.", 405));
-		}
-		if(empty($requestObject->organizationZip) === true) {
-			throw(new \InvalidArgumentException ("No organization zip code is listed or available.", 405));
-		}
-		if(empty($requestObject->profileAtHandle) === true) {
-			throw(new \InvalidArgumentException ("No @Handle is listed or available.", 405));
-		}
-		if(empty($requestObject->profileEmail) === true) {
-			throw(new \InvalidArgumentException ("No profile email is listed or available.", 405));
-		}
-		if(empty($requestObject->profileName) === true) {
-			throw(new \InvalidArgumentException ("No profile name is listed or available.", 405));
-		}
-		if(empty($requestObject->postBreed) === true) {
-			throw(new \InvalidArgumentException ("No post breed is listed or available.", 405));
-		}
-		if(empty($requestObject->postDescription) === true) {
-			throw(new \InvalidArgumentException ("No post description is listed or available.", 405));
-		}
-		if(empty($requestObject->postSex) === true) {
-			throw(new \InvalidArgumentException ("No post sex is listed or available.", 405));
-		}
-		if(empty($requestObject->postType) === true) {
-			throw(new \InvalidArgumentException ("No post type is listed or available.", 405));
-		}
+			verifyXsrf();
+			$requestContent = file_get_contents("php://input");
+			// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
+			$requestObject = json_decode($requestContent);
+			// This Line then decodes the JSON package and stores that result in $requestObject
+			//make sure organization email is available (required field) (no id, token or Add2)
+			if(empty($requestObject->organizationProfileId) === true) {
+				throw(new \InvalidArgumentException ("No associated profile is listed or available.", 405));
+			}
+			if(empty($requestObject->organizationAddress1) === true) {
+				throw(new \InvalidArgumentException ("No organization address is listed or available.", 405));
+			}
+			if(empty($requestObject->organizationCity) === true) {
+				throw(new \InvalidArgumentException ("No organization city is listed or available.", 405));
+			}
+			if(empty($requestObject->organizationEmail) === true) {
+				throw(new \InvalidArgumentException ("No organization email listed or available.", 405));
+			}
+			if(empty($requestObject->organizationLicense) === true) {
+				throw(new \InvalidArgumentException ("No organization license is listed or available.", 405));
+			}
+			if(empty($requestObject->organizationName) === true) {
+				throw(new \InvalidArgumentException ("No organization name is listed or available.", 405));
+			}
+			if(empty($requestObject->organizationPhone) === true) {
+				throw(new \InvalidArgumentException ("No organization phone number is listed or available.", 405));
+			}
+			if(empty($requestObject->organizationState) === true) {
+				throw(new \InvalidArgumentException ("No organization state is listed or available.", 405));
+			}
+			if(empty($requestObject->organizationZip) === true) {
+				throw(new \InvalidArgumentException ("No organization zip code is listed or available.", 405));
+			}
+			if(empty($requestObject->profileAtHandle) === true) {
+				throw(new \InvalidArgumentException ("No @Handle is listed or available.", 405));
+			}
+			if(empty($requestObject->profileEmail) === true) {
+				throw(new \InvalidArgumentException ("No profile email is listed or available.", 405));
+			}
+			if(empty($requestObject->profileName) === true) {
+				throw(new \InvalidArgumentException ("No profile name is listed or available.", 405));
+			}
+			if(empty($requestObject->postBreed) === true) {
+				throw(new \InvalidArgumentException ("No post breed is listed or available.", 405));
+			}
+			if(empty($requestObject->postDescription) === true) {
+				throw(new \InvalidArgumentException ("No post description is listed or available.", 405));
+			}
+			if(empty($requestObject->postSex) === true) {
+				throw(new \InvalidArgumentException ("No post sex is listed or available.", 405));
+			}
+			if(empty($requestObject->postType) === true) {
+				throw(new \InvalidArgumentException ("No post type is listed or available.", 405));
+			}
 
-		//  !!!!make sure profileId is not null
-		if(empty($requestObject->OrganizationId) === true) {
-			throw(new \InvalidArgumentException ("No Organization ID.", 405));
-		}
-		//perform the actual put or post
-		if($method === "PUT") {
+			//  !!!!make sure profileId is not null
+			if(empty($requestObject->OrganizationId) === true) {
+				throw(new \InvalidArgumentException ("No Organization ID.", 405));
+			}
+			//perform the actual put or post
+			if($method === "PUT") {
+
+				//enforce that the end user has a XSRF token.
+				verifyXsrf();
+
+				// retrieve the organization to update
+				$organization = Organization::getOrganizationByOrganizationId($pdo, $id);
+				if($organization === null) {
+					throw(new RuntimeException("Organization does not exist", 404));
+				}
+				//enforce the user is signed in and only trying to edit their own profile
+				if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $organization->getOrganizationProfileId()) {
+					throw(new \InvalidArgumentException("You are not allowed to edit this organization", 403));
+				}
+				// update all attributes (not primary or foreign)
+				$organization->setOrganizationAddress1($requestObject->organizationAddress1);
+				$organization->setOrganizationAddress2($requestObject->organizationAddress2);
+				$organization->setOrganizationCity($requestObject->organizationCity);
+				$organization->setOrganizationEmail($requestObject->organizationEmail);
+				$organization->setOrganizationLicense($requestObject->organizationLicense);
+				$organization->setOrganizationName($requestObject->organizationName);
+				$organization->setOrganizationPhone($requestObject->organizationPhone);
+				$organization->setOrganizationState($requestObject->organizationState);
+				$organization->setOrganizationZip($requestObject->organizationZip);
+				$organization->update($pdo);
+
+				// update reply
+				$reply->message = "Organization successfully updated.";
+
+			} else if($method === "POST") {
+
+				//enforce that the end user has a XSRF token.
+				verifyXsrf();
+
+				// enforce the user is signed in
+				if(empty($_SESSION["profile"]) === true) {
+					throw(new \InvalidArgumentException("you must be logged in to create", 403));
+				}
+
+				// create new organization and insert into the database
+				$organization = new Organization(null, $requestObject->ProfileId, $requestObject->organizationActivationToken, $requestObject->organizationAddress1, $requestObject->organizationAddress2, $requestObject->organizationCity, $requestObject->organizationEmail, $requestObject->organizationLicense, $requestObject->organizationName, $requestObject->organizationPhone, $requestObject->organizationState, $requestObject->organizationZip);
+				$organization->insert($pdo);
+
+				// update reply
+				$reply->message = "Organization created OK";
+
+			}
+		} else if($method === "DELETE") {
 
 			//enforce that the end user has a XSRF token.
 			verifyXsrf();
 
-			// retrieve the organization to update
+			// retrieve the Organization to be deleted
 			$organization = Organization::getOrganizationByOrganizationId($pdo, $id);
 			if($organization === null) {
 				throw(new RuntimeException("Organization does not exist", 404));
 			}
+
 			//enforce the user is signed in and only trying to edit their own profile
 			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $organization->getOrganizationProfileId()) {
-				throw(new \InvalidArgumentException("You are not allowed to edit this organization", 403));
+				throw(new \InvalidArgumentException("You are not allowed to delete this organization.", 403));
 			}
-			// update all attributes (not primary or foreign)
-			$organization->setOrganizationAddress1($requestObject->organizationAddress1);
-			$organization->setOrganizationAddress2($requestObject->organizationAddress2);
-			$organization->setOrganizationCity($requestObject->organizationCity);
-			$organization->setOrganizationEmail($requestObject->organizationEmail);
-			$organization->setOrganizationLicense($requestObject->organizationLicense);
-			$organization->setOrganizationName($requestObject->organizationName);
-			$organization->setOrganizationPhone($requestObject->organizationPhone);
-			$organization->setOrganizationState($requestObject->organizationState);
-			$organization->setOrganizationZip($requestObject->organizationZip);
-			$organization->update($pdo);
 
+			// delete organization
+			$organization->delete($pdo);
 			// update reply
-			$reply->message = "Organization successfully updated.";
-
-		} else if($method === "POST") {
-
-			//enforce that the end user has a XSRF token.
-			verifyXsrf();
-
-			// enforce the user is signed in
-			if(empty($_SESSION["profile"]) === true) {
-							throw(new \InvalidArgumentException("you must be logged in to create", 403));
-						}
-
-						// create new organization and insert into the database
-						$organization = new Organization(null, $requestObject->ProfileId, $requestObject->organizationActivationToken, $requestObject->organizationAddress1, $requestObject->organizationAddress2, $requestObject->organizationCity, $requestObject->organizationEmail, $requestObject->organizationLicense, $requestObject->organizationName, $requestObject->organizationPhone, $requestObject->organizationState, $requestObject->organizationZip);
-						$organization->insert($pdo);
-
-						// update reply
-						$reply->message = "Organization created OK";
-
-		}
-	} else if($method === "DELETE") {
-
-		//enforce that the end user has a XSRF token.
-		verifyXsrf();
-
-		// retrieve the Organization to be deleted
-		$organization = Organization::getOrganizationByOrganizationId($pdo, $id);
-		if($organization === null) {
-			throw(new RuntimeException("Organization does not exist", 404));
+			$reply->message = "Organization deleted OK";
+		} else {
+			throw (new InvalidArgumentException("Invalid HTTP method request"));
 		}
 
-		//enforce the user is signed in and only trying to edit their own profile
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $organization->getOrganizationProfileId()) {
-			throw(new \InvalidArgumentException("You are not allowed to delete this organization.", 403));
-		}
-
-		// delete organization
-		$organization->delete($pdo);
-		// update reply
-		$reply->message = "Organization deleted OK";
-	} else {
-		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
 
 // update the $reply->status $reply->message
-} catch(\Exception | \TypeError $exception) {
-	$reply->status = $exception->getCode();
-	$reply->message = $exception->getMessage();
-}
+	}
+catch
+	(\Exception | \TypeError $exception) {
+		$reply->status = $exception->getCode();
+		$reply->message = $exception->getMessage();
+	}
+
 
 header("Content-type: application/json");
 if($reply->data === null) {
 	unset($reply->data);
 }
+
+
 
 // encode and return reply to front end caller
 echo json_encode($reply);

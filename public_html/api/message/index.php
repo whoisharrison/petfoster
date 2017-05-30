@@ -158,8 +158,8 @@ try {
 
 
 	header("Content-type: application/json");
-	if($reply->dateTime === null) {
-		unset($reply->dateTime);
+	if($reply->data === null) {
+		unset($reply->data);
 	}
 
 //encode and return reply to the front end called

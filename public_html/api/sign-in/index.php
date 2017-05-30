@@ -89,7 +89,7 @@ try {
 
 
 		  	$_SESSION["organization"] = $organization;
-			 $_SESSION["profile"] = $profile;
+			  $_SESSION["profile"] = $profile;
 			  $reply->message = "Sign in was successful";
 
 		  } else {
