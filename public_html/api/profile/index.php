@@ -12,7 +12,7 @@ use Edu\Cnm\PetRescueAbq\ {
 /**
  * api for profile class
  *
- * @author Valente Meza <mharrison13@cnm.edu>
+ * @author michael harrison <mharrison13@cnm.edu>
  */
 
 //verify the session, start if not active
