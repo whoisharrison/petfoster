@@ -3,7 +3,7 @@
 require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "php/lib/xsrf.php";
-require_once ("/etc/apache2/capstone-mysql/encrypted-config.php");
+require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\PetRescueAbq\ {
 	Profile
@@ -31,16 +31,16 @@ try {
 	//$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 732);
 
 	//determine which HTTP method was used
-	$method = array_key_exists("http_X_HTTP_METHOD", $_SERVER ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["$_REQUEST_METHOD"];
+	$method = array_key_exists("http_X_HTTP_METHOD", $_SERVER ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["$_REQUEST_METHOD"]);
 
 	//sanitize input
-	$id = filter_unput(INPUT_GET, "id", FILTER_VALIDATE_INT;
+	$id = filter_unput(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$profileAtHandle = filter_input(INPUT_GET, "profileAtHandle", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_VALIDATE_EMAIL);
-	$profilePassword = filter_input(INPUT_GET), "profilePassword", FILTER_SANITIZE_STRINGFILTER_FLAG_NO_ENCODE_QUOTES);
+	$profilePassword = filter_input(INPUT_GET, "profilePassword", FILTER_SANITIZE_STRINGFILTER_FLAG_NO_ENCODE_QUOTES);
 
 // make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty(id) === true || $id <0)) {
+	if(($method === "DELETE" || $method === "PUT") && (empty(id) === true || $id < 0)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative, 405"));
 	}
 
@@ -68,55 +68,55 @@ try {
 	}
 
 	if(empty($id) === false) {
-			$profile - Profile::getProfileById($pdo, $id);
-			if($profile !== null) {
-				$reply->data = $profile;
-			}
-		} else if(empty($profileId) === false) {
-			$profile = Profile::getProfileId($pdo, $id)->toArray();
-			if($profile !== null) {
-				$reply->data = $profile;
-			}
-		} else if(empty($profileEmail) === false) {
+		$profile - Profile::getProfileById($pdo, $id);
+		if($profile !== null) {
+			$reply->data = $profile;
+		}
+	} else if(empty($profileId) === false) {
+		$profile = Profile::getProfileId($pdo, $id)->toArray();
+		if($profile !== null) {
+			$reply->data = $profile;
+		}
+	} else if(empty($profileEmail) === false) {
 		$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail)->toArray();
 		if($profile !== null) {
 			$reply->data = $profile;
 
 		} elseif($method === "PUT") {
-	//enforce the user is signed in and only trying to edit their own profile
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $id) {
-			throw(new \InvalidArgumentException("You are not allowed to access this profile", 403));
-		}
-		//decode the response from the front end
-		$requestContent = file_get_contents("php://input");
-		$requestObject = json_decode($requestContent);
-		//retrieve the profile to be updated
-		$profile = Profile::getProfileByProfileId($pdo, $id);
-		if($profile === null) {
-			throw(new RuntimeException("Profile does not exist", 404));
-		}
-		if(empty($requestObject->newPassword) === true) {
-			//enforce that the XSRF token is present in the header
-			verifyXsrf();
-			//profile at handle
-			if(empty($requestObject->profileAtHandle) === true) {
-				throw(new \InvalidArgumentException ("No profile at handle", 405));
+			//enforce the user is signed in and only trying to edit their own profile
+			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $id) {
+				throw(new \InvalidArgumentException("You are not allowed to access this profile", 403));
 			}
-			//profile email
-			if(empty($requestObject->profileEmail) === true) {
-				throw(new \InvalidArgumentException ("No profile email present", 405));
+			//decode the response from the front end
+			$requestContent = file_get_contents("php://input");
+			$requestObject = json_decode($requestContent);
+			//retrieve the profile to be updated
+			$profile = Profile::getProfileByProfileId($pdo, $id);
+			if($profile === null) {
+				throw(new RuntimeException("Profile does not exist", 404));
 			}
-			//profile name
-			if(empty($requestObject->profileName) === true) {
-				$requestObject->ProfileName = $profile->getProfileName();
+			if(empty($requestObject->newPassword) === true) {
+				//enforce that the XSRF token is present in the header
+				verifyXsrf();
+				//profile at handle
+				if(empty($requestObject->profileAtHandle) === true) {
+					throw(new \InvalidArgumentException ("No profile at handle", 405));
+				}
+				//profile email
+				if(empty($requestObject->profileEmail) === true) {
+					throw(new \InvalidArgumentException ("No profile email present", 405));
+				}
+				//profile name
+				if(empty($requestObject->profileName) === true) {
+					$requestObject->ProfileName = $profile->getProfileName();
+				}
+				$profile->setProfileAtHandle($requestObject->profileAtHandle);
+				$profile->setProfileEmail($requestObject->profileEmail);
+				$profile->setProfileName($requestObject->profileName);
+				$profile->update($pdo);
+				// update reply
+				$reply->message = "Profile information updated";
 			}
-			$profile->setProfileAtHandle($requestObject->profileAtHandle);
-			$profile->setProfileEmail($requestObject->profileEmail);
-			$profile->setProfileName($requestObject->profileName);
-			$profile->update($pdo);
-			// update reply
-			$reply->message = "Profile information updated";
-		}
 
 			/**
 			 * update the password if requested
@@ -161,16 +161,20 @@ try {
 			throw (new InvalidArgumentException("Invalid HTTP request", 400));
 		}
 		// catch any exceptions that were thrown and update the status and message state variable fields
-	} catch(\Exception | $exception) {
-		$reply->status = $exception->getCode();
-		$reply->message = $exception->getMessage();
 	}
-
-header("Content-type: application/json");
-if($reply->data === null) {
-	unset($reply->data);
 }
 
+catch
+	(\Exception | \TypeError $exception){
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+}
+
+	header("Content-type: application/json");
+	if($reply->data === null) {
+		unset($reply->data);
+	}
+
 // encode and return reply to front end caller
-echo json_encode($reply);
+	echo json_encode($reply);
 
