@@ -3,7 +3,7 @@
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "php/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/php/lib/mailgun.php";
-requre_once("etc/apache2/capstone-mysql/encrypted-config.php");
+require_once ("/etc/apache2/capstone-mysql/encrypted-config.php");
 use Edu\Cnm\PetRescueAbq;
 
 /**
@@ -23,7 +23,7 @@ $reply->data = null;
 
 try {
 	//grab the mySQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/PetRescueAbq.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] :
