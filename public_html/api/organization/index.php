@@ -2,10 +2,9 @@
 /**
  * Created by Jeffrey Cooper.
  */
-require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
-require_once("/etc/apache2/~jcooper37/public_html/petadopt/encrypted-config.php");
+require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\PetRescueAbq\ {
 	Organization,
@@ -32,7 +31,7 @@ $reply->data = null;
 
 try {
 	//establish mySQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/~jcooper37/public_html/petadopt/pet-rescue-abq.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
 
 	// mock a session and assign a specific user to it.
 	// only for testing purposes - not in the live code.
