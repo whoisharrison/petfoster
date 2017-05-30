@@ -165,7 +165,7 @@ try {
 			throw(new \InvalidArgumentException ("No zip code is listed or available.", 405));
 		}
 
-		//  !!!!make sure profileId is not null
+		//  !!!!make sure organizationId is not null
 		if(empty($requestObject->OrganizationId) === true) {
 			throw(new \InvalidArgumentException ("No Organization ID.", 405));
 		}
