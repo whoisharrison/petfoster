@@ -14,7 +14,7 @@ use Edu\Cnm\PetRescueAbq\ {
 	Post
 };
 
-// TODO: ENABLE ALL FOR GOD MODE. WAIT FOR PROFILE IDs AND HARD CODE THEM.
+// TODO: ENABLE ORG GET, PUT and DELETE
 /**
  * api for the Admin panel
  *
@@ -56,14 +56,6 @@ try {
 	$organizationState = filter_input(INPUT_GET, "organizationState", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$organizationZip = filter_input(INPUT_GET, "organizationZip", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$organizationZip = filter_input(INPUT_GET, "organizationZip", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$profileActivationToken = filter_input(INPUT_GET, "profileActivationToken", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$profileAtHandle = filter_input(INPUT_GET, "profileAtHandle", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$profileName = filter_input(INPUT_GET, "profileName", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$postBreed = filter_input(INPUT_GET, "profileBreed", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$postDescription = filter_input(INPUT_GET, "postDescription", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$postSex = filter_input(INPUT_GET, "postSex", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$postType = filter_input(INPUT_GET, "postType", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 
 	//make sure the id is valid for methods that require it
@@ -138,108 +130,49 @@ try {
 			if($organization !== null) {
 				$reply->data = $organization;
 			}
-		} else if(empty($profileActivationToken) === false) {
-			$profile = Profile::getProfileByProfileActivationToken($pdo, $profileActivationToken);
-			if($profile !== null) {
-				$reply->data = $profile;
-			}
-		} else if(empty($profileAtHandle) === false) {
-			$profile = Profile::getProfileByProfileAtHandle($pdo, $profileAtHandle);
-			if($profile !== null) {
-				$reply->data = $profile;
-			}
-		} else if(empty($profileEmail) === false) {
-			$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
-			if($profile !== null) {
-				$reply->data = $profile;
-			}
-		} else if(empty($profileName) === false) {
-			$profile = Profile::getProfileByProfileName($pdo, $profileName);
-			if($profile !== null) {
-				$reply->data = $profile;
-			}
-		} else if(empty($postBreed) === false) {
-			$post = Post::getPostByPostBreed($pdo, $postBreed);
-			if($post !== null) {
-				$reply->data = $post;
-			}
-		} else if(empty($postDescription) === false) {
-			$post = Post::getPostByPostDescription($pdo, $postDescription);
-			if($post !== null) {
-				$reply->data = $post;
-			}
-		} else if(empty($postSex) === false) {
-			$post = Post::getPostByPostSex($pdo, $postSex);
-			if($post !== null) {
-				$reply->data = $post;
-			}
-		} else if(empty($postType) === false) {
-			$post = Post::getPostByPostType($pdo, $postType);
-			if($post !== null) {
-				$reply->data = $post;
 			}
 		} else if($method === "PUT") {
 
-			verifyXsrf();
-			$requestContent = file_get_contents("php://input");
-			// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
-			$requestObject = json_decode($requestContent);
-			// This Line then decodes the JSON package and stores that result in $requestObject
-			//make sure organization email is available (required field) (no id, token or Add2)
-			if(empty($requestObject->organizationProfileId) === true) {
-				throw(new \InvalidArgumentException ("No associated profile is listed or available.", 405));
-			}
-			if(empty($requestObject->organizationAddress1) === true) {
-				throw(new \InvalidArgumentException ("No organization address is listed or available.", 405));
-			}
-			if(empty($requestObject->organizationCity) === true) {
-				throw(new \InvalidArgumentException ("No organization city is listed or available.", 405));
-			}
-			if(empty($requestObject->organizationEmail) === true) {
-				throw(new \InvalidArgumentException ("No organization email listed or available.", 405));
-			}
-			if(empty($requestObject->organizationLicense) === true) {
-				throw(new \InvalidArgumentException ("No organization license is listed or available.", 405));
-			}
-			if(empty($requestObject->organizationName) === true) {
-				throw(new \InvalidArgumentException ("No organization name is listed or available.", 405));
-			}
-			if(empty($requestObject->organizationPhone) === true) {
-				throw(new \InvalidArgumentException ("No organization phone number is listed or available.", 405));
-			}
-			if(empty($requestObject->organizationState) === true) {
-				throw(new \InvalidArgumentException ("No organization state is listed or available.", 405));
-			}
-			if(empty($requestObject->organizationZip) === true) {
-				throw(new \InvalidArgumentException ("No organization zip code is listed or available.", 405));
-			}
-			if(empty($requestObject->profileAtHandle) === true) {
-				throw(new \InvalidArgumentException ("No @Handle is listed or available.", 405));
-			}
-			if(empty($requestObject->profileEmail) === true) {
-				throw(new \InvalidArgumentException ("No profile email is listed or available.", 405));
-			}
-			if(empty($requestObject->profileName) === true) {
-				throw(new \InvalidArgumentException ("No profile name is listed or available.", 405));
-			}
-			if(empty($requestObject->postBreed) === true) {
-				throw(new \InvalidArgumentException ("No post breed is listed or available.", 405));
-			}
-			if(empty($requestObject->postDescription) === true) {
-				throw(new \InvalidArgumentException ("No post description is listed or available.", 405));
-			}
-			if(empty($requestObject->postSex) === true) {
-				throw(new \InvalidArgumentException ("No post sex is listed or available.", 405));
-			}
-			if(empty($requestObject->postType) === true) {
-				throw(new \InvalidArgumentException ("No post type is listed or available.", 405));
-			}
+		verifyXsrf();
+		$requestContent = file_get_contents("php://input");
+		// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
+		$requestObject = json_decode($requestContent);
+		// This Line then decodes the JSON package and stores that result in $requestObject
+		//make sure organization email is available (required field) (no id, token or Add2)
+		if(empty($requestObject->organizationProfileId) === true) {
+			throw(new \InvalidArgumentException ("No associated profile is listed or available.", 405));
+		}
+		if(empty($requestObject->organizationAddress1) === true) {
+			throw(new \InvalidArgumentException ("No organization address is listed or available.", 405));
+		}
+		if(empty($requestObject->organizationCity) === true) {
+			throw(new \InvalidArgumentException ("No organization city is listed or available.", 405));
+		}
+		if(empty($requestObject->organizationEmail) === true) {
+			throw(new \InvalidArgumentException ("No organization email listed or available.", 405));
+		}
+		if(empty($requestObject->organizationLicense) === true) {
+			throw(new \InvalidArgumentException ("No organization license is listed or available.", 405));
+		}
+		if(empty($requestObject->organizationName) === true) {
+			throw(new \InvalidArgumentException ("No organization name is listed or available.", 405));
+		}
+		if(empty($requestObject->organizationPhone) === true) {
+			throw(new \InvalidArgumentException ("No organization phone number is listed or available.", 405));
+		}
+		if(empty($requestObject->organizationState) === true) {
+			throw(new \InvalidArgumentException ("No organization state is listed or available.", 405));
+		}
+		if(empty($requestObject->organizationZip) === true) {
+			throw(new \InvalidArgumentException ("No organization zip code is listed or available.", 405));
+		}
+	}
 
 			//  !!!!make sure profileId is not null
 			if(empty($requestObject->OrganizationId) === true) {
 				throw(new \InvalidArgumentException ("No Organization ID.", 405));
 			}
-			//perform the actual put or post
+			//perform the actual put
 			if($method === "PUT") {
 
 				//enforce that the end user has a XSRF token.
@@ -269,25 +202,7 @@ try {
 				// update reply
 				$reply->message = "Organization successfully updated.";
 
-			} else if($method === "POST") {
-
-				//enforce that the end user has a XSRF token.
-				verifyXsrf();
-
-				// enforce the user is signed in
-				if(empty($_SESSION["profile"]) === true) {
-					throw(new \InvalidArgumentException("you must be logged in to create", 403));
-				}
-
-				// create new organization and insert into the database
-				$organization = new Organization(null, $requestObject->ProfileId, $requestObject->organizationActivationToken, $requestObject->organizationAddress1, $requestObject->organizationAddress2, $requestObject->organizationCity, $requestObject->organizationEmail, $requestObject->organizationLicense, $requestObject->organizationName, $requestObject->organizationPhone, $requestObject->organizationState, $requestObject->organizationZip);
-				$organization->insert($pdo);
-
-				// update reply
-				$reply->message = "Organization created OK";
-
-			}
-		} else if($method === "DELETE") {
+			} else if($method === "DELETE") {
 
 			//enforce that the end user has a XSRF token.
 			verifyXsrf();
@@ -310,8 +225,6 @@ try {
 		} else {
 			throw (new InvalidArgumentException("Invalid HTTP method request"));
 		}
-
-	}
 
 // update the $reply->status $reply->message
 	}
