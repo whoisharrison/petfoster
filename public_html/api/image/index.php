@@ -1,7 +1,7 @@
 <?php
 
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
-require_once dirname(__, 3) . "/vendor/autoload.php";
+require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once dirname(__DIR__, 3) . "/etc/apache2/capstone-mysql/encrypted-config.php";
 
@@ -66,6 +66,13 @@ try {
 
 		//get image/all images then update reply
 
+		if(empty($id) === false){
+			$profile = Profile::getProfileByProfileId($pdo, $id);
+		if($profile !== null){
+			$reply->data = $profile;
+		}
+
+	}
 		if(empty($Id) === false) {
 			$post = Post::getPostByPostId($pdo, $id);
 			if($post !== null) {
@@ -126,7 +133,7 @@ try {
 			verifyXsrf();
 
 			//TODO enforce that all the needed variables to create both post and image are present
-
+			//added profile, have Q's about profile id or $id
 			//verifying that the user is logged in before they can insert an image
 
 			if($empty($_SESSION["profile"]) === true) {
@@ -183,13 +190,12 @@ try {
 		} else {
 			throw (new InvalidArgumentException("Invalid HTTP method request"));
 		}
-	}
 catch
 	(Exception $exception) {
 		$reply->status = $exception->getCode();
 		$reply->
 	}
-}
+
 
 
 
