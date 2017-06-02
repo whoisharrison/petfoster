@@ -52,10 +52,10 @@ try {
 		//get a specific profile and update
 		if(empty($id !== null)) {
 			$reply->data = $id;
-		}
-	} else if(empty($id) === false) {
-		$profile = Profile::getProfileByProfileId($pdo, $id)->toArray();
-	} else if($method === "put") {
+		} else if(empty($id) === false) {
+		$profile = Profile::getProfileByProfileId($pdo, $id);
+	}
+	} else if($method === "PUT") {
 
 		//ensure that the user is signed in and only trying to edit their own profile
 		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $id) {
@@ -68,12 +68,7 @@ try {
 	}
 
 	if(empty($id) === false) {
-		$profile - Profile::getProfileById($pdo, $id);
-		if($profile !== null) {
-			$reply->data = $profile;
-		}
-	} else if(empty($profileId) === false) {
-		$profile = Profile::getProfileId($pdo, $id)->toArray();
+		$profile = Profile::getProfileByProfileId($pdo, $id);
 		if($profile !== null) {
 			$reply->data = $profile;
 		}
@@ -81,12 +76,7 @@ try {
 		$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail)->toArray();
 		if($profile !== null) {
 			$reply->data = $profile;
-
-		} elseif($method === "PUT") {
-			//enforce the user is signed in and only trying to edit their own profile
-			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $id) {
-				throw(new \InvalidArgumentException("You are not allowed to access this profile", 403));
-			}
+		}
 			//decode the response from the front end
 			$requestContent = file_get_contents("php://input");
 			$requestObject = json_decode($requestContent);
@@ -123,7 +113,7 @@ try {
 			 **/
 
 			//enforce that current password new password and confirm password is present
-			if(empty($requestObject->ProfilePassword) === false && empty($requestObject->profileConfirmPassword) === false && empty($requestContent->ConfirmPassword) === false) {
+			if(empty($requestObject->profilePassword) === false && empty($requestObject->profileConfirmPassword) === false && empty($requestContent->ConfirmPassword) === false) {
 				//make sure the new password and confirm password exist
 				if($requestObject->newProfilePassword !== $requestObject->profileConfirmPassword) {
 					throw(new RuntimeException("New passwords do not match", 401));
@@ -143,7 +133,7 @@ try {
 			//preform the actual update to the database and update message
 			$profile->update($pdo);
 			$reply->message = "profile password successfully updated";
-		} elseif($method === "DELETE") {
+		} else if($method === "DELETE") {
 			//verify the XSRF Token
 			verifyXsrf();
 			$profile = Profile::getProfileByProfileId($pdo, $id);
