@@ -1,8 +1,8 @@
 <?php
 
 
-require_once dirname (__DIR__, 3) . "/php/classes/autoload.php";
-require_once dirname (__DIR__, 3) . "/php/lib/xsrf.php";
+require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
+require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\PetRescueAbq\{
@@ -33,7 +33,7 @@ try {
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
 
 	//mock a logged in user by mocking the session and assigning a specific user to it
-	//this is the only for testin purposes and should not be in the live code
+	//this is the only for testing purposes and should not be in the live code
 	//$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 732);
 	//$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo, 732);
 
@@ -86,18 +86,23 @@ try {
 				$reply->data = $message;
 			}
 
-		}
-			//DELETED THIS
-			/**
-			{
-			$messages = Message::getAllMessages($pdo)->toArray();
-			if($messages !== null) {
-				$reply->data = $messages;
+			// check to see if org exists and org id is ok OR profile exists and profile id is ok
+			if((empty($organization = Organization::getOrganizationByOrganizationId($pdo, $id) === true) && $organizationId($_SESSION["organization"]) !== $organizationId)
+				|| (empty($id = Profile::getProfileByProfileId($pdo, $id) === true) && $id($_SESSION["profile"]) !== $id)) {
+				throw(new InvalidArgumentException("org and profile are not ok, 405"));
 			}
-		}
-			 **/
 
-	} else if($method === "POST") {
+		}
+		//DELETED THIS
+		/**
+		 * {
+		 * $messages = Message::getAllMessages($pdo)->toArray();
+		 * if($messages !== null) {
+		 * $reply->data = $messages;
+		 * }
+		 * }
+		 **/
+
 
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
@@ -151,19 +156,19 @@ try {
 
 	//update the $reply->status $reply->message, probably not gonna need
 
-	 } catch(\Exception | \TypeError $exception) {
-	 //$reply->status = $exception->getCode();
-	 // $reply->message = $exception->getMessage();
-	 }
+} catch(\Exception | \TypeError $exception) {
+	//$reply->status = $exception->getCode();
+	// $reply->message = $exception->getMessage();
+}
 
 
-	header("Content-type: application/json");
-	if($reply->data === null) {
-		unset($reply->data);
-	}
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
 
 //encode and return reply to the front end called
-	echo json_encode($reply);
+echo json_encode($reply);
 
 
 

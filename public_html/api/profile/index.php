@@ -3,7 +3,7 @@
 require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
-require_once ("/etc/apache2/capstone-mysql/encrypted-config.php");
+require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\PetRescueAbq\ {
 	Profile
@@ -22,7 +22,7 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 //prepare an empty reply
 $reply = new stdClass();
 $reply->status = 200;
-$reply->status = null;
+$reply->data = null;
 
 try {
 	//grab the mySQL connection
@@ -31,16 +31,16 @@ try {
 	//$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 732);
 
 	//determine which HTTP method was used
-	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["$_REQUEST_METHOD"];
+	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	//sanitize input
-	$id = filter_unput(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 	$profileAtHandle = filter_input(INPUT_GET, "profileAtHandle", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_VALIDATE_EMAIL);
-	$profilePassword = filter_input(INPUT_GET, "profilePassword", FILTER_SANITIZE_STRINGFILTER_FLAG_NO_ENCODE_QUOTES);
+	$profilePassword = filter_input(INPUT_GET, "profilePassword", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 // make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty(id) === true || $id < 0)) {
+	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative, 405"));
 	}
 
@@ -162,19 +162,17 @@ try {
 		}
 		// catch any exceptions that were thrown and update the status and message state variable fields
 	}
-}
-
-catch
-	(\Exception | \TypeError $exception){
+} catch
+(\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
 }
 
-	header("Content-type: application/json");
-	if($reply->data === null) {
-		unset($reply->data);
-	}
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
 
 // encode and return reply to front end caller
-	echo json_encode($reply);
+echo json_encode($reply);
 
