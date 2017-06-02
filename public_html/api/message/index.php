@@ -87,8 +87,8 @@ try {
 			}
 
 			// check to see if org exists and org id is ok OR profile exists and profile id is ok
-			if((empty($organization === true) && $organizationId($_SESSION["organization"]) !== $organizationId)
-				|| (empty($id === true) && $id($_SESSION["profile"]) !== $id)) {
+			if(empty($organization) === true && $organizationId["organization"]->getOrganizationId() !== $organizationId)
+				|| if(empty($id) === true && $id["profile"]->getProfileId() !== $id)) {
 				throw(new InvalidArgumentException("org and profile are not ok, 405"));
 			}
 
