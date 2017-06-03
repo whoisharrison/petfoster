@@ -86,11 +86,16 @@ try {
 				$reply->data = $message;
 			}
 
+			// old check to see if org exists and org id is ok OR profile exists and profile id is ok
+			//			if(empty($organization->getOrganizationId) === true && $_SESSION["organization"]->getOrganizationId() !== $organizationId->getOrganizationId()) || if(empty($id->profileId) === true && $_SESSION["profile"]->getProfileId() !== $id) {
+			//				throw(new InvalidArgumentException("org and profile are not ok, 405"));
+			//			}
+
 			// check to see if org exists and org id is ok OR profile exists and profile id is ok
-			if(empty($organization->organizationId) === true && $organizationId["organization"]->getOrganizationId() !== $organizationId)
-				|| if(empty($id->profileId) === true && $id["profile"]->getProfileId() !== $id) {
+			if(empty($organization->getOrganizationId) === true || $_SESSION["organization"]->getOrganizationId() !== $organizationId()) && if(empty($id->profileId) === true || $_SESSION["profile"]->getProfileId() !== $id) {
 				throw(new InvalidArgumentException("org and profile are not ok, 405"));
 			}
+
 
 		}
 		//DELETED THIS
