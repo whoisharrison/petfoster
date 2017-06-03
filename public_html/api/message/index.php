@@ -91,7 +91,7 @@ try {
 			//				throw(new InvalidArgumentException("org and profile are not ok, 405"));
 			//			}
 
-			// check to see if org exists and org id is ok OR profile exists and profile id is ok
+			// check to see if org exists oe org id is ok and profile exists or profile id is ok
 			if(empty($organization->getOrganizationId) === true || $_SESSION["organization"]->getOrganizationId() !== $organizationId()) && if(empty($id->profileId) === true || $_SESSION["profile"]->getProfileId() !== $id) {
 				throw(new InvalidArgumentException("org and profile are not ok, 405"));
 			}
