@@ -109,11 +109,11 @@ try {
 
 
 
-				//another attempt
+				//another attempt 2.5ish or so... something... I need a beer
 				if(($id === $organization->getOrganizationId) || ($_SESSION["organization"]->getOrganizationId() !== $organizationId()) && (($id === $profile->getProfileId) ||
 						$_SESSION["profile"]->getProfileId() !== $profileId())) {
 
-								throw(new InvalidArgumentException("org and profile are not ok, 405"));
+							throw(new InvalidArgumentException("org and profile are not ok, 405"));
 				}
 
 
