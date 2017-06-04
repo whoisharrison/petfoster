@@ -99,32 +99,32 @@ try {
 
 			//second attempt
 			// check to see if org exists oe org id is ok and profile exists or profile id is ok
-			if(empty($organization->getOrganizationId) === true || $_SESSION["organization"]->getOrganizationId() !== $organizationId())
-
-
-
-			 && if(empty($id->profileId) === true || $_SESSION["profile"]->getProfileId() !== $id) {
-				throw(new InvalidArgumentException("org and profile are not ok, 405"));
-			}
-
-
-
-
-
-				//another attempt 2.5ish or so... something... I need a beer
-				if(($id === $organization->getOrganizationId) || ($_SESSION["organization"]->getOrganizationId() !== $organizationId()) && (($id === $profile->getProfileId) ||
-						$_SESSION["profile"]->getProfileId() !== $profileId())) {
-
-							throw(new InvalidArgumentException("org and profile are not ok, 405"));
-				}
+//			if(empty($organization->getOrganizationId) === true || $_SESSION["organization"]->getOrganizationId() !== $organizationId())
+//
+//
+//
+//			 && if(empty($id->profileId) === true || $_SESSION["profile"]->getProfileId() !== $id) {
+//				throw(new InvalidArgumentException("org and profile are not ok, 405"));
+//			}
+//
+//
+//
+//
+//
+//				//another attempt 2.5ish or so... something... I need a beer
+//				if(($id === $organization->getOrganizationId) || ($_SESSION["organization"]->getOrganizationId() !== $organizationId()) && (($id === $profile->getProfileId) ||
+//						$_SESSION["profile"]->getProfileId() !== $profileId())) {
+//
+//							throw(new InvalidArgumentException("org and profile are not ok, 405"));
+//				}
 
 
 
 
 
 						//another attempt 2.75ish or so... looks more like Mikes stuff
-				if(empty($organization->getOrganizationId === true) || ($_SESSION["organization"]->getOrganizationId() !== $organizationId()) && (empty($profile->getProfileId === true) ||
-						$_SESSION["profile"]->getProfileId() !== $profileId())) {
+				if((empty ($messageOrganizationId->getOrganizationId === true) && ($_SESSION["organization"]->getOrganizationId() !== $messageOrganizationId()
+						)) || (empty($messageProfileId->getProfileId === true) && ($_SESSION["profile"]->getProfileId() !== $messageProfileId()))){
 
 					throw(new InvalidArgumentException("org and profile are not ok, 405"));
 				}
