@@ -117,7 +117,6 @@ class Message implements \JsonSerializable {
 		if($newMessageId === null) {
 			$this->messageId = null;
 			return;
-
 		}
 
 		//verify the message id is positive
@@ -695,3 +694,8 @@ class Message implements \JsonSerializable {
 			return($fields);
 		}
 }
+
+
+
+
+

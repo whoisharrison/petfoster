@@ -49,7 +49,7 @@ function setXsrfCookie($cookiePath = "/") {
 /**
  * verifies the X-XSRF-TOKEN sent by Angular matches the XSRF-TOKEN saved in this session.
  * This function returns nothing, but will throw an exception when something does not match
- *
+ * 
  * @see https://code.angularjs.org/1.4.2/docs/api/ng/service/$http Angular $http service
  * @throws InvalidArgumentException when tokens do not match
  * @throws RuntimeException if the session is not active

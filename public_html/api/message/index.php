@@ -86,15 +86,39 @@ try {
 				$reply->data = $message;
 			}
 
+
+
+
+			//first attempt
 			// old check to see if org exists and org id is ok OR profile exists and profile id is ok
 			//			if(empty($organization->getOrganizationId) === true && $_SESSION["organization"]->getOrganizationId() !== $organizationId->getOrganizationId()) || if(empty($id->profileId) === true && $_SESSION["profile"]->getProfileId() !== $id) {
 			//				throw(new InvalidArgumentException("org and profile are not ok, 405"));
 			//			}
 
+
+
+			//second attempt
 			// check to see if org exists oe org id is ok and profile exists or profile id is ok
-			if(empty($organization->getOrganizationId) === true || $_SESSION["organization"]->getOrganizationId() !== $organizationId()) && if(empty($id->profileId) === true || $_SESSION["profile"]->getProfileId() !== $id) {
+			if(empty($organization->getOrganizationId) === true || $_SESSION["organization"]->getOrganizationId() !== $organizationId())
+
+
+
+			 && if(empty($id->profileId) === true || $_SESSION["profile"]->getProfileId() !== $id) {
 				throw(new InvalidArgumentException("org and profile are not ok, 405"));
 			}
+
+
+
+				//another attempt
+				if(($id === $organization->getOrganizationId) || ($_SESSION["organization"]->getOrganizationId() !== $organizationId()) && (($id === $profile->getProfileId) ||
+						$_SESSION["profile"]->getProfileId() !== $profileId())) {
+
+								throw(new InvalidArgumentException("org and profile are not ok, 405"));
+				}
+
+
+
+
 
 
 		}
