@@ -121,13 +121,13 @@ try {
 
 
 
+			//another attempt 2.75ish or so... looks more like Mikes stuff
+			if((empty($id->getOrganizationId === true) && ($_SESSION["organization"]->getOrganizationId() !== null
+					)) || (empty($id->getProfileId === true) && ($_SESSION["profile"]->getProfileId() !== null))){
 
-						//another attempt 2.75ish or so... looks more like Mikes stuff
-				if((empty ($messageOrganizationId->getOrganizationId === true) && ($_SESSION["organization"]->getOrganizationId() !== $messageOrganizationId()
-						)) || (empty($messageProfileId->getProfileId === true) && ($_SESSION["profile"]->getProfileId() !== $messageProfileId()))){
+				throw(new InvalidArgumentException("org and profile are not ok, 405"));
+			}
 
-					throw(new InvalidArgumentException("org and profile are not ok, 405"));
-				}
 
 
 
@@ -199,12 +199,15 @@ try {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
 
-	//update the $reply->status $reply->message, probably not gonna need
+
 
 } catch(\Exception | \TypeError $exception) {
 	//$reply->status = $exception->getCode();
 	// $reply->message = $exception->getMessage();
 }
+
+
+
 
 
 header("Content-type: application/json");
