@@ -61,14 +61,26 @@ try {
 		//set XSRF cookie
 		setXsrfCookie();
 
-		//get a specific message or all messages and update reply
-		if(empty($id) === false) {
-			$message = Message::getMessageByMessageId($pdo, $id);
-			if($message !== null) {
-				$reply->data = $message;
-			}
+//		//get a specific message or all messages and update reply
+//		if(empty($id) === false) {
+//			$message = Message::getMessageByMessageId($pdo, $id);
+//			if($message !== null) {
+//				$reply->data = $message;
+//			}
 
-		} else if(empty($messageProfileId) === false) {
+//		}
+
+		if(!(empty($messageOrganizationId) === true ^ empty($messageProfileId) === true)) {
+			throw(new InvalidArgumentException("you are not logged in, 401"));
+		}
+
+		// this is the code we are trying 6.5.15 revision 3.0
+		if(((empty($_SESSION["organization"]) === true) && ($_SESSION["organization"]->getOrganizationId() !== $messageOrganizationId)) || ((empty($_SESSION["profile"]) === true) && ($_SESSION["profile"]->getProfileId() !== $messageProfileId))) {
+			throw(new InvalidArgumentException("org or profile are not ok, 405"));
+		}
+
+
+	else if(empty($messageProfileId) === false) {
 			$message = Message::getMessageByMessageProfileId($pdo, $messageProfileId)->toArray();
 			if($message !== null) {
 
@@ -125,10 +137,10 @@ try {
 
 
 // this is the code we are trying 6.5.15 revision 3.0
-			if(((empty($organization) === true) && ($_SESSION["organization"]->getOrganizationId() !== $messageOrganizationId())) || ((empty($profile)=== true) && ($_SESSION["profile"]->getProfileId() !== $messageProfileId()))
-			) {
-				throw(new InvalidArgumentException("org and profile are not ok, 405"));
-			}
+//			if(((empty($organization) === true) && ($_SESSION["organization"]->getOrganizationId() !== $messageOrganizationId())) || ((empty($profile)=== true) && ($_SESSION["profile"]->getProfileId() !== $messageProfileId()))
+//			) {
+//				throw(new InvalidArgumentException("org and profile are not ok, 405"));
+//			}
 
 
 		}
