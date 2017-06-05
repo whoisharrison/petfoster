@@ -122,20 +122,6 @@ try {
 		$profile->update($pdo);
 		$reply->message = "profile successfully updated";
 
-	} else if($method === "DELETE") {
-		//verify the XSRF Token
-		verifyXsrf();
-		$profile = Profile::getProfileByProfileId($pdo, $id);
-		if($profile === null) {
-			throw (new RuntimeException("Profile does not exist"));
-		}
-		//enforce the user is signed in and only trying to edit their own profile
-		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $profile->getProfileId()) {
-			throw(new \InvalidArgumentException("You are not allowed to access this profile", 403));
-		}
-		//delete the from the database
-		$profile->delete($pdo);
-		$reply->message = "Profile Deleted";
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP request", 400));
 	}
