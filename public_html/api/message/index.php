@@ -115,16 +115,16 @@ try {
 //							throw(new InvalidArgumentException("org and profile are not ok, 405"));
 //				}
 
+//			//another attempt 2.75ish or so... looks more like Mikes stuff
+//			if((empty($id->getOrganizationId === true) && ($_SESSION["organization"]->getOrganizationId() !== null
+//					)) || (empty($id->getProfileId === true) && ($_SESSION["profile"]->getProfileId() !== null))
+//			) {
+//
+//				throw(new InvalidArgumentException("org and profile are not ok, 405"));
+//			}
 
-			//another attempt 2.75ish or so... looks more like Mikes stuff
-			if((empty($id->getOrganizationId === true) && ($_SESSION["organization"]->getOrganizationId() !== null
-					)) || (empty($id->getProfileId === true) && ($_SESSION["profile"]->getProfileId() !== null))
-			) {
 
-				throw(new InvalidArgumentException("org and profile are not ok, 405"));
-			}
-
-// this is the code we are trying 6.5.15
+// this is the code we are trying 6.5.15 revision 3.0
 			if(((empty($organization) === true) && ($_SESSION["organization"]->getOrganizationId() !== $messageOrganizationId())) || ((empty($profile)=== true) && ($_SESSION["profile"]->getProfileId() !== $messageProfileId()))
 			) {
 				throw(new InvalidArgumentException("org and profile are not ok, 405"));
