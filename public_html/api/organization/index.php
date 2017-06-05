@@ -33,6 +33,12 @@ try {
 	//establish mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
 
+	// mock a live profile session - TEST ONLY
+//	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 2);
+
+	// mock a live organization session - TEST ONLY
+//	$_SESSION{"organization"} = Organization::getOrganizationByOrganizationId($pdo, 2);
+
 	// mock a session and assign a specific user to it.
 	// only for testing purposes - not in the live code.
 	//$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 257);
