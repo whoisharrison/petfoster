@@ -87,14 +87,11 @@ try {
 			}
 
 
-
-
 			//first attempt
 			// old check to see if org exists and org id is ok OR profile exists and profile id is ok
 			//			if(empty($organization->getOrganizationId) === true && $_SESSION["organization"]->getOrganizationId() !== $organizationId->getOrganizationId()) || if(empty($id->profileId) === true && $_SESSION["profile"]->getProfileId() !== $id) {
 			//				throw(new InvalidArgumentException("org and profile are not ok, 405"));
 			//			}
-
 
 
 			//second attempt
@@ -119,22 +116,19 @@ try {
 //				}
 
 
-
-
 			//another attempt 2.75ish or so... looks more like Mikes stuff
 			if((empty($id->getOrganizationId === true) && ($_SESSION["organization"]->getOrganizationId() !== null
-					)) || (empty($id->getProfileId === true) && ($_SESSION["profile"]->getProfileId() !== null))){
+					)) || (empty($id->getProfileId === true) && ($_SESSION["profile"]->getProfileId() !== null))
+			) {
 
 				throw(new InvalidArgumentException("org and profile are not ok, 405"));
 			}
 
-
-
-
-
-
-
-
+// this is the code we are trying 6.5.15
+			if(((empty ($messageOrganizationId->getOrganizationId) === true) && ($_SESSION["organization"]->getOrganizationId() !== $messageOrganizationId())) || ((empty($messageProfileId->getProfileId)=== true) && ($_SESSION["profile"]->getProfileId() !== $messageProfileId()))
+			) {
+				throw(new InvalidArgumentException("org and profile are not ok, 405"));
+			}
 
 
 		}
@@ -200,14 +194,10 @@ try {
 	}
 
 
-
 } catch(\Exception | \TypeError $exception) {
 	//$reply->status = $exception->getCode();
 	// $reply->message = $exception->getMessage();
 }
-
-
-
 
 
 header("Content-type: application/json");

@@ -151,9 +151,7 @@ try {
 			throw (new InvalidArgumentException("Invalid HTTP request", 400));
 		}
 		// catch any exceptions that were thrown and update the status and message state variable fields
-	}
-} catch
-(\Exception | \TypeError $exception) {
+	} catch (\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
 }
