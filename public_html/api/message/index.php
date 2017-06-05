@@ -125,7 +125,7 @@ try {
 			}
 
 // this is the code we are trying 6.5.15
-			if(((empty ($messageOrganizationId->getOrganizationId) === true) && ($_SESSION["organization"]->getOrganizationId() !== $messageOrganizationId())) || ((empty($messageProfileId->getProfileId)=== true) && ($_SESSION["profile"]->getProfileId() !== $messageProfileId()))
+			if(((empty($organization) === true) && ($_SESSION["organization"]->getOrganizationId() !== $messageOrganizationId())) || ((empty($profile)=== true) && ($_SESSION["profile"]->getProfileId() !== $messageProfileId()))
 			) {
 				throw(new InvalidArgumentException("org and profile are not ok, 405"));
 			}
