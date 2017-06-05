@@ -133,7 +133,7 @@ try {
 		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $profile->getProfileId()) {
 			throw(new \InvalidArgumentException("You are not allowed to access this profile", 403));
 		}
-		//delete the post from the database
+		//delete the from the database
 		$profile->delete($pdo);
 		$reply->message = "Profile Deleted";
 	} else {
