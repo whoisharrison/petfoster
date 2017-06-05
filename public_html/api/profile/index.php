@@ -28,7 +28,7 @@ try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
 	//Mock a logged in user
-	//$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 732);
+	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 3);
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -53,8 +53,8 @@ try {
 		if(empty($id !== null)) {
 			$reply->data = $id;
 		} else if(empty($id) === false) {
-		$profile = Profile::getProfileByProfileId($pdo, $id);
-	}
+			$profile = Profile::getProfileByProfileId($pdo, $id);
+		}
 	} else if($method === "PUT") {
 
 		//ensure that the user is signed in and only trying to edit their own profile
@@ -65,93 +65,82 @@ try {
 		//decode response from front end
 		$request_content = file_get_contents("php://input");
 		$requestObject = json_decode($request_content);
-	}
 
-	if(empty($id) === false) {
+		//retrieve the profile to be updated
 		$profile = Profile::getProfileByProfileId($pdo, $id);
-		if($profile !== null) {
-			$reply->data = $profile;
+		if($profile === null) {
+			throw(new RuntimeException("Profile does not exist", 404));
 		}
-	} else if(empty($profileEmail) === false) {
-		$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail)->toArray();
-		if($profile !== null) {
-			$reply->data = $profile;
-		}
-			//decode the response from the front end
-			$requestContent = file_get_contents("php://input");
-			$requestObject = json_decode($requestContent);
-			//retrieve the profile to be updated
-			$profile = Profile::getProfileByProfileId($pdo, $id);
-			if($profile === null) {
-				throw(new RuntimeException("Profile does not exist", 404));
-			}
-			if(empty($requestObject->newPassword) === true) {
-				//enforce that the XSRF token is present in the header
-				verifyXsrf();
-				//profile at handle
-				if(empty($requestObject->profileAtHandle) === true) {
-					throw(new \InvalidArgumentException ("No profile at handle", 405));
-				}
-				//profile email
-				if(empty($requestObject->profileEmail) === true) {
-					throw(new \InvalidArgumentException ("No profile email present", 405));
-				}
-				//profile name
-				if(empty($requestObject->profileName) === true) {
-					$requestObject->ProfileName = $profile->getProfileName();
-				}
-				$profile->setProfileAtHandle($requestObject->profileAtHandle);
-				$profile->setProfileEmail($requestObject->profileEmail);
-				$profile->setProfileName($requestObject->profileName);
-				$profile->update($pdo);
-				// update reply
-				$reply->message = "Profile information updated";
-			}
-
-			/**
-			 * update the password if requested
-			 **/
-
-			//enforce that current password new password and confirm password is present
-			if(empty($requestObject->profilePassword) === false && empty($requestObject->profileConfirmPassword) === false && empty($requestContent->ConfirmPassword) === false) {
-				//make sure the new password and confirm password exist
-				if($requestObject->newProfilePassword !== $requestObject->profileConfirmPassword) {
-					throw(new RuntimeException("New passwords do not match", 401));
-				}
-				//hash the previous password
-				$currentPasswordHash = hash_pbkdf2("sha512", $requestObject->currentProfilePassword, $profile->getProfileSalt(), 262144);
-				//make sure the hash given by the end user matches what is in the database
-				if($currentPasswordHash !== $profile->getProfileHash()) {
-					throw(new \RuntimeException("Previous password is incorrect", 401));
-				}
-				// salt and hash the new password and update the profile object
-				$newPasswordSalt = bin2hex(random_bytes(16));
-				$newPasswordHash = hash_pbkdf2("sha512", $requestObject->newProfilePassword, $newPasswordSalt, 262144);
-				$profile->setProfileHash($newPasswordHash);
-				$profile->setProfileSalt($newPasswordSalt);
-			}
-			//preform the actual update to the database and update message
-			$profile->update($pdo);
-			$reply->message = "profile password successfully updated";
-		} else if($method === "DELETE") {
-			//verify the XSRF Token
+		if(empty($requestObject->profilePassword) === true) {
+			//enforce that the XSRF token is present in the header
 			verifyXsrf();
-			$profile = Profile::getProfileByProfileId($pdo, $id);
-			if($profile === null) {
-				throw (new RuntimeException("Profile does not exist"));
+			//profile at handle
+			if(empty($requestObject->profileAtHandle) === true) {
+				throw(new \InvalidArgumentException ("No profile at handle", 405));
 			}
-			//enforce the user is signed in and only trying to edit their own profile
-			if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $profile->getProfileId()) {
-				throw(new \InvalidArgumentException("You are not allowed to access this profile", 403));
+			//profile email
+			if(empty($requestObject->profileEmail) === true) {
+				throw(new \InvalidArgumentException ("No profile email present", 405));
 			}
-			//delete the post from the database
-			$profile->delete($pdo);
-			$reply->message = "Profile Deleted";
-		} else {
-			throw (new InvalidArgumentException("Invalid HTTP request", 400));
+			//profile name
+			if(empty($requestObject->profileName) === true) {
+				$requestObject->profileName = $profile->getProfileName();
+			}
+			$profile->setProfileAtHandle($requestObject->profileAtHandle);
+			$profile->setProfileEmail($requestObject->profileEmail);
+			$profile->setProfileName($requestObject->profileName);
+			$profile->update($pdo);
+			// update reply
+			$reply->message = "Profile information updated";
 		}
-		// catch any exceptions that were thrown and update the status and message state variable fields
-	} catch (\Exception | \TypeError $exception) {
+
+
+
+		/**
+		 * update the password if requested
+		 **/
+
+		//enforce that current password new password and confirm password is present
+		if(empty($requestObject->profilePassword) === false && empty($requestObject->profileConfirmPassword) === false && empty($requestContent->ConfirmPassword) === false) {
+			//make sure the new password and confirm password exist
+			if($requestObject->newProfilePassword !== $requestObject->profileConfirmPassword) {
+				throw(new RuntimeException("New passwords do not match", 401));
+			}
+			//hash the previous password
+			$currentPasswordHash = hash_pbkdf2("sha512", $requestObject->currentProfilePassword, $profile->getProfileSalt(), 262144);
+			//make sure the hash given by the end user matches what is in the database
+			if($currentPasswordHash !== $profile->getProfileHash()) {
+				throw(new \RuntimeException("Previous password is incorrect", 401));
+			}
+			// salt and hash the new password and update the profile object
+			$newPasswordSalt = bin2hex(random_bytes(16));
+			$newPasswordHash = hash_pbkdf2("sha512", $requestObject->newProfilePassword, $newPasswordSalt, 262144);
+			$profile->setProfileHash($newPasswordHash);
+			$profile->setProfileSalt($newPasswordSalt);
+		}
+		//preform the actual update to the database and update message
+		$profile->update($pdo);
+		$reply->message = "profile successfully updated";
+
+	} else if($method === "DELETE") {
+		//verify the XSRF Token
+		verifyXsrf();
+		$profile = Profile::getProfileByProfileId($pdo, $id);
+		if($profile === null) {
+			throw (new RuntimeException("Profile does not exist"));
+		}
+		//enforce the user is signed in and only trying to edit their own profile
+		if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $profile->getProfileId()) {
+			throw(new \InvalidArgumentException("You are not allowed to access this profile", 403));
+		}
+		//delete the post from the database
+		$profile->delete($pdo);
+		$reply->message = "Profile Deleted";
+	} else {
+		throw (new InvalidArgumentException("Invalid HTTP request", 400));
+	}
+	// catch any exceptions that were thrown and update the status and message state variable fields
+} catch(\Exception | \TypeError $exception) {
 	$reply->status = $exception->getCode();
 	$reply->message = $exception->getMessage();
 }
