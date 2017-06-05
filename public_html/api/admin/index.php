@@ -55,7 +55,6 @@ try {
 	$organizationPhone = filter_input(INPUT_GET, "organizationPhone", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$organizationState = filter_input(INPUT_GET, "organizationState", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$organizationZip = filter_input(INPUT_GET, "organizationZip", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	$organizationZip = filter_input(INPUT_GET, "organizationZip", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 
 	//make sure the id is valid for methods that require it
@@ -187,7 +186,7 @@ try {
 				if(empty($_SESSION["profile"]) === true || $_SESSION["profile"]->getProfileId() !== $organization->getOrganizationProfileId()) {
 					throw(new \InvalidArgumentException("You are not allowed to edit this organization", 403));
 				}
-				// update all attributes (not primary or foreign)
+				// update all attributes (not primary or foreign or token)
 				$organization->setOrganizationAddress1($requestObject->organizationAddress1);
 				$organization->setOrganizationAddress2($requestObject->organizationAddress2);
 				$organization->setOrganizationCity($requestObject->organizationCity);

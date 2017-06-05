@@ -57,7 +57,7 @@ try {
 
 
 	//make sure the id is valid for methods that require it
-	if(($method === "GET" || $method === "PUT") && (empty($id) === true || $id < 0)) {
+	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 
@@ -83,21 +83,6 @@ try {
 			if($organization !== null) {
 				$reply->data = $organization;
 			}
-		} else if(empty($organizationAddress1) === false) {
-			$organization = Organization::getOrganizationByOrganizationAddress1($pdo, $organizationAddress1);
-			if($organization !== null) {
-				$reply->data = $organization;
-			}
-		} else if(empty($organizationAddress2) === false) {
-			$organization = Organization::getOrganizationByOrganizationAddress2($pdo, $organizationAddress2);
-			if($organization !== null) {
-				$reply->data = $organization;
-			}
-		} else if(empty($organizationCity) === false) {
-			$organization = Organization::getOrganizationByOrganizationCity($pdo, $organizationCity);
-			if($organization !== null) {
-				$reply->data = $organization;
-			}
 		} else if(empty($organizationEmail) === false) {
 			$organization = Organization::getOrganizationByOrganizationEmail($pdo, $organizationEmail);
 			if($organization !== null) {
@@ -113,20 +98,11 @@ try {
 			if($organization !== null) {
 				$reply->data = $organization;
 			}
-		} else if(empty($organizationPhone) === false) {
-			$organization = Organization::getOrganizationByOrganizationPhone($pdo, $organizationPhone);
-			if($organization !== null) {
-				$reply->data = $organization;
-			}
-		} else if(empty($organizationState) === false) {
-			$organization = Organization::getOrganizationByOrganizationState($pdo, $organizationState);
-			if($organization !== null) {
-				$reply->data = $organization;
-			}
-		} else if(empty($organizationZip) === false) {
-			$organization = Organization::getOrganizationByOrganizationZip($pdo, $organizationZip);
-			if($organization !== null) {
-				$reply->data = $organization;
+		} else {
+//			get ALL the organizations
+			$organizations = Organization::getAllOrganizations($pdo)->toArray();
+			if($organizations !== null) {
+				$reply->data = $organizations;
 			}
 		}
 	} else if($method === "PUT") {
@@ -137,11 +113,19 @@ try {
 		$requestObject = json_decode($requestContent);
 		// This Line then decodes the JSON package and stores that result in $requestObject
 		//make sure organization email is available (required field) (no id, token or Add2)
-		if(empty($requestObject->organizationProfileId) === true) {
-			throw(new \InvalidArgumentException ("No associated profile is listed or available.", 405));
+//		if(empty($requestObject->organizationProfileId) === true) {
+//			throw(new \InvalidArgumentException ("No associated profile is listed or available.", 405));
+//		}
+//		make sure activation token is null
+		if(empty($requestObject->organizationActivationToken) === false) {
+			throw(new \InvalidArgumentException("Activation token can not be changed.", 405));
 		}
 		if(empty($requestObject->organizationAddress1) === true) {
 			throw(new \InvalidArgumentException ("No address is listed or available.", 405));
+		}
+//		make sure organization address 2 is listed (optional field)
+		if(empty($requestObject->organizationAddress2) === true) {
+			$requestObject->organizationAddress2 = null;
 		}
 		if(empty($requestObject->organizationCity) === true) {
 			throw(new \InvalidArgumentException ("No city is listed or available.", 405));
@@ -166,14 +150,14 @@ try {
 		}
 
 		//  !!!!make sure organizationId is not null
-		if(empty($requestObject->OrganizationId) === true) {
+/*		if(empty($requestObject->id) === true) {
 			throw(new \InvalidArgumentException ("No Organization ID.", 405));
-		}
+		}*/
 		//perform the actual put or post
-		if($method === "PUT") {
+//		if($method === "PUT") {
 
 			//enforce that the end user has a XSRF token.
-			verifyXsrf();
+//			verifyXsrf();
 
 			// retrieve the organization to update
 			$organization = Organization::getOrganizationByOrganizationId($pdo, $id);
@@ -198,25 +182,7 @@ try {
 
 			// update reply
 			$reply->message = "Organization successfully updated.";
-
-//		} else if($method === "POST") {
-
-			//enforce that the end user has a XSRF token.
-//			verifyXsrf();
-
-			// enforce the user is signed in
-//			if(empty($_SESSION["profile"]) === true) {
-			/*				throw(new \InvalidArgumentException("you must be logged in to create", 403));
-			//			}
-
-						// create new organization and insert into the database
-						$organization = new Organization(null, $requestObject->ProfileId, $requestObject->organizationActivationToken, $requestObject->organizationAddress1, $requestObject->organizationAddress2, $requestObject->organizationCity, $requestObject->organizationEmail, $requestObject->organizationLicense, $requestObject->organizationName, $requestObject->organizationPhone, $requestObject->organizationState, $requestObject->organizationZip);
-						$organization->insert($pdo);
-
-						// update reply
-						$reply->message = "Organization created OK";
-					*/
-		}
+//		}
 	} else if($method === "DELETE") {
 
 		//enforce that the end user has a XSRF token.
