@@ -28,7 +28,7 @@ try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
 	//Mock a logged in user
-	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 3);
+	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 42);
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -40,7 +40,7 @@ try {
 	$profilePassword = filter_input(INPUT_GET, "profilePassword", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 // make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
+	if(($method === "PUT") && (empty($id) === true || $id < 0)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative, 405"));
 	}
 
@@ -50,11 +50,29 @@ try {
 		setXsrfCookie();
 
 		//get a specific profile and update
-		if(empty($id !== null)) {
-			$reply->data = $id;
-		} else if(empty($id) === false) {
+		if(empty($id) === false) {
 			$profile = Profile::getProfileByProfileId($pdo, $id);
+
+			if($profile !== null) {
+				$reply->data = $profile;
+			}
+		} else if(empty($profileAtHandle) === false) {
+			$profile = Profile::getProfileByProfileAtHandle($pdo, $profileAtHandle);
+			if($profile !== null) {
+				$reply->data = $profile;
+			}
+		} else if(empty($profileEmail) === false) {
+			$profile = Profile::getProfileByProfileEmail($pdo, $profileEmail);
+			if($profile !== null) {
+				$reply->data = $profile;
+			}
+		} else if(empty($profileName) === false) {
+			$profile = Profile::getProfileByProfileName($pdo, $profileName);
+			if($profileName !== null) {
+				$reply->data = $profile;
+			}
 		}
+
 	} else if($method === "PUT") {
 
 		//ensure that the user is signed in and only trying to edit their own profile
@@ -93,7 +111,6 @@ try {
 			// update reply
 			$reply->message = "Profile information updated";
 		}
-
 
 
 		/**

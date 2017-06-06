@@ -11,7 +11,7 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 require_once dirname(__DIR__, 2) . "/vendor/autoload.php";
 
 function mailGunslinger($senderName, $senderEmail, $receiverName, $receiverEmail, $subject, $message) {
-	$config = readConfig("/etc/apache2/capstone-mysql.petRescueAbq.ini");
+	$config = readConfig("/etc/apache2/capstone-mysql/fosterabq.ini");
 	$mailgun = json_decode($config["mailgun"]);
 
 	//start the mailgun client
