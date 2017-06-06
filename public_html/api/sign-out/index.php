@@ -29,7 +29,8 @@ use Edu\Cnm\PetRescueAbq\{Profile, Organization};
 		$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
 
 		//determine which HTTP methods was used
-		$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+		$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] :
+			$_SERVER["REQUEST_METHOD"];
 
 		if($method === "GET") {
 			$_SESSION = [];
