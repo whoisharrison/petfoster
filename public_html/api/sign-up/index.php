@@ -2,7 +2,7 @@
 
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
-//require_once dirname(__DIR__, 3) . "/php/lib/mailgun.php";
+require_once dirname(__DIR__, 3) . "/php/lib/mailgun.php";
 require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 use Edu\Cnm\PetRescueAbq\ {
@@ -64,48 +64,6 @@ try {
 			throw(new \InvalidArgumentException("Passwords do not match"));
 		}
 
-		// check for "O" flag, then check for "O" required fields
-		if($requestObject->profileFlag === "O") {
-			//verify that address is present
-			if(empty($requestObject->organizationAddress1) === true) {
-				throw(new \InvalidArgumentException("Please enter a valid address", 405));
-			}
-
-			//verify that address is present
-			if(empty($requestObject->organizationAddress2) === true) {
-				$requestObject->profilePhone = null;
-			}
-
-			//verify that City is present
-			if(empty($requestObject->organizationCity) === true) {
-				throw(new \InvalidArgumentException("Please enter a valid City", 405));
-			}
-
-			//verify that organization ID is present
-			if(empty($requestObject->organizationLicense) === true) {
-				throw(new \InvalidArgumentException("Please enter a valid Organization Adoption License", 405));
-			}
-
-			//profile organization name is a required field
-			if(empty($requestObject->organizationName) === true) {
-				throw(new \InvalidArgumentException("Please enter your organization's name", 405));
-			}
-
-			//if phone is empty set it to null
-			if(empty($requestObject->organizationPhone) === true) {
-				$requestObject->organizationPhone = null;
-			}
-
-			//verify that State is present
-			if(empty($requestObject->organizationState) === true) {
-				throw(new \InvalidArgumentException("Please enter a valid State", 405));
-			}
-
-			//verify that Zip Code is present
-			if(empty($requestObject->organizationZip) === true) {
-				throw(new \InvalidArgumentException("Please enter your Zip-Code", 405));
-			}
-		}
 
 		// create new Profile, insert, send profile activation email
 		$salt = bin2hex(random_bytes(32));
@@ -117,116 +75,82 @@ try {
 		$profile->insert($pdo);
 
 		//compose the email message to send with activation token
-		$messageSubject = "Thank you for signing up for an account to Pet Rescue Abq!";
-		//building the activation link that can travel to another server and still work. This is the link what will be clicked to confirm account.
-		//make sure URL is /public_html/api/activation/$activation
-
 		$basePath = dirname($_SERVER["SCRIPT_NAME"], 3);
 		//create the path
-		$urlglue = $basePath . "public_html/api/activation/?activation=" . $profileActivationToken;
+		$urlglue = $basePath . "public_html/api/activation/?activation=" . $activationToken;
 		//create the redirect link
 		$confirmLink = "https://" . $_SERVER["SERVER_NAME"] . $urlglue;
 		//compose message to send with email
+		$messageSubject = "Thank you for signing up for an account to Pet Rescue Abq!";
 		$message = <<< EOF
-<h2>Thanks for signing up!</h2>
-<p>You must confirm your email to begin using your account. Click the link below: </p>
-<p><a href="$confirmLink">$confirmLink</a></p>
+		<h2>Welcome to Pet Rescue ABQ</h2>
+		<p>Please visit the following URL to verify your account: </p><p><a href="$confirmLink">$confirmLink<a></p>
 EOF;
-		//create swift email
-		$mailGun = mailGun_Message::newInstance();
-		// attach the sender to the message
-		// this takes the form of an associative array where the email is the key to a real name
-		$mailGun->setFrom(["petrescueabq.com" => "admin"]);
-		/**
-		 * attach recipients to the message
-		 * notice this is an array that can include or omit the recipient's name
-		 * use the recipient's real name where possible;
-		 * this reduces the probability of the email is marked as spam
-		 */
-		//define who the recipient is
-		$recipients = [$requestObject->profileEmail];
-		//set the recipient to the swift message
-		$mailGun->setTo($recipients);
-		//attach the subject line to the email message
-		$mailGun->setSubject($messageSubject);
-		/**
-		 * attach the message to the email
-		 * set two versions of the message: a html formatted version and a filter_var()ed version of the message, plain text
-		 * notice the tactic used is to display the entire $confirmLink to plain text
-		 * this lets users who are not viewing the html content to still access the link
-		 */
-		//attach the html version fo the message
-		$mailGun->setBody($message, "text/html");
-		//attach the plain text version of the message
-		$mailGun->addPart(html_entity_decode($message), "text/plain");
-
-		//send the message
-		$numSent = $mailer->send($mailGun, $failedRecipients);
-		/**
-		 * the send method returns the number of recipients that accepted the Email
-		 * so, if the number attempted is not the number accepted, this is an Exception
-		 **/
-		if($numSent !== count($recipients)) {
-			// the $failedRecipients parameter passed in the send() method now contains contains an array of the Emails that failed
-			throw(new RuntimeException("unable to send email"));
-		}
-		// check for "O" flag, if Y, create Org, insert and send Org email
-		if($requestObject->profileFlag === "O") {
-			//create the organization object and prepare to insert into the database
-			$organization = new Organization(null, $profile->getProfileId(), $activationToken, $requestObject->organizationAddress1, $requestObject->organizationAddress2, $requestObject->organizationCity, $requestObject->organizationLicense, $requestObject->organizationName, $requestObject->organizationPhone);
-			//insert the organization into the database
-			$organization->insert($pdo);
-
-			$messageSubject = "Your Pet Rescue Abq account is under review!";
-			//compose message to send with email
-			$message = <<< EOF
-	<h2>Thanks for signing up as an Pet Rescue Abq Organization!</h2>
-	<p>Your account is currently under review. You will be notified as soon as your account is approved.</p>
-EOF;
-			//create swift email
-			$mailGun = mailGun_Message::newInstance();
-			// attach the sender to the message
-			// this takes the form of an associative array where the email is the key to a real name
-			$mailGun->setFrom(["petrescueabq.com" => "admin"]);
-			/**
-			 * attach recipients to the message
-			 * notice this is an array that can include or omit the recipient's name
-			 * use the recipient's real name where possible;
-			 * this reduces the probability of the email is marked as spam
-			 */
-			//define who the recipient is
-			$recipients = [$requestObject->profileEmail];
-			//set the recipient to the message
-			$mailGun->setTo($recipients);
-			//attach the subject line to the email message
-			$mailGun->setSubject($messageSubject);
-			/**
-			 * attach the message to the email
-			 * set two versions of the message: a html formatted version and a filter_var()ed version of the message, plain text
-			 * notice the tactic used is to display the entire $confirmLink to plain text
-			 * this lets users who are not viewing the html content to still access the link
-			 */
-			//attach the html version fo the message
-			$mailGun->setBody($message, "text/html");
-			//attach the plain text version of the message
-			$mailGun->addPart(html_entity_decode($message), "text/plain");
-
-			//send the message
-			$numSent = $mailer->send($mailGun, $failedRecipients);
-			/**
-			 * the send method returns the number of recipients that accepted the Email
-			 * so, if the number attempted is not the number accepted, this is an Exception
-			 **/
-			if($numSent !== count($recipients)) {
-				// the $failedRecipients parameter passed in the send() method now contains contains an array of the Emails that failed
-				throw(new RuntimeException("unable to send email"));
-			}
-
-			// success message
-			$reply->message = "Thank you for creating a profile Pet Rescue Abq!";
-		}
+		$response = mailGunslinger("petrescueabq", "petrescueabq@gmail.com", $requestObject->profileName, $requestObject->profileEmail, $messageSubject, $message);
+		$reply->message = "Almost there! An email has been sent to activate your account.";
 	} else {
-		throw (new InvalidArgumentException("invalid http request"));
+		throw(new \InvalidArgumentException("Invalid HTTP request.", 405));
+	}
+	// check for "O" flag, if Y, create Org, insert and send Org email
+	if($requestObject->profileFlag === "O") {
+
+		//verify that address is present
+		if(empty($requestObject->organizationAddress1) === true) {
+			throw(new \InvalidArgumentException("Please enter a valid address", 405));
+		}
+
+		//verify that address is present
+		if(empty($requestObject->organizationAddress2) === true) {
+			$requestObject->profilePhone = null;
+		}
+
+		//verify that City is present
+		if(empty($requestObject->organizationCity) === true) {
+			throw(new \InvalidArgumentException("Please enter a valid City", 405));
+		}
+
+		//verify that organization ID is present
+		if(empty($requestObject->organizationLicense) === true) {
+			throw(new \InvalidArgumentException("Please enter a valid Organization Adoption License", 405));
+		}
+
+		//profile organization name is a required field
+		if(empty($requestObject->organizationName) === true) {
+			throw(new \InvalidArgumentException("Please enter your organization's name", 405));
+		}
+
+		//if phone is empty set it to null
+		if(empty($requestObject->organizationPhone) === true) {
+			$requestObject->organizationPhone = null;
+		}
+
+		//verify that State is present
+		if(empty($requestObject->organizationState) === true) {
+			throw(new \InvalidArgumentException("Please enter a valid State", 405));
+		}
+
+		//verify that Zip Code is present
+		if(empty($requestObject->organizationZip) === true) {
+			throw(new \InvalidArgumentException("Please enter your Zip-Code", 405));
+		}
+
+		//create the organization object and prepare to insert into the database
+		$organization = new Organization(null, $profile->getProfileId(), $activationToken, $requestObject->organizationAddress1, $requestObject->organizationAddress2, $requestObject->organizationCity, $requestObject->organizationLicense, $requestObject->organizationName, $requestObject->organizationPhone);
+		//insert the organization into the database
+		$organization->insert($pdo);
+
+		//compose the email message to send with activation token
+		$basePath = dirname($_SERVER["SCRIPT_NAME"], 3);
+		$messageSubject = "Your Pet Rescue Abq account is under review!";
+		//compose message to send with email
+		$message = <<< EOF
+		<h2>Welcome to Pet Rescue ABQ</h2>
+		<p>Thanks for signing up as a Pet Rescue ABQ organization. Your account is currently under review. You will be notified as soon as your account is approved. </p>
+EOF;
+		$response = mailGunslinger("petrescueabq", "petrescueabq@gmail.com", $requestObject->profileName, $requestObject->profileEmail, $messageSubject, $message);
+		$reply->message = "Thanks for signing up as a Pet Rescue ABQ organization. Your account is currently under review.";
+	} else {
+		throw(new \InvalidArgumentException("Invalid HTTP request.", 405));
 	}
 
 } catch(\Exception $exception) {

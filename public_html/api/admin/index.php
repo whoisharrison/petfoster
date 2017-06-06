@@ -14,7 +14,7 @@ use Edu\Cnm\PetRescueAbq\ {
 	Post
 };
 
-// TODO: ENABLE ORG GET, PUT and DELETE
+// ENABLE ORG GET, PUT and DELETE
 /**
  * api for the Admin panel
  *
@@ -84,7 +84,7 @@ try {
 			if($organization !== null) {
 				$reply->data = $organization;
 			}
-		} else if(empty($organizationAddress1) === false) {
+		}/* else if(empty($organizationAddress1) === false) {
 			$organization = Organization::getOrganizationByOrganizationAddress1($pdo, $organizationAddress1);
 			if($organization !== null) {
 				$reply->data = $organization;
@@ -99,7 +99,7 @@ try {
 			if($organization !== null) {
 				$reply->data = $organization;
 			}
-		} else if(empty($organizationEmail) === false) {
+		}*/ else if(empty($organizationEmail) === false) {
 			$organization = Organization::getOrganizationByOrganizationEmail($pdo, $organizationEmail);
 			if($organization !== null) {
 				$reply->data = $organization;
@@ -114,7 +114,7 @@ try {
 			if($organization !== null) {
 				$reply->data = $organization;
 			}
-		} else if(empty($organizationPhone) === false) {
+		}/* else if(empty($organizationPhone) === false) {
 			$organization = Organization::getOrganizationByOrganizationPhone($pdo, $organizationPhone);
 			if($organization !== null) {
 				$reply->data = $organization;
@@ -129,7 +129,7 @@ try {
 			if($organization !== null) {
 				$reply->data = $organization;
 			}
-			}
+			}*/
 		} else if($method === "PUT") {
 
 		verifyXsrf();

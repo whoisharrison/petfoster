@@ -36,7 +36,7 @@ try {
 	//mock a logged in user by mocking the session and assigning a specific user to it
 	//this is the only for testing purposes and should not be in the live code
 	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 1);
-	$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo, 1);
+	// $_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo, 1);
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -76,7 +76,7 @@ try {
 		}
 
 		// this is the code we are trying 6.5.15 revision 3.0
-		if(((empty($_SESSION["organization"]) === true) && ($_SESSION["organization"]->getOrganizationId() !== $messageOrganizationId)) || ((empty($_SESSION["profile"]) === true) && ($_SESSION["profile"]->getProfileId() !== $messageProfileId))) {
+		if(((empty($_SESSION["organization"]) === false) && ($_SESSION["organization"]->getOrganizationId() !== $messageOrganizationId)) || ((empty($_SESSION["profile"]) === false) && ($_SESSION["profile"]->getProfileId() !== $messageProfileId))) {
 			throw(new InvalidArgumentException("org or profile are not ok, 405"));
 		}
 
