@@ -8,11 +8,11 @@ require_once dirname(__DIR__, 3) . "/etc/apache2/capstone-mysql/encrypted-config
 //Cloudinary?
 
 use Edu\Cnm\PetRescueAbq\{
-	Post, Image, Organization
+	Post, Profile, Image
 };
 
 /**
- * Api for Post/Image Class
+ * Api for Image Class
  *
  * @author Amy Skidmore <askidmore1@cnm.edu>
  *
@@ -66,18 +66,14 @@ try {
 
 		//get image/all images then update reply
 
-		//if(empty($id) === false) {
-		//	$profile = Profile::getProfileByProfileId($pdo, $id);
-		//	if($profile !== null) {
-			//	$reply->data = $profile;
-	}
-		if(empty($id) === false) {
-			$organization = Organization::getOrganizationByOrganizationId($pdo, $id);
-			if($organization !== null) {
-			$reply->data = $organization;
-
+		if(empty($id) === false){
+			$profile = Profile::getProfileByProfileId($pdo, $id);
+		if($profile !== null){
+			$reply->data = $profile;
 		}
-		if(empty($id) === false) {
+
+	}
+		if(empty($Id) === false) {
 			$post = Post::getPostByPostId($pdo, $id);
 			if($post !== null) {
 				$reply->data = $post;
@@ -133,59 +129,18 @@ try {
 			if($image !== null) {
 				$reply->data = $image;
 			}
-		} elseif($method === "PUT" || $method === "POST") {
+		} elseif($method === "POST") {
 			verifyXsrf();
-			$requestContent = file_get_contents("php://input");
-			// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
-			$requestObject = json_decode($requestContent);
-			// This Line Then decodes the JSON package and stores that result in $requestObject
 
 			//TODO enforce that all the needed variables to create both post and image are present
-			//took out profile, added org have Q's about profile id or $id
-			//verifying that the user is logged in before they can insert an post/image
+			//added profile, have Q's about profile id or $id
+			//verifying that the user is logged in before they can insert an image
 
-		}
-			If(empty($requestObject->OrganizationId) === true) {
-				throw (new\InvalidArgumentException("You must have an Organization Id to post"));
-
-			}
-			//not sure should i use this method?
-			//if($empty($_SESSION["organization"]) === true) {
-				//throw (new\InvalidArgumentException(("User must be logged in to Post."), 401));
+			if($empty($_SESSION["profile"]) === true) {
+				throw (new\InvalidArgumentException(("User must be logged in to upload images."), 401));
 
 			}
-			if($empty($requestObject->postId) === true){
-				throw (new\InvalidArgumentException("You must be logged in to post"));
 
-			}
-			if ($empty($requestObject->postBreed) === true){
-				throw (new\InvalidArgumentException("You must specify breed to Post"));
-
-			}
-			if($empty($requestObject->postDescription) === true){
-				throw (new\InvalidArgumentException("You must place a description to Post"));
-
-			}
-			if($empty($requestObject->postSex) === true){
-				throw (new\InvalidArgumentException("You must specify animals sex to Post"));
-
-			}
-			if($empty($requestObject->postType) === true){
-				throw (new\InvalidArgumentException("You must specify type to Post"));
-
-			}
-			if($empty($requestObject->imageId) === true){
-				throw (new\InvalidArgumentException("You must place an image in the Post"));
-
-			}
-			if(empty($requestObject->imagePostId) === true){
-				throw (new\InvalidArgumentException("You must be logged in to Post"));
-
-			}
-			if(empty($requestObject->imageCloudinaryId) === true){
-				throw (new\InvalidArgumentException("You must be logged in to Post"));
-
-			}
 			//Variable assignment for the users image name, MIME type, and image extension
 			//ask about image id below ""
 			$tempUserFileName = $_FILES["file"]["tmp_name"];
@@ -195,16 +150,17 @@ try {
 			//upload the image to Cloudinary and get the public id
 			$cloudinaryResult = \Cloudinary\Uploader::upload($_FILES["file"]["tmp_name"], array("width" => 500, "crop" => "scale"));
 
-			//TODO get the post and grab the image object (use the $post->getPostId() for the imagePostId)
-		$post = new Post(null,)
+			//TODO create the post before creating the image object (use the $post->getPostId() for the imagePostId)
+			$post = new Post($post->getPostId(), $imagePostId());
+			$post->insert($imagePostId);
 
 			// After the sending the image to Cloudinary, grab the public id and create the new image
-
+			$image = new Image(null, $postId, $cloudinaryResult["public_id"]);
 			$image->insert($pdo);
 
 //Push the data to the imageId, upload the new image, and notify user.
 			$reply->data = $image->getImageId();
-			$reply->message = "Image upoad successful.";
+			$reply->message = "Image upload successful.";
 
 		} elseif($method === "DELETE") {
 			verifyXsrf();
@@ -216,35 +172,35 @@ try {
 			}
 
 			//TODO grab the organization by the postOrganizationId
-			//TODO grab the profile by the organizationProfileId
+
+
+
+
+
+
+
+
+
+
 			//TODO use the profile object's profile Id to insure the user logged in can  delete what he actually created
 
 			//verify user is logged in to delete post/image
-			if(empty($_SESSION ["profile"]) === true || $_SESSION ["profile"]->getProfileId() !== $post->getPostId()) {
+			if(empty($_SESSION ["profile"]) === true || $_SESSION ["profile"]->getProfileId() !== $post->) {
 				throw (new\InvalidArgumentException("You must be logged in to delete."));
 			}
 
 			// TODO kill the children fisrt (delete the image object in the database before deleting the actual post)
-
-
 			$post->delete($pdo);
 			$reply->message = "Post successfully deleted.";
 
 		} else {
 			throw (new InvalidArgumentException("Invalid HTTP method request"));
 		}
-
-	} catch(Exception $exception) {
-			$reply->status = $exception->getCode();
-			$reply->message = $exception->getMessage();
-	} catch(TypeError $typeError){
-					$reply->status = $typeError->getCode();
-					$reply->message = $typeError->getMessage();
-}
-	header("Content-type: application/json");
-
-	//encode and return reply to front end caller
-echo json_encode($reply);
+catch
+	(Exception $exception) {
+		$reply->status = $exception->getCode();
+		$reply->
+	}
 
 
 

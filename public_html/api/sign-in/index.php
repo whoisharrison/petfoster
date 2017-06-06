@@ -36,9 +36,10 @@ try {
 //	$messageId = filter_input(INPUT_GET, "messageId", FILTER_VALIDATE_INT);
 //	$messageProfileId = filter_input(INPUT_GET, "messageProfileId", FILTER_VALIDATE_INT);
 //	$messageOrganizationId = filter_input(INPUT_GET, "messageOrganizationId", FILTER_VALIDATE_INT);
-//	$messageContent = filter_input(INPUT_GET, "messageContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$profileEmail = filter_input(INPUT_GET, "profileEmail", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 //	$messageDateTime = filter_input(INPUT_GET, "eventDate", FILTER_SANITIZE_STRING);
 //	$subjectContent = filter_input(INPUT_GET, "subjectContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	$profilePassword = filter_input(INPUT_GET, "profilePassword", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 
 
