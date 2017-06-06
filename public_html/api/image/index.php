@@ -220,7 +220,7 @@ try {
 				if($post === null) {
 					throw (new RuntimeException("Post does not exist", 404));
 				}
-				if($empty($_SESSION[$organization]->() !== $post->getPostOrganizationId())); {
+				if($empty($_SESSION[$organization]->(jkljl,) !== $post->getPostOrganizationId())); {
 					throw (new \InvalidArgumentException("You are not allowed to delete this post.", 401));
 				}
 
