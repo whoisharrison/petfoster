@@ -216,19 +216,21 @@ try {
 
 				//retrieve the postid to delete
 				$post = Post::getPostByPostId($pdo, $id);
-				post = ($pdo = $postOrganizationId, $postBreed, $postDescription, $postSex, $postType));
 				if($post === null) {
 					throw (new RuntimeException("Post does not exist", 404));
 				}
-				if($empty($_SESSION[$organization]->(jkljl,) !== $post->getPostOrganizationId())); {
+				if($_SESSION["organization"]->getOrganizationId() !== $post->getPostOrganizationId()) {
 					throw (new \InvalidArgumentException("You are not allowed to delete this post.", 401));
 				}
-
-
+				$postId = $post->getPostId();
+				Image::getImageByImagePostId($pdo, $postId);
 
 
 				//TODO grab the organization by the postOrganizationId
-				//TODO grab the profile by the organizationProfileId
+
+
+
+
 
 				//verify user is logged in to delete post/image_ i'm just not sure how to structure this... above in another form
 				//if(empty($_SESSION ["organization"]) === true || $_SESSION ["organization"]->getOrganzationId() !== $post->getPostOrganizationId()); {
