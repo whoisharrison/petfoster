@@ -139,16 +139,24 @@ EOF;
 		//insert the organization into the database
 		$organization->insert($pdo);
 
+		//activation token for org
+		$salt = bin2hex(random_bytes(32));
+		$hash = hash_pbkdf2("sha512", $requestObject->profilePassword, $salt, 262144);
+		$activationTokenOrg = bin2hex(random_bytes(16));
 		//compose the email message to send with activation token
 		$basePath = dirname($_SERVER["SCRIPT_NAME"], 3);
-		$messageSubject = "Your Pet Rescue Abq account is under review!";
+		//create the path
+		$urlglue = $basePath . "public_html/api/activation/?activation=" . $activationTokenOrg;
+		//create the redirect link
+		$confirmLink = "https://" . $_SERVER["SERVER_NAME"] . $urlglue;
 		//compose message to send with email
+		$messageSubject = "Organization account ready for activation!";
 		$message = <<< EOF
-		<h2>Welcome to Pet Rescue ABQ</h2>
-		<p>Thanks for signing up as a Pet Rescue ABQ organization. Your account is currently under review. You will be notified as soon as your account is approved. </p>
+		<h2>Organization ready for Activation</h2>
+		<p>Please click the following URL to verify this account: </p><p><a href="$confirmLink">$confirmLink<a></p>
 EOF;
-		$response = mailGunslinger("petrescueabq", "petrescueabq@gmail.com", $requestObject->profileName, $requestObject->profileEmail, $messageSubject, $message);
-		$reply->message = "Thanks for signing up as a Pet Rescue ABQ organization. Your account is currently under review.";
+		$response = mailGunslinger("petrescueabq", "petrescueabq@gmail.com", $requestObject->profileName, "petrescueabq@gmail.com", $messageSubject, $message);
+		$reply->message = "Almost there! An email has been sent to activate your account.";
 	} else {
 		throw(new \InvalidArgumentException("Invalid HTTP request.", 405));
 	}
