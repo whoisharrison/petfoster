@@ -34,7 +34,7 @@ $reply->data = null;
 try {
 
 	//grab the connection to mySQL
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/petRescueAbq.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
 
 	/** Cloudinary API  */
 	$config = readConfig("/etc/apache2/capstone-mysql/petRescueAbq.ini");
@@ -71,191 +71,181 @@ try {
 		//if(empty($id) === false) {
 		//	$profile = Profile::getProfileByProfileId($pdo, $id);
 		//	if($profile !== null) {
-			//	$reply->data = $profile;
+		//	$reply->data = $profile;
 	}
-		if(empty($id) === false) {
-			$organization = Organization::getOrganizationByOrganizationId($pdo, $id);
-			if($organization !== null) {
-				$reply->data = $organization;
+	if(empty($id) === false) {
+		$post = Post::getPostByPostId($pdo, $id);
+		if($post !== null) {
+			$reply->data = $post;
 
-			}
-			if(empty($id) === false) {
-				$post = Post::getPostByPostId($pdo, $id);
-				if($posts !== null) {
-					$reply->data = $post;
-				}
+		}
 
-			} elseif(empty($postOrganizationId) === false) {
-				$post = Post::getPostsByPostOrganizationId($pdo, $postOrganizationId)->toArray();
-				if($posts !== null) {
-					$reply->data = $posts;
-				}
+	} elseif(empty($postOrganizationId) === false) {
+		$post = Post::getPostsByPostOrganizationId($pdo, $postOrganizationId)->toArray();
+		if($post !== null) {
+			$reply->data = $post;
+		}
 
-			} elseif(empty($postBreed) === false) {
-				$post = Post::getPostsByPostBreed($pdo, $postBreed)->toArray();
-				if($posts !== null) {
-					$reply->data = $posts;
+	} elseif(empty($postBreed) === false) {
+		$post = Post::getPostsByPostBreed($pdo, $postBreed)->toArray();
+		if($post !== null) {
+			$reply->data = $post;
 
-				}
+		}
 
-			} elseif(empty($postDescription) === false) {
-				$post = Post::getPostByPostDescription($pdo, $postDescription)->toArray();
-				if($posts !== null) {
-					$reply->data = $posts;
-				}
+	} elseif(empty($postDescription) === false) {
+		$posts = Post::getPostByPostDescription($pdo, $postDescription)->toArray();
+		if($posts !== null) {
+			$reply->data = $posts;
+		}
 
-			} elseif(empty($postSex) === false) {
-				$post = Post::getPostByPostSex($pdo, $postSex)->toArray();
-				if($posts !== null) {
-					$reply->data = $posts;
-				}
+	} elseif(empty($postSex) === false) {
+		$posts = Post::getPostByPostSex($pdo, $postSex)->toArray();
+		if($posts !== null) {
+			$reply->data = $posts;
+		}
 
-			} elseif(empty($postType) === false) {
-				$post = Post::getPostByPostType($pdo, $postType)->toArray();
-				if($posts !== null) {
-					$reply->data = $posts;
-				}
+	} elseif(empty($postType) === false) {
+		$posts = Post::getPostByPostType($pdo, $postType)->toArray();
+		if($posts !== null) {
+			$reply->data = $posts;
+		}
 
-			}
-			if(empty($imageId) === false) {
-				$image = Image::getImageByImageId($pdo, $imageId);
-				if($image !== null) {
-					$reply->data = $image;
-				}
+	}
+	if(empty($imageId) === false) {
+		$image = Image::getImageByImageId($pdo, $imageId);
+		if($image !== null) {
+			$reply->data = $image;
+		}
 
-			} elseif(empty($imagePostId) === false) {
-				$image = Image::getImageByImagePostId($pdo, $imagePostId);
-				if($image !== null) {
-					$reply->data = $image;
+	} elseif(empty($imagePostId) === false) {
+		$image = Image::getImageByImagePostId($pdo, $imagePostId);
+		if($image !== null) {
+			$reply->data = $image;
 
-				}
+		}
 
-			} elseif(empty($imageCloudinaryId) === false) {
-				$image = Image::getImageByImageCloudinaryId($pdo, $imageCloudinaryId);
-				if($image !== null) {
-					$reply->data = $image;
-				}
+	} elseif(empty($imageCloudinaryId) === false) {
+		$image = Image::getImageByImageCloudinaryId($pdo, $imageCloudinaryId);
+		if($image !== null) {
+			$reply->data = $image;
+		}
 
 
+	} elseif($method === "PUT" || $method === "POST") {
+		verifyXsrf();
+		$requestContent = file_get_contents("php://input");
+		// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
+		$requestObject = json_decode($requestContent);
+		// This Line Then decodes the JSON package and stores that result in $requestObject
 
-			} elseif($method === "PUT" || $method === "POST") {
-				verifyXsrf();
-				$requestContent = file_get_contents("php://input");
-				// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
-				$requestObject = json_decode($requestContent);
-				// This Line Then decodes the JSON package and stores that result in $requestObject
-
-				//TODO enforce that all the needed variables to create both post and image are present
-				//took out profile, added org have Q's about profile id or $id
-				//verifying that the user is logged in before they can insert an post/image
+		//TODO enforce that all the needed variables to create both post and image are present
+		//took out profile, added org have Q's about profile id or $id
+		//verifying that the user is logged in before they can insert an post/image
 
 //			If(empty($requestObject->OrganizationId) === true) {
 //				throw (new\InvalidArgumentException("You must have an Organization Id to post"));
 //
 //			}
+//TODO do we need to check postId on insert
+		if(empty($_SESSION["organization"]) === true) {
+			throw (new\InvalidArgumentException("User must be logged in to Post.", 401));
 
-				if($empty($_SESSION["organization"]) === true) {
-					throw (new\InvalidArgumentException("User must be logged in to Post.", 401));
+		}
+		if(empty($requestObject->postId) === true) {
+			throw (new\InvalidArgumentException("You must be logged in to post", 402));
 
-				}
-				if($empty($requestObject->postId) === true) {
-					throw (new\InvalidArgumentException("You must be logged in to post"));
+		}
+		if(empty($requestObject->postBreed) === true) {
+			throw (new\InvalidArgumentException("You must specify breed to Post", 402));
 
-				}
-				if($empty($requestObject->postBreed) === true) {
-					throw (new\InvalidArgumentException("You must specify breed to Post"));
+		}
+		if(empty($requestObject->postDescription) === true) {
+			throw (new\InvalidArgumentException("You must place a description to Post", 402));
 
-				}
-				if($empty($requestObject->postDescription) === true) {
-					throw (new\InvalidArgumentException("You must place a description to Post"));
+		}
+		if(empty($requestObject->postSex) === true) {
+			throw (new\InvalidArgumentException("You must specify animals sex to Post", 402));
 
-				}
-				if($empty($requestObject->postSex) === true) {
-					throw (new\InvalidArgumentException("You must specify animals sex to Post"));
+		}
+		if(empty($requestObject->postType) === true) {
+			throw (new\InvalidArgumentException("You must specify type to Post", 402));
+//TODO: are we requiring that an image be included for every post
+		}
+		if(empty($requestObject->imageId) === true) {
+			throw (new\InvalidArgumentException("You must place an image in the Post", 402));
 
-				}
-				if($empty($requestObject->postType) === true) {
-					throw (new\InvalidArgumentException("You must specify type to Post"));
+		}
+		if(empty($requestObject->imagePostId) === true) {
+			throw (new\InvalidArgumentException("You must be logged in to Post", 402));
 
-				}
-				if($empty($requestObject->imageId) === true) {
-					throw (new\InvalidArgumentException("You must place an image in the Post"));
+		}
+		if(empty($requestObject->imageCloudinaryId) === true) {
+			throw (new\InvalidArgumentException("You must be logged in to Post", 402));
 
-				}
-				if(empty($requestObject->imagePostId) === true) {
-					throw (new\InvalidArgumentException("You must be logged in to Post"));
+		}
+		//Variable assignment for the users image name, MIME type, and image extension
+		//ask about image id below ""
+		$tempUserFileName = $_FILES["dog"]["tmp_name"];
+		$userFileType = $_FILES["file"]["type"];
+		$userFileExtension = strtolower(strrchr($_FILES["file"]["name"], "."));
 
-				}
-				if(empty($requestObject->imageCloudinaryId) === true) {
-					throw (new\InvalidArgumentException("You must be logged in to Post"));
+		//upload the image to Cloudinary and get the public id
+		$cloudinaryResult = \Cloudinary\Uploader::upload($_FILES["file"]["tmp_name"], array("width" => 500, "crop" => "scale"));
 
-				}
-				//Variable assignment for the users image name, MIME type, and image extension
-				//ask about image id below ""
-				$tempUserFileName = $_FILES["file"]["tmp_name"];
-				$userFileType = $_FILES["file"]["type"];
-				$userFileExtension = strtolower(strrchr($_FILES["file"]["name"], "."));
+		$post = new Post(null, $_SESSION['organization']->getOrganizationId(), $requestObject->postBreed, $requestObject->postDescription, $requestObject->postSex, $requestObject->postType);
+		$post->insert($pdo);
 
-				//upload the image to Cloudinary and get the public id
-				$cloudinaryResult = \Cloudinary\Uploader::upload($_FILES["file"]["tmp_name"], array("width" => 500, "crop" => "scale"));
-
-				//TODO get the post and grab the image object (use the $post->getPostId() for the imagePostId)
-				$post = new Post(null, $_SESSION['organization']->getOrganizationId(), $requestObject->postBreed, $requestObject->postDescription, $requestObject->postSex, $requestObject->postType);
-				$post->insert($pdo);
-
-				// After the sending the image to Cloudinary, grab the public id and create the new post/image
-				$image = new Image(null, $post->getPostId(), $cloudinaryResult["public_id"]);
-				$image->insert($pdo);
+		// Inserting image into database
+		$image = new Image(null, $post->getPostId(), $cloudinaryResult["public_id"]);
+		$image->insert($pdo);
 
 //Push the data to the imageId, upload the new image, and notify user.
-				$reply->data = $image->getImageId();
-				$reply->message = "Post successful.";
+//				$reply->data = $image->getImageId();
+		$reply->message = "Post successful.";
 
-			} elseif($method === "DELETE") {
-				verifyXsrf();
+	} elseif($method === "DELETE") {
+		verifyXsrf();
 
-				//retrieve the postid to delete
-				$post = Post::getPostByPostId($pdo, $id);
-				if($post === null) {
-					throw (new RuntimeException("Post does not exist", 404));
-				}
-				if($_SESSION["organization"]->getOrganizationId() !== $post->getPostOrganizationId()) {
-					throw (new \InvalidArgumentException("You are not allowed to delete this post.", 401));
-				}
-				$postId = $post->getPostId();
-				Image::getImageByImagePostId($pdo, $postId);
+		//retrieve the postId to delete
+		$post = Post::getPostByPostId($pdo, $id);
+		if($post === null) {
+			throw (new RuntimeException("Post does not exist", 404));
+		}
+		if($_SESSION["organization"]->getOrganizationId() !== $post->getPostOrganizationId()) {
+			throw (new \InvalidArgumentException("You are not allowed to delete this post.", 401));
+		}
+		//getting the image by image post id
+		$postId = $post->getPostId();
 
+		$image = Image::getImageByImagePostId($pdo, $postId);
 
-				//TODO grab the organization by the postOrganizationId
+		//deleting the image and the post
 
+		$image->delete($pdo);
 
+		$post->delete($pdo);
 
-
-
-				//verify user is logged in to delete post/image_ i'm just not sure how to structure this... above in another form
-				//if(empty($_SESSION ["organization"]) === true || $_SESSION ["organization"]->getOrganzationId() !== $post->getPostOrganizationId()); {
-					//throw (new\InvalidArgumentException("You must be logged in to delete."));
-				}
-
-				// TODO kill the children fisrt (delete the image object in the database before deleting the actual post)
+		$reply->message = "Post successfully deleted.";
 
 
-				$post->delete($pdo);
-				$reply->message = "Post successfully deleted.";
+		//verify user is logged in to delete post/image_ i'm just not sure how to structure this... above in another form
+		//if(empty($_SESSION ["organization"]) === true || $_SESSION ["organization"]->getOrganizationId() !== $post->getPostOrganizationId()); {
+		//throw (new\InvalidArgumentException("You must be logged in to delete."));
+	} else {
+		throw (new InvalidArgumentException("Invalid HTTP method request"));
+	}
 
-			} else {
-				throw (new InvalidArgumentException("Invalid HTTP method request"));
-			}
-		} catch(Exception $exception) {
-			$reply->status = $exception->getCode();
-			$reply->message = $exception->getMessage();
-	} catch(TypeError $typeError){
-					$reply->status = $typeError->getCode();
-					$reply->message = $typeError->getMessage();
+} catch(Exception $exception) {
+	$reply->status = $exception->getCode();
+	$reply->message = $exception->getMessage();
+} catch(TypeError $typeError) {
+	$reply->status = $typeError->getCode();
+	$reply->message = $typeError->getMessage();
 }
-	header("Content-type: application/json");
+header("Content-type: application/json");
 
-	//encode and return reply to front end caller
+//encode and return reply to front end caller
 echo json_encode($reply);
 
 
