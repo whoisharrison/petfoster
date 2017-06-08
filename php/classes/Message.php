@@ -519,7 +519,7 @@ class Message implements \JsonSerializable {
 		}
 
 		//create query template
-		$query = "SELECT messageId, messageProfileId, messageOrganizationId, messageContent, messageDateTime, messageSubject FROM message WHERE messageProfileId 		= :messageProfileId";
+		$query = "SELECT messageId, messageProfileId, messageOrganizationId, messageContent, messageDateTime, messageSubject FROM message WHERE messageOrganizationId 	= :messageOrganizationId";
 		$statement = $pdo->prepare($query);
 
 		//bind the message profile id to the place holder in the template

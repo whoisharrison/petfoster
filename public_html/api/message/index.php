@@ -36,7 +36,7 @@ try {
 	//mock a logged in user by mocking the session and assigning a specific user to it
 	//this is the only for testing purposes and should not be in the live code
 //		$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 1);
-	$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo, 3);
+	//["organization"] = Organization::getOrganizationByOrganizationId($pdo, 1);
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -62,6 +62,102 @@ try {
 		//set XSRF cookie
 		setXsrfCookie();
 
+		if((empty ($_SESSION["organization"]) === false) && (empty ($_SESSION["profile"] === false))) {
+			if(empty($id) === false) {
+				$message = Message::getMessageByMessageId($pdo, $id);
+
+				if(($_SESSION["organization"]->getOrganizationId() !== $message->getMessageOrganizationId()) || ($_SESSION["organization"]->getOrganizationProfileId() !== $message->getMessageProfileId())) {
+					throw (new InvalidArgumentException("you are not allowed to view these messages"));
+
+				} else {
+					$reply->data = $message;
+				}
+			}
+
+		} else if(empty($_SESSION["profile"]) === false) {
+
+		} else {
+			throw (new \InvalidArgumentException("you must be logged in to view messages", 403));
+
+
+
+
+
+	} if($method === "POST") {
+
+		//verifyXsrf();
+		$requestContent = file_get_contents("php://input");
+		// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the
+		//front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream
+		// that allows raw data to be read from the front end request which is, in this case, a JSON package.
+		$requestObject = json_decode($requestContent);
+		//this line decodes the JSON package and stors that result in $requestObject
+
+		//make sure message content is available (required field)
+		//is messageContent going to mess with my attribute messageContent
+		if(empty($requestObject->messageContent) === true) {
+			throw(new \InvalidArgumentException("No content for Message.", 405));
+		}
+
+		//make sure message date is accurate
+		if(empty($requestObject->messageDateTime) === true) {
+			$requestObject->messageDateTime = null;
+		}
+
+		//make sure profileId is available
+		if(empty($requestObject->messageProfileId) === true) {
+			throw(new \InvalidArgumentException("No profile Id.", 405));
+		}
+
+		//ADDED ORGANIZATION?
+		if(empty($requestObject->messageOrganizationId) === true) {
+			throw(new \InvalidArgumentException("No organization Id.", 405));
+		}
+
+
+			//have them lool that I did this right
+			//enforce the user is signed in
+			if(empty($_SESSION["profile"]) === true) {
+				throw(new \InvalidArgumentException("You must be logged in to post messages", 403));
+			}
+
+			//create new message and insert it into the database
+
+			$message = new Message(null, $requestObject->messageProfileId, $requestObject->messageOrganizationId, $requestObject->messageContent,
+				null);
+			$message->insert($pdo);
+
+			//update reply
+			$reply->message = "Message created ok";
+		}
+
+	} else {
+	throw (new InvalidArgumentException("Invalid HTTP method request"));
+	}
+
+
+} catch(\Exception | \TypeError $exception) {
+//	$reply->status = $exception->getCode();
+//	 $reply->message = $exception->getMessage();
+}
+
+
+header("Content-type: application/json");
+if($reply->data === null) {
+	unset($reply->data);
+}
+
+//encode and return reply to the front end called
+echo json_encode($reply);
+
+
+
+
+
+
+
+//BONE YARD
+
 //		//get a specific message or all messages and update reply
 //		if(empty($id) === false) {
 //			$message = Message::getMessageByMessageId($pdo, $id);
@@ -69,46 +165,61 @@ try {
 //				$reply->data = $message;
 //			}
 
+
+//try and grab the organization from the $_SESSION["organization "] if nothing happens set organization to null.
+//
+
+//
+//		if(empty($_SESSION["organization"]) === true) {
+//			$orgaizationProfileId = null;
+//		 } elseif(empty($_SESSION["organization"]) !== true) {
+//
+//			$orgaizationProfileId = $_SESSION["organization"]->organizationProfileId;
+//
+//			//assign the organization
+//
 //		}
-
-		if(!(empty($messageOrganizationId) === true ^ empty($messageProfileId) === true)) {
-			throw(new InvalidArgumentException("you are not logged in, 401"));
-		}
-
-		// this is the code we are trying 6.5.15 revision 3.0
-		if(((empty($_SESSION["organization"]) === true) && ($_SESSION["organization"]->getOrganizationId() !== $messageOrganizationId)) || ((empty($_SESSION["profile"]) === true) && ($_SESSION["profile"]->getProfileId() !== $messageProfileId))) {
-			throw(new InvalidArgumentException("org or profile are not ok, 405"));
-		}
+/**
 
 
-	else if(empty($messageProfileId) === false) {
-			$message = Message::getMessageByMessageProfileId($pdo, $messageProfileId)->toArray();
-			if($message !== null) {
+if(!(empty($messageOrganizationId) === true ^ empty($messageProfileId) === true)) {
+throw(new InvalidArgumentException("you are not logged in, 401"));
+}
 
-				//ADDED ORGANIZATION - put in get
-				if(empty($_SESSION["organization"]) === true) {
-					throw(new \InvalidArgumentException("You must be logged in to post messages", 403));
-				}
+// this is the code we are trying 6.5.15 revision 3.0
+if(((empty($_SESSION["organization"]) === true) && ($_SESSION["organization"]->getOrganizationId() !== $messageOrganizationId)) || ((empty($_SESSION["profile"]) === true) && ($_SESSION["profile"]->getProfileId() !== $messageProfileId))) {
+throw(new InvalidArgumentException("org or profile are not ok, 405"));
+/*
+ *
+ * /
+ *
+ *
+} else if(empty($messageProfileId) === false) {
+$message = Message::getMessageByMessageProfileId($pdo, $messageProfileId)->toArray();
+if($message !== null) {
 
-				$reply->data = $message;
-			}
+$reply->data = $message;
+}
 
-		} else if(empty($messageOrganizationId) === false) {
-			$message = Message::getMessageByMessageOrganizationId($pdo, $messageOrganizationId)->toArray();
-			if($message !== null) {
-				$reply->data = $message;
-			}
-
-
-			//first attempt
-			// old check to see if org exists and org id is ok OR profile exists and profile id is ok
-			//			if(empty($organization->getOrganizationId) === true && $_SESSION["organization"]->getOrganizationId() !== $organizationId->getOrganizationId()) || if(empty($id->profileId) === true && $_SESSION["profile"]->getProfileId() !== $id) {
-			//				throw(new InvalidArgumentException("org and profile are not ok, 405"));
-			//			}
+} else if(empty($messageOrganizationId) === false) {
+$message = Message::getMessageByMessageOrganizationId($pdo, $messageOrganizationId)->toArray();
+if($message !== null) {
+$reply->data = $message;*
 
 
-			//second attempt
-			// check to see if org exists oe org id is ok and profile exists or profile id is ok
+
+
+
+
+//first attempt
+// old check to see if org exists and org id is ok OR profile exists and profile id is ok
+//			if(empty($organization->getOrganizationId) === true && $_SESSION["organization"]->getOrganizationId() !== $organizationId->getOrganizationId()) || if(empty($id->profileId) === true && $_SESSION["profile"]->getProfileId() !== $id) {
+//				throw(new InvalidArgumentException("org and profile are not ok, 405"));
+//			}
+
+
+//second attempt
+// check to see if org exists oe org id is ok and profile exists or profile id is ok
 //			if(empty($organization->getOrganizationId) === true || $_SESSION["organization"]->getOrganizationId() !== $organizationId())
 //
 //
@@ -144,84 +255,14 @@ try {
 //			}
 
 
-		}
-		//DELETED THIS
-		/**
-		 * {
-		 * $messages = Message::getAllMessages($pdo)->toArray();
-		 * if($messages !== null) {
-		 * $reply->data = $messages;
-		 * }
-		 * }
-		 **/
 
-
-		verifyXsrf();
-		$requestContent = file_get_contents("php://input");
-		// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the
-		//front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream
-		// that allows raw data to be read from the front end request which is, in this case, a JSON package.
-		$requestObject = json_decode($requestContent);
-		//this line decodes the JSON package and stors that result in $requestObject
-
-		//make sure message content is available (required field)
-		//is messageContent going to mess with my attribute messageContent
-		if(empty($requestObject->messageContent) === true) {
-			throw(new \InvalidArgumentException("No content for Message.", 405));
-		}
-
-		//make sure message date is accurate
-		if(empty($requestObject->messageDateTime) === true) {
-			$requestObject->messageDateTime = null;
-		}
-
-		//make sure profileId is available
-		if(empty($requestObject->messageProfileId) === true) {
-			throw(new \InvalidArgumentException("No profile Id.", 405));
-		}
-
-		//ADDED ORGANIZATION?
-		if(empty($requestObject->messageOrganizationId) === true) {
-			throw(new \InvalidArgumentException("No organization Id.", 405));
-		}
-
-		if($method === "POST") {
-
-			//enforce the user is signed in
-			if(empty($_SESSION["profile"]) === true) {
-				throw(new \InvalidArgumentException("You must be logged in to post messages", 403));
-			}
-
-			//create new message and insert it into the database
-
-			$message = new Message(null, $requestObject->messageProfileId, $requestObject->messageOrganizationId, $requestObject->messageContent,
-				null);
-			$message->insert($pdo);
-
-			//update reply
-			$reply->message = "Message created ok";
-		}
-
-	} else {
-		throw (new InvalidArgumentException("Invalid HTTP method request"));
-	}
-
-
-} catch(\Exception | \TypeError $exception) {
-	//$reply->status = $exception->getCode();
-	// $reply->message = $exception->getMessage();
-}
-
-
-header("Content-type: application/json");
-if($reply->data === null) {
-	unset($reply->data);
-}
-
-//encode and return reply to the front end called
-echo json_encode($reply);
-
-
-
-
+//DELETED THIS
+/**
+ * {
+ * $messages = Message::getAllMessages($pdo)->toArray();
+ * if($messages !== null) {
+ * $reply->data = $messages;
+ * }
+ * }
+ **/
 
