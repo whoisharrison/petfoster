@@ -36,7 +36,7 @@ try {
 	//mock a logged in user by mocking the session and assigning a specific user to it
 	//this is the only for testing purposes and should not be in the live code
 //		$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 1);
-	//["organization"] = Organization::getOrganizationByOrganizationId($pdo, 1);
+//	$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo, 1);
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -49,13 +49,6 @@ try {
 	$messageContent = filter_input(INPUT_GET, "messageContent", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 	$messageSubject = filter_input(INPUT_GET, "messageSubject", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-	//make sure the id is valid for the methods that require it
-	//DO I NEED THIS, NO YOU DO NOT NEED THIS!!!
-	/**
-	 * if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
-	 * throw(new InvalidArgumentException("id cannot be empty or negative", 405));
-	 * }
-	 **/
 
 	//handle GET request - if id is present, that message is returned, otherwise all messages are returned
 	if($method === "GET") {
@@ -75,6 +68,18 @@ try {
 			}
 
 		} else if(empty($_SESSION["profile"]) === false) {
+
+			if (empty($id) === false) {
+				$message = Message::getMessageByMessageId($pdo, $id);
+
+				if (($_SESSION["profile"]->getProfileId() !== $message->getMessageProfileId())){
+					throw (new \InvalidArgumentException("you are not allowed to view messages"));
+
+				} else {
+					$reply->data = $message;
+				}
+			}
+
 
 		} else {
 			throw (new \InvalidArgumentException("you must be logged in to view messages", 403));
@@ -263,6 +268,15 @@ $reply->data = $message;*
  * if($messages !== null) {
  * $reply->data = $messages;
  * }
+ * }
+ **/
+
+
+//make sure the id is valid for the methods that require it
+//DO I NEED THIS, NO YOU DO NOT NEED THIS!!!
+/**
+ * if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
+ * throw(new InvalidArgumentException("id cannot be empty or negative", 405));
  * }
  **/
 
