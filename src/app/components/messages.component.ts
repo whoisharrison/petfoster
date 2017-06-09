@@ -30,4 +30,10 @@ export class MessagesComponent implements OnInit {
 		this.messageService.getAllMessages()
 			.subscribe(messages => this.messages = messages);
 	}
+
+
+	//not sure if I need this?
+	postMessage() : void {
+		this.postMessage.postMessage(this.message).subscribe(status => this.status = status);
+	}
 }
