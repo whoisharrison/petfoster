@@ -1,14 +1,17 @@
 import {RouterModule, Routes} from "@angular/router";
 import {BaconComponent} from "./components/bacon-component";
 import {HomeComponent} from "./components/home-component";
-import {BaconService} from "./services/ba{
+import {BaconService} from "./services/bacon-service"
+import {SignInComponent} from "./components/sign-in.component";
+import {MessagesComponent} from "./components/messages.component";
 
-export const allAppComponents = [BaconComponent, HomeComponent, MessagesComponent];
+export const allAppComponents = [BaconComponent, HomeComponent, MessagesComponent, SignInComponent];
 
 export const routes: Routes = [
 	{path: "bacon", component: BaconComponent},
 	{path: "", component: HomeComponent},
 	{path: "messages",component: MessagesComponent},
+	{path: "signin", component: SignInComponent}
 
 ];
 
