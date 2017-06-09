@@ -81,60 +81,6 @@ try {
 			}
 
 
-		} else if(empty($_SESSION["messageOrganizationId"]) === false) {
-
-			if(empty($id) === false) {
-				$message = Message::getMessageByMessageId($pdo, $id);
-
-				if(($_SESSION["profile"]->getOrganizationMessageId() !== $message->getMessageProfileId())) {
-					throw (new InvalidArgumentException("you are not allowed to view profile messages C"));
-
-				} else {
-					$reply->data = $message;
-				}
-			}
-
-
-		} else if(empty($_SESSION["messageProfileId"]) === false) {
-
-			if(empty($id) === false) {
-				$message = Message::getMessageByMessageId($pdo, $id);
-
-				if(($_SESSION["profile"]->getMessageProfileId() !== $message->getMessageProfileId())) {
-					throw (new InvalidArgumentException("you are not allowed to view profile messages D"));
-
-				} else {
-					$reply->data = $message;
-				}
-			}
-
-
-		} else if(empty($_SESSION["messageByMessageOrganizationId"]) === false) {
-
-			if(empty($id) === false) {
-				$message = Message::getMessageByMessageId($pdo, $id);
-
-				if(($_SESSION["profile"]->getMessageByMessageOrganizationId() !== $message->getMessageProfileId())) {
-					throw (new InvalidArgumentException("you are not allowed to view profile messages E"));
-
-				} else {
-					$reply->data = $message;
-				}
-			}
-
-
-		} else if(empty($_SESSION["messageByMessageProfileId"]) === false) {
-
-			if(empty($id) === false) {
-				$message = Message::getMessageByMessageId($pdo, $id);
-
-				if(($_SESSION["profile"]->getMessageByMessageProfileId() !== $message->getMessageProfileId())) {
-					throw (new InvalidArgumentException("you are not allowed to view profile messages F"));
-
-				} else {
-					$reply->data = $message;
-				}
-			}
 
 
 		} else {
@@ -342,3 +288,60 @@ $reply->data = $message;*
 
 
 //		$messageProfileId = $_SESSION["organization"]->getOrganizationProfileId() ?? $_SESSION["profile"]->getProfileId();
+
+//
+//
+//} else if(empty($_SESSION["messageOrganizationId"]) === false) {
+//
+//	if(empty($id) === false) {
+//		$message = Message::getMessageByMessageId($pdo, $id);
+//
+//		if(($_SESSION["profile"]->getOrganizationMessageId() !== $message->getMessageProfileId())) {
+//			throw (new InvalidArgumentException("you are not allowed to view profile messages C"));
+//
+//		} else {
+//			$reply->data = $message;
+//		}
+//	}
+//
+//
+//} else if(empty($_SESSION["messageProfileId"]) === false) {
+//
+//	if(empty($id) === false) {
+//		$message = Message::getMessageByMessageId($pdo, $id);
+//
+//		if(($_SESSION["profile"]->getMessageProfileId() !== $message->getMessageProfileId())) {
+//			throw (new InvalidArgumentException("you are not allowed to view profile messages D"));
+//
+//		} else {
+//			$reply->data = $message;
+//		}
+//	}
+//
+//
+//} else if(empty($_SESSION["messageByMessageOrganizationId"]) === false) {
+//
+//	if(empty($id) === false) {
+//		$message = Message::getMessageByMessageId($pdo, $id);
+//
+//		if(($_SESSION["profile"]->getMessageByMessageOrganizationId() !== $message->getMessageProfileId())) {
+//			throw (new InvalidArgumentException("you are not allowed to view profile messages E"));
+//
+//		} else {
+//			$reply->data = $message;
+//		}
+//	}
+//
+//
+//} else if(empty($_SESSION["messageByMessageProfileId"]) === false) {
+//
+//	if(empty($id) === false) {
+//		$message = Message::getMessageByMessageId($pdo, $id);
+//
+//		if(($_SESSION["profile"]->getMessageByMessageProfileId() !== $message->getMessageProfileId())) {
+//			throw (new InvalidArgumentException("you are not allowed to view profile messages F"));
+//
+//		} else {
+//			$reply->data = $message;
+//		}
+//	}
