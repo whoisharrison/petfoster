@@ -1,0 +1,148 @@
+html, body {
+	color: #fff;
+}
+
+a,
+a:visited,
+a:hover,
+a:active {
+	-webkit-transition: all 250ms ease;
+	-moz-transition: all 250ms ease;
+	-ms-transition: all 250ms ease;
+	-o-transition: all 250ms ease;
+	transition: all 250ms ease;
+}
+
+/********************************************
+* Spacers
+********************************************/
+@media only screen and (min-width: 768px) {
+	.text-right-sm {
+		text-align: right;
+	}
+}
+
+/****************************************
+* Home Page - Welcome
+*****************************************/
+body {
+	background: url("../images/bg-cat.jpg") no-repeat center center;
+	background-attachment: fixed;
+	background-size: cover;
+	padding-bottom: 100px;
+}
+
+main.bg .jumbotron {
+	background: transparent;
+	border-radius: 0;
+}
+
+main.bg .jumbotron > h1 {
+	color: #fff;
+	font-family: 'Playfair Display', Times, serif;
+	text-shadow: 3px 3px 0 black;
+	text-transform: uppercase;
+}
+
+main.bg .jumbotron .lead {
+	background: gold;
+	color: black;
+	display: inline-block;
+	font-weight: 800;
+	padding: 5px 25px;
+	text-shadow: 1px 1px 0 white;
+}
+
+/*styles for sm, md, lg screens */
+@media only screen and (min-width: 768px) {
+	main.bg .jumbotron {
+		font-size: 5em;
+	}
+}
+
+
+/****************************************
+* Main Navbar
+*****************************************/
+nav.navbar {
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+	-ms-transition: all 500ms ease;
+	-o-transition: all 500ms ease;
+	transition: all 500ms ease;
+}
+
+.navbar-brand {
+	font-family: 'Playfair Display', 'Times New Roman', Times, serif;
+}
+
+.navbar-default {
+	background-color: white;
+}
+
+/* custom navbar-inverse overrides*/
+.navbar-inverse .navbar-brand {
+	color: #fff;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+	color: #fff;
+}
+
+.navbar-inverse .navbar-brand:focus,
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-nav>li>a:focus,
+.navbar-inverse .navbar-nav>li>a:hover {
+	color: gold;
+}
+
+/* embiggen nav on md and lg screens only*/
+@media only screen and (min-width: 992px) {
+	nav.navbar {
+		padding: 40px 0;
+	}
+
+	.navbar-inverse {
+		background-color: transparent;
+		border-bottom: 1px solid rgba(255,255,255,0.2);
+	}
+
+	.navbar-brand {
+		font-size: 3rem;
+	}
+}
+
+/****************************************
+* Post Content
+*****************************************/
+.panel-body {
+	color: #333;
+}
+
+/****************************************
+* Footer
+*****************************************/
+footer {
+	background-color: #111;
+	color: gold;
+	padding: 2rem 0;
+}
+
+/***
+* Flexbox Sticky Footer
+* http://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/
+***/
+
+/*corrects IE min-height bug*/
+html { display: flex;}
+body { width: 100%;}
+
+.sfooter {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.sfooter-content {
+	flex: 1 0 auto;
+}
