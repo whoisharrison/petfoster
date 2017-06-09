@@ -14,7 +14,11 @@ export const routes: Routes = [
 
 export const appRoutingProviders: any[] = [BaconService];
 
-// not sure if we needed this?
+// not sure if we needed this? but what the hell, drinking coffee
 // export const appRoutingProviders: any[] = [MessageService];
 
 export const routing = RouterModule.forRoot(routes);
+
+
+
+//import is acting weird here
