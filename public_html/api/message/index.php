@@ -35,8 +35,8 @@ try {
 
 	//mock a logged in user by mocking the session and assigning a specific user to it
 	//this is the only for testing purposes and should not be in the live code
-//		$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 2);
-	$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo, 1);
+		$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 1);
+//	$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo, 1);
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -69,10 +69,10 @@ try {
 
 		} else if(empty($_SESSION["profile"]) === false) {
 
-			if (empty($id) === false) {
+			if(empty($id) === false) {
 				$message = Message::getMessageByMessageId($pdo, $id);
 
-				if (($_SESSION["profile"]->getProfileId() !== $message->getMessageProfileId())){
+				if(($_SESSION["profile"]->getProfileId() !== $message->getMessageProfileId())) {
 					throw (new InvalidArgumentException("you are not allowed to view profile messages B"));
 
 				} else {
@@ -83,10 +83,10 @@ try {
 
 		} else if(empty($_SESSION["messageOrganizationId"]) === false) {
 
-			if (empty($id) === false) {
+			if(empty($id) === false) {
 				$message = Message::getMessageByMessageId($pdo, $id);
 
-				if (($_SESSION["profile"]->getOrganizationMessageId() !== $message->getMessageProfileId())){
+				if(($_SESSION["profile"]->getOrganizationMessageId() !== $message->getMessageProfileId())) {
 					throw (new InvalidArgumentException("you are not allowed to view profile messages C"));
 
 				} else {
@@ -97,10 +97,10 @@ try {
 
 		} else if(empty($_SESSION["messageProfileId"]) === false) {
 
-			if (empty($id) === false) {
+			if(empty($id) === false) {
 				$message = Message::getMessageByMessageId($pdo, $id);
 
-				if (($_SESSION["profile"]->getMessageProfileId() !== $message->getMessageProfileId())){
+				if(($_SESSION["profile"]->getMessageProfileId() !== $message->getMessageProfileId())) {
 					throw (new InvalidArgumentException("you are not allowed to view profile messages D"));
 
 				} else {
@@ -111,10 +111,10 @@ try {
 
 		} else if(empty($_SESSION["messageByMessageOrganizationId"]) === false) {
 
-			if (empty($id) === false) {
+			if(empty($id) === false) {
 				$message = Message::getMessageByMessageId($pdo, $id);
 
-				if (($_SESSION["profile"]->getMessageByMessageOrganizationId() !== $message->getMessageProfileId())){
+				if(($_SESSION["profile"]->getMessageByMessageOrganizationId() !== $message->getMessageProfileId())) {
 					throw (new InvalidArgumentException("you are not allowed to view profile messages E"));
 
 				} else {
@@ -125,10 +125,10 @@ try {
 
 		} else if(empty($_SESSION["messageByMessageProfileId"]) === false) {
 
-			if (empty($id) === false) {
+			if(empty($id) === false) {
 				$message = Message::getMessageByMessageId($pdo, $id);
 
-				if (($_SESSION["profile"]->getMessageByMessageProfileId() !== $message->getMessageProfileId())){
+				if(($_SESSION["profile"]->getMessageByMessageProfileId() !== $message->getMessageProfileId())) {
 					throw (new InvalidArgumentException("you are not allowed to view profile messages F"));
 
 				} else {
@@ -137,18 +137,12 @@ try {
 			}
 
 
-
-
-
-
-
-
-
 		} else {
 			throw (new InvalidArgumentException("you must be logged in to view messages", 403));
 		}
 
-	if($method === "POST") {
+
+	} else if($method === "POST") {
 
 		//verifyXsrf();
 		$requestContent = file_get_contents("php://input");
@@ -157,6 +151,7 @@ try {
 		// that allows raw data to be read from the front end request which is, in this case, a JSON package.
 		$requestObject = json_decode($requestContent);
 		//this line decodes the JSON package and stors that result in $requestObject
+
 
 		//make sure message content is available (required field)
 		//is messageContent going to mess with my attribute messageContent
@@ -169,10 +164,15 @@ try {
 			$requestObject->messageDateTime = null;
 		}
 
-		//make sure profileId is available
-		if(empty($requestObject->messageProfileId) === true) {
-			throw(new \InvalidArgumentException("No profile Id.", 405));
+		//message subject
+		if(empty($requestObject->messageSubject) === true) {
+			throw(new \InvalidArgumentException("No subject for message.", 405));
 		}
+
+		//make sure profileId is available
+//		if(empty($requestObject->messageProfileId) === true) {
+//			throw(new \InvalidArgumentException("No profile Id.", 405));
+//		}
 
 		//ADDED ORGANIZATION?
 		if(empty($requestObject->messageOrganizationId) === true) {
@@ -180,27 +180,22 @@ try {
 		}
 
 		//have them look that I did this right
-			//enforce the user is signed in
-			if(empty($_SESSION["profile"]) === true) {
-				throw(new \InvalidArgumentException("You must be logged in to post messages", 403));
-			}
-
-			//create new message and insert it into the database
-
-			$message = new Message(null, $requestObject->messageProfileId, $requestObject->messageOrganizationId, $requestObject->messageContent,
-				null);
-			$message->insert($pdo);
-
-			//update reply
-			$reply->message = "Message created ok";
+		//enforce the user is signed in
+		if(empty($_SESSION["profile"]) === true) {
+			throw(new \InvalidArgumentException("You must be logged in to post messages", 401));
 		}
 
-	}
 
+		//create new message and insert it into the database
 
-	//do i need this?
-		else {
-	throw (new InvalidArgumentException("Invalid HTTP method request"));
+		$message = new Message(null, $_SESSION["profile"]->getProfileId(), $requestObject->messageOrganizationId, $requestObject->messageContent,null, $requestObject->messageSubject);
+
+		$message->insert($pdo);
+
+		//update reply
+		$reply->message = "Message created ok";
+	} else {
+		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
 
 
@@ -208,7 +203,7 @@ try {
 
 	//ask about this?
 	$reply->status = $exception->getCode();
-	 $reply->message = $exception->getMessage();
+	$reply->message = $exception->getMessage();
 }
 
 
@@ -250,7 +245,6 @@ echo json_encode($reply);
 //			//assign the organization
 //
 //		}
-
 
 
 //if(!(empty($messageOrganizationId) === true ^ empty($messageProfileId) === true)) {
@@ -346,3 +340,5 @@ $reply->data = $message;*
  * }
  **/
 
+
+//		$messageProfileId = $_SESSION["organization"]->getOrganizationProfileId() ?? $_SESSION["profile"]->getProfileId();
