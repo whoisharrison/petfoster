@@ -2,7 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Params} from "@angular/router";
 import {Observable} from "rxjs";
 import {MessageService} from "../services/message.service";
-import {Message} from "../classes/message";
+import {Message} from "../classes/messages";
 import {Status} from "../classes/status";
 
 @Component({
