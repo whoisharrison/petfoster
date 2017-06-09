@@ -1,3 +1,5 @@
+//@sproutswap thank you!
+
 //this is the modal that pops up when "sign-in" is clicked
 
 import{Component, ViewChild, EventEmitter, Output} from "@angular/core";
@@ -6,7 +8,7 @@ import {Router} from "@angular/router";
 import {Observable} from "rxjs/Observable"
 
 
-//so i need status.ts file for this?
+//so i need status.ts file for this or does this depend on project?
 import {Status} from "../classes/status";
 import {SignInService} from "../services/sign-in.service";
 import {SignIn} from "../classes/sign-in";
@@ -14,9 +16,11 @@ declare var $: any;
 
 @Component({
 	templateUrl: "./templates/sign-in.php",
-	selector: "signin-component"
+	selector: "sign-in.component"
 })
 
+
+//watch this area for errors
 export class SignInComponent {
 	@ViewChild("signInForm") signInForm : any;
 
@@ -38,7 +42,9 @@ export class SignInComponent {
 					this.router.navigate([""]);
 					location.reload(true);
 					this.signInForm.reset();
-					setTimeout(function(){$("#signin-modal").modal('hide');},1000);
+
+
+									setTimeout(function(){$("#signin-modal").modal('hide');},1000);
 				}
 			});
 	}
