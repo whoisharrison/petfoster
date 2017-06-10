@@ -36,10 +36,13 @@ try {
 	//grab the connection to mySQL
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
 
+
+	$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo,1);
+
 	/** Cloudinary API  */
-	$config = readConfig("/etc/apache2/capstone-mysql/petRescueAbq.ini");
-	$cloudinary = json_encode($config["cloudinary"]);
-	\Cloudinary::config(["cloud_name" => $cloudinary->cloudName, "api_key" => $cloudinary->apiKey, "api_secret" => $cloudinary->apiSecret]);
+	//$config = readConfig("/etc/apache2/capstone-mysql/petRescueAbq.ini");
+	//$cloudinary = json_encode($config["cloudinary"]);
+	//\Cloudinary::config(["cloud_name" => $cloudinary->cloudName, "api_key" => $cloudinary->apiKey, "api_secret" => $cloudinary->apiSecret]);
 
 	// Determine the HTTP method
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -154,13 +157,8 @@ try {
 		}
 
 
-		if(empty($requestObject->postFlag) === false) {
+		if($requestObject->postFlag === "y") {
 
-
-			if(empty($requestObject->postId) === true) {
-				throw (new\InvalidArgumentException("You must be logged in to post", 402));
-
-			}
 			if(empty($requestObject->postBreed) === true) {
 				throw (new\InvalidArgumentException("You must specify breed to Post", 402));
 
@@ -179,33 +177,34 @@ try {
 
 			$post = new Post(null, $_SESSION['organization']->getOrganizationId(), $requestObject->postBreed, $requestObject->postDescription, $requestObject->postSex, $requestObject->postType);
 			$post->insert($pdo);
+		} else {
+
+
+			if(empty($requestObject->imageId) === true) {
+				throw (new\InvalidArgumentException("You must place an image in the Post", 402));
+
+			}
+			if(empty($requestObject->imagePostId) === true) {
+				throw (new\InvalidArgumentException("You must be logged in to Post", 402));
+
+			}
+			if(empty($requestObject->imageCloudinaryId) === true) {
+				throw (new\InvalidArgumentException("You must be logged in to Post", 402));
+
+			}
+			//Variable assignment for the users image name, MIME type, and image extension
+			//ask about image id below ""
+			$tempUserFileName = $_FILES["dog"]["tmp_name"];
+			$userFileType = $_FILES["file"]["type"];
+			$userFileExtension = strtolower(strrchr($_FILES["file"]["name"], "."));
+
+			//upload the image to Cloudinary and get the public id
+			$cloudinaryResult = \Cloudinary\Uploader::upload($_FILES["file"]["tmp_name"], array("width" => 500, "crop" => "scale"));
+
+			// Inserting image into database
+			$image = new Image(null, $requestObject->postId, $cloudinaryResult["public_id"]);
+			$image->insert($pdo);
 		}
-
-
-		if(empty($requestObject->imageId) === true) {
-			throw (new\InvalidArgumentException("You must place an image in the Post", 402));
-
-		}
-		if(empty($requestObject->imagePostId) === true) {
-			throw (new\InvalidArgumentException("You must be logged in to Post", 402));
-
-		}
-		if(empty($requestObject->imageCloudinaryId) === true) {
-			throw (new\InvalidArgumentException("You must be logged in to Post", 402));
-
-		}
-		//Variable assignment for the users image name, MIME type, and image extension
-		//ask about image id below ""
-		$tempUserFileName = $_FILES["dog"]["tmp_name"];
-		$userFileType = $_FILES["file"]["type"];
-		$userFileExtension = strtolower(strrchr($_FILES["file"]["name"], "."));
-
-		//upload the image to Cloudinary and get the public id
-		$cloudinaryResult = \Cloudinary\Uploader::upload($_FILES["file"]["tmp_name"], array("width" => 500, "crop" => "scale"));
-
-		// Inserting image into database
-		$image = new Image(null, $requestObject->postId, $cloudinaryResult["public_id"]);
-		$image->insert($pdo);
 
 
 //Push the data to the imageId, upload the new image, and notify user.
