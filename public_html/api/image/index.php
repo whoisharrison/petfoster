@@ -72,65 +72,65 @@ try {
 		//	$profile = Profile::getProfileByProfileId($pdo, $id);
 		//	if($profile !== null) {
 		//	$reply->data = $profile;
-	}
-	if(empty($id) === false) {
-		$post = Post::getPostByPostId($pdo, $id);
-		if($post !== null) {
-			$reply->data = $post;
+
+		if(empty($id) === false) {
+			$post = Post::getPostByPostId($pdo, $id);
+			if($post !== null) {
+				$reply->data = $post;
+
+			}
+
+		} elseif(empty($postOrganizationId) === false) {
+			$post = Post::getPostsByPostOrganizationId($pdo, $postOrganizationId)->toArray();
+			if($post !== null) {
+				$reply->data = $post;
+			}
+
+		} elseif(empty($postBreed) === false) {
+			$post = Post::getPostsByPostBreed($pdo, $postBreed)->toArray();
+			if($post !== null) {
+				$reply->data = $post;
+
+			}
+
+		} elseif(empty($postDescription) === false) {
+			$posts = Post::getPostByPostDescription($pdo, $postDescription)->toArray();
+			if($posts !== null) {
+				$reply->data = $posts;
+			}
+
+		} elseif(empty($postSex) === false) {
+			$posts = Post::getPostByPostSex($pdo, $postSex)->toArray();
+			if($posts !== null) {
+				$reply->data = $posts;
+			}
+
+		} elseif(empty($postType) === false) {
+			$posts = Post::getPostByPostType($pdo, $postType)->toArray();
+			if($posts !== null) {
+				$reply->data = $posts;
+			}
 
 		}
+		if(empty($imageId) === false) {
+			$image = Image::getImageByImageId($pdo, $imageId);
+			if($image !== null) {
+				$reply->data = $image;
+			}
 
-	} elseif(empty($postOrganizationId) === false) {
-		$post = Post::getPostsByPostOrganizationId($pdo, $postOrganizationId)->toArray();
-		if($post !== null) {
-			$reply->data = $post;
+		} elseif(empty($imagePostId) === false) {
+			$image = Image::getImageByImagePostId($pdo, $imagePostId);
+			if($image !== null) {
+				$reply->data = $image;
+
+			}
+
+		} elseif(empty($imageCloudinaryId) === false) {
+			$image = Image::getImageByImageCloudinaryId($pdo, $imageCloudinaryId);
+			if($image !== null) {
+				$reply->data = $image;
+			}
 		}
-
-	} elseif(empty($postBreed) === false) {
-		$post = Post::getPostsByPostBreed($pdo, $postBreed)->toArray();
-		if($post !== null) {
-			$reply->data = $post;
-
-		}
-
-	} elseif(empty($postDescription) === false) {
-		$posts = Post::getPostByPostDescription($pdo, $postDescription)->toArray();
-		if($posts !== null) {
-			$reply->data = $posts;
-		}
-
-	} elseif(empty($postSex) === false) {
-		$posts = Post::getPostByPostSex($pdo, $postSex)->toArray();
-		if($posts !== null) {
-			$reply->data = $posts;
-		}
-
-	} elseif(empty($postType) === false) {
-		$posts = Post::getPostByPostType($pdo, $postType)->toArray();
-		if($posts !== null) {
-			$reply->data = $posts;
-		}
-
-	}
-	if(empty($imageId) === false) {
-		$image = Image::getImageByImageId($pdo, $imageId);
-		if($image !== null) {
-			$reply->data = $image;
-		}
-
-	} elseif(empty($imagePostId) === false) {
-		$image = Image::getImageByImagePostId($pdo, $imagePostId);
-		if($image !== null) {
-			$reply->data = $image;
-
-		}
-
-	} elseif(empty($imageCloudinaryId) === false) {
-		$image = Image::getImageByImageCloudinaryId($pdo, $imageCloudinaryId);
-		if($image !== null) {
-			$reply->data = $image;
-		}
-
 
 	} elseif($method === "PUT" || $method === "POST") {
 		verifyXsrf();
@@ -152,26 +152,36 @@ try {
 			throw (new\InvalidArgumentException("User must be logged in to Post.", 401));
 
 		}
-		if(empty($requestObject->postId) === true) {
-			throw (new\InvalidArgumentException("You must be logged in to post", 402));
 
-		}
-		if(empty($requestObject->postBreed) === true) {
-			throw (new\InvalidArgumentException("You must specify breed to Post", 402));
 
-		}
-		if(empty($requestObject->postDescription) === true) {
-			throw (new\InvalidArgumentException("You must place a description to Post", 402));
+		if(empty($requestObject->postFlag) === false) {
 
-		}
-		if(empty($requestObject->postSex) === true) {
-			throw (new\InvalidArgumentException("You must specify animals sex to Post", 402));
 
+			if(empty($requestObject->postId) === true) {
+				throw (new\InvalidArgumentException("You must be logged in to post", 402));
+
+			}
+			if(empty($requestObject->postBreed) === true) {
+				throw (new\InvalidArgumentException("You must specify breed to Post", 402));
+
+			}
+			if(empty($requestObject->postDescription) === true) {
+				throw (new\InvalidArgumentException("You must place a description to Post", 402));
+
+			}
+			if(empty($requestObject->postSex) === true) {
+				throw (new\InvalidArgumentException("You must specify animals sex to Post", 402));
+
+			}
+			if(empty($requestObject->postType) === true) {
+				throw (new\InvalidArgumentException("You must specify type to Post", 402));
+			}
+
+			$post = new Post(null, $_SESSION['organization']->getOrganizationId(), $requestObject->postBreed, $requestObject->postDescription, $requestObject->postSex, $requestObject->postType);
+			$post->insert($pdo);
 		}
-		if(empty($requestObject->postType) === true) {
-			throw (new\InvalidArgumentException("You must specify type to Post", 402));
-//TODO: are we requiring that an image be included for every post
-		}
+
+
 		if(empty($requestObject->imageId) === true) {
 			throw (new\InvalidArgumentException("You must place an image in the Post", 402));
 
@@ -193,12 +203,10 @@ try {
 		//upload the image to Cloudinary and get the public id
 		$cloudinaryResult = \Cloudinary\Uploader::upload($_FILES["file"]["tmp_name"], array("width" => 500, "crop" => "scale"));
 
-		$post = new Post(null, $_SESSION['organization']->getOrganizationId(), $requestObject->postBreed, $requestObject->postDescription, $requestObject->postSex, $requestObject->postType);
-		$post->insert($pdo);
-
 		// Inserting image into database
-		$image = new Image(null, $post->getPostId(), $cloudinaryResult["public_id"]);
+		$image = new Image(null, $requestObject->postId, $cloudinaryResult["public_id"]);
 		$image->insert($pdo);
+
 
 //Push the data to the imageId, upload the new image, and notify user.
 //				$reply->data = $image->getImageId();

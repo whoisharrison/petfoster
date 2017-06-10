@@ -4,6 +4,7 @@ import {HomeComponent} from "./components/home-component";
 import {BaconService} from "./services/bacon-service"
 import {SignInComponent} from "./components/sign-in.component";
 import {MessagesComponent} from "./components/messages.component";
+import {PostComponent} from "./components/post.component";
 
 export const allAppComponents = [BaconComponent, HomeComponent, MessagesComponent, SignInComponent];
 
