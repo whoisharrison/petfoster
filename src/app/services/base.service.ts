@@ -1,6 +1,6 @@
 import {Http, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {Status} from "../class/status";
+import {Status} from "../classes/status";
 
 export abstract class BaseService {
 	constructor(protected http: Http) {}

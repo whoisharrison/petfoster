@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {BaseService} from "./base-service";
-import {Post} from "../class/post-class";
-import {Status} from "../class/status";
+import {BaseService} from "./base.service";
+import {Post} from "../classes/post";
+import {Status} from "../classes/status";
 
 
 import DateTimeFormat = Intl.DateTimeFormat;
@@ -29,7 +29,7 @@ export class PostService extends BaseService {
 	}
 
 	editPost(post: Post) : Observable<Status> {
-		return(this.http.put(this.postUrl + post.id, post)
+		return(this.http.put(this.postUrl + post.postId, post)
 			.map(this.extractMessage)
 			.catch(this.handleError));
 	}

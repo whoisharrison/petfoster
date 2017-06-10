@@ -12,7 +12,7 @@ import {Status} from "../classes/status";
 export class PostComponent implements OnInit{
 	posts: Post[] = [];
 	status: Status = null;
-	post: Post = new Post(0, 0, 0, "", null, "", "", 0);
+	post: Post = new Post(null, null, null, null, null, null, null);
 	constructor(private postService: PostService, private route: ActivatedRoute) {
 	}
 

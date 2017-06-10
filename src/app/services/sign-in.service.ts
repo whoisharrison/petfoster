@@ -18,7 +18,7 @@ export class SignInService extends BaseService {
 	//preform the post to initiate sign in
 	postSignIn(signIn:SignIn) : Observable<Status> {
 		return(this.http.post(this.signInUrl, signIn)
-			.map(BaseService.extractMessage)
-			.catch(BaseService.handleError));
+			.map(this.extractMessage)
+			.catch(this.handleError));
 	}
 }

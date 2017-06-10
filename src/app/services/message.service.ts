@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {BaseService} from "./base.service";
-import {Message} from "../classes/message";
+import {Message} from "../classes/messages";
 import {Status} from "../classes/status";
 
 @Injectable()
@@ -57,7 +57,7 @@ export class MessageService extends BaseService {
 	}
 
 	createMessage(message : Message) : Observable<Status> {
-		return(this.http.message(this.messageUrl, message)
+		return(this.http.post(this.messageUrl, message)
 			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
