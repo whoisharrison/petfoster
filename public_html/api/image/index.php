@@ -40,9 +40,10 @@ try {
 	$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo,1);
 
 	/** Cloudinary API  */
-	//$config = readConfig("/etc/apache2/capstone-mysql/petRescueAbq.ini");
-	//$cloudinary = json_encode($config["cloudinary"]);
-	//\Cloudinary::config(["cloud_name" => $cloudinary->cloudName, "api_key" => $cloudinary->apiKey, "api_secret" => $cloudinary->apiSecret]);
+	$config = readConfig("/etc/apache2/capstone-mysql/fosterabq.ini");
+	$cloudinary = json_decode($config["cloudinary"]);
+	\Cloudinary::config(["cloud_name" => $cloudinary->cloudName, "api_key" => $cloudinary->apiKey, "api_secret" => $cloudinary->apiSecret]);
+	$_SESSION["post"] = Post::getPostByPostId($pdo, 1);
 
 	// Determine the HTTP method
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
