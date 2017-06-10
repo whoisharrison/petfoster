@@ -36,7 +36,7 @@ try {
 	//mock a logged in user by mocking the session and assigning a specific user to it
 	//this is the only for testing purposes and should not be in the live code
 		$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 1);
-//	$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo, 1);
+	$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo, 1);
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -55,17 +55,42 @@ try {
 		//set XSRF cookie
 		setXsrfCookie();
 
-		if((empty ($_SESSION["organization"]) === false) && (empty ($_SESSION["profile"] === false))) {
+
+
+
+		if((empty ($_SESSION["organization"]) === false) && (empty ($_SESSION["profile"]) === false)) {
 			if(empty($id) === false) {
 				$message = Message::getMessageByMessageId($pdo, $id);
 
+
 				if(($_SESSION["organization"]->getOrganizationId() !== $message->getMessageOrganizationId()) || ($_SESSION["organization"]->getOrganizationProfileId() !== $message->getMessageProfileId())) {
-					throw (new InvalidArgumentException("you are not allowed to view org messages A"));
+					throw (new InvalidArgumentException("you are not allowed to view org messages"));
+
 
 				} else {
 					$reply->data = $message;
 				}
+
+
+			} else if(empty($messageProfileId) === false) {
+				$message = Message::getMessageByMessageProfileId($pdo, $messageProfileId);
+
+				//grab the first message from the array and check to make sure the organization has the correct permissions
+				$messageCheck = $message[0];
+
+				if(($_SESSION["organization"]->getOrganizationId() !== $messageCheck->getMessageOrganizationId()) ||
+						($_SESSION["organization"]->getOrganizationProfileId() !== $messageCheck->getMessageProfileId())) {
+					throw (new InvalidArgumentException("you are not allowed to view org messages"));
+				} else {
+					$reply->data = $message;
+				}
+
+			} else {
+				$messages = Message::getMessageByMessageOrganizationId($pdo, $_SESSION["organization"]->getOrganizationId());
+					$reply->data = $messages->toArray();
 			}
+
+
 
 		} else if(empty($_SESSION["profile"]) === false) {
 
@@ -73,19 +98,42 @@ try {
 				$message = Message::getMessageByMessageId($pdo, $id);
 
 				if(($_SESSION["profile"]->getProfileId() !== $message->getMessageProfileId())) {
-					throw (new InvalidArgumentException("you are not allowed to view profile messages B"));
+					throw (new InvalidArgumentException("you are not allowed to view profile messages"));
 
 				} else {
 					$reply->data = $message;
 				}
+
+
+
+
+			} else if(empty($messageOrganizationId) === false) {
+
+				if(empty($messageOrganizationId) === false) {
+					$message = Message::getMessageByMessageOrganizationId($pdo, $messageOrganizationId);
+
+					// grab the first object in the array for making sure the profile has access to these messages
+					$messageCheck = $message[0];
+
+					if(($_SESSION["profile"]->getProfileId() !== $messageCheck->getMessageProfileId())) {
+
+						//throw an error if the user does not have the right permissions
+						throw (new InvalidArgumentException("you are not allowed to view profile messages"));
+
+					} else {
+						$reply->data = $message;
+					}
+				} else {
+					$messages = Message::getMessageByMessageProfileId($pdo, $_SESSION["profile"]->getProfileId());
+
+					$reply->data = $messages;
+
+				}
+
 			}
-
-
-
-
-		} else {
-			throw (new InvalidArgumentException("you must be logged in to view messages", 403));
-		}
+			} else {
+				throw (new InvalidArgumentException("you must be logged in to view messages", 403));
+			}
 
 
 	} else if($method === "POST") {
