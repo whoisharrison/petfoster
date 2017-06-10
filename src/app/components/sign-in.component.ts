@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
 import {Observable} from "rxjs/Observable"
 
 
-//so i need status.ts file for this or does this depend on project?
+
 import {Status} from "../classes/status";
 import {SignInService} from "../services/sign-in.service";
 import {SignIn} from "../classes/sign-in";
