@@ -11,7 +11,7 @@ import {Status} from "../classes/status";
 
 export class MessagesComponent implements OnInit {
 
-	newMessage : Message = new Message(null, null, null, null);
+	newMessage : Message = new Message(null, null, null, null, null, null);
 	messages : Message[] = [];
 	status : Status = null;
 
@@ -32,8 +32,4 @@ export class MessagesComponent implements OnInit {
 	}
 
 
-	//not sure if I need this?
-	postMessage() : void {
-		this.postMessage.postMessage(this.message).subscribe(status => this.status = status);
-	}
 }

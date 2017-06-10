@@ -4,4 +4,3 @@ export class SignIn {
 		public profilePassword: string){}
 }
 
-//profileEmail and pw correct?

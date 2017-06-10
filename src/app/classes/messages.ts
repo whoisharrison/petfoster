@@ -1,12 +1,12 @@
 export class Message {
 
-	//do i need public Id?
-	constructor(public Id : number, public messageId: number,
+
+	constructor(public messageId: number,
 					public messageProfileId: number,
 					public messageOrganizationId: number,
 					public messageContent: string,
-					public messageDateTime : DateTime,
-					public messageSubject : string) {}
+					public messageDateTime: Date,
+					public messageSubject: string) {}
 }
 
 
