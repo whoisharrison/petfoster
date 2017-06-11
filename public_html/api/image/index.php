@@ -37,13 +37,13 @@ try {
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
 
 
-	$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo,1);
+//	$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo,1);
 
 	/** Cloudinary API  */
 	$config = readConfig("/etc/apache2/capstone-mysql/fosterabq.ini");
 	$cloudinary = json_decode($config["cloudinary"]);
 	\Cloudinary::config(["cloud_name" => $cloudinary->cloudName, "api_key" => $cloudinary->apiKey, "api_secret" => $cloudinary->apiSecret]);
-	$_SESSION["post"] = Post::getPostByPostId($pdo, 1);
+//	$_SESSION["post"] = Post::getPostByPostId($pdo, 1);
 
 	// Determine the HTTP method
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -80,20 +80,20 @@ try {
 		if(empty($id) === false) {
 			$post = Post::getPostByPostId($pdo, $id);
 			if($post !== null) {
-				$reply->data = $post;
+				$reply->data = $posts;
 
 			}
 
 		} elseif(empty($postOrganizationId) === false) {
 			$post = Post::getPostsByPostOrganizationId($pdo, $postOrganizationId)->toArray();
 			if($post !== null) {
-				$reply->data = $post;
+				$reply->data = $posts;
 			}
 
 		} elseif(empty($postBreed) === false) {
 			$post = Post::getPostsByPostBreed($pdo, $postBreed)->toArray();
 			if($post !== null) {
-				$reply->data = $post;
+				$reply->data = $posts;
 
 			}
 

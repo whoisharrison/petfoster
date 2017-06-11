@@ -28,7 +28,7 @@ try {
 	//grab the mySQL connection
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
 	//Mock a logged in user
-	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 42);
+	$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 1);
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
