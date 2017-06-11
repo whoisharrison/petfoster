@@ -1,4 +1,4 @@
-export class SignUp {
+export class Profile {
 	constructor(
 		public profileId: number,
 		public profileAtHandle: string,
