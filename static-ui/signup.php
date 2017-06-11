@@ -143,8 +143,8 @@
 									<input type="orgphone" class="form-control" id="orgphone" name="orgphone" placeholder="Phone Number">
 								</div>
 							</div>
+						</div>
 						<!--End of Sign-up form-->
-							<!--recaptcha -->
 							<!-- reCAPTCHA -->
 							<div class="g-recaptcha" data-sitekey="--YOUR RECAPTCHA SITE KEY--"></div>
 
