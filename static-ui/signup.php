@@ -70,6 +70,7 @@
 								</div>
 							</div>
 						</div>
+
 						<!-- collapse org -->
 						<div id="orghidden" class="collapse">
 						<!--Organization Name-->
