@@ -29,9 +29,11 @@ try {
 
 	//sanitize activation input
 	$activation = filter_input(INPUT_GET, "activation", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
 	// handle GET request - if id is present, that activation is returned, otherwise all activations are returned
 	if($method === "GET") {
-	//make sure Profile Activation Token is a valid hash
+
+		//make sure Profile Activation Token is a valid hash
 		if(ctype_xdigit($activation) === false) {
 			throw (new \InvalidArgumentException("Activation token is invalid.", 405));
 		}
