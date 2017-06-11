@@ -65,7 +65,7 @@
 							<label for="orgcheck">Are you seeking a pet or an organization? <span class="text-danger">*</span></label>
 							<div class="input-group">
 								<div class="btn-group" data-toggle="buttons-radio">
-									<label class="radio-inline"><input type="radio" data-toggle="collapse in" data-target="#orghidden"  name="optradio">Seeking Pet</label>
+									<label class="radio-inline"><input type="radio" data-toggle="collapse in" data-target="#orghidden"  name="optradio" checked="checked">Seeking Pet</label>
 									<label class="radio-inline"><input type="radio" data-toggle="collapse" data-target="#orghidden" name="optradio">Organization</label>
 								</div>
 							</div>
