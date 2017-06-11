@@ -64,7 +64,6 @@ try {
 			throw(new \InvalidArgumentException("Passwords do not match"));
 		}
 
-
 		// create new Profile, insert, send profile activation email
 		$salt = bin2hex(random_bytes(32));
 		$hash = hash_pbkdf2("sha512", $requestObject->profilePassword, $salt, 262144);
@@ -77,7 +76,7 @@ try {
 		//compose the email message to send with activation token
 		$basePath = dirname($_SERVER["SCRIPT_NAME"], 3);
 		//create the path
-		$urlglue = $basePath . "public_html/api/activation/?activation=" . $activationToken;
+		$urlglue = $basePath . "/api/activation/?activation=" . $activationToken;
 		//create the redirect link
 		$confirmLink = "https://" . $_SERVER["SERVER_NAME"] . $urlglue;
 		//compose message to send with email
@@ -133,20 +132,19 @@ EOF;
 		if(empty($requestObject->organizationZip) === true) {
 			throw(new \InvalidArgumentException("Please enter your Zip-Code", 405));
 		}
-
+		$activationTokenOrg = bin2hex(random_bytes(16));
 		//create the organization object and prepare to insert into the database
-		$organization = new Organization(null, $profile->getProfileId(), $activationToken, $requestObject->organizationAddress1, $requestObject->organizationAddress2, $requestObject->organizationCity, $requestObject->organizationLicense, $requestObject->organizationName, $requestObject->organizationPhone);
+		$organization = new Organization(null, $profile->getProfileId(), $activationTokenOrg, $requestObject->organizationAddress1, $requestObject->organizationAddress2, $requestObject->organizationCity, $profile->getProfileEmail(), $requestObject->organizationLicense, $requestObject->organizationName, $requestObject->organizationPhone, $requestObject->organizationState, $requestObject->organizationZip);
 		//insert the organization into the database
 		$organization->insert($pdo);
 
 		//activation token for org
 		$salt = bin2hex(random_bytes(32));
 		$hash = hash_pbkdf2("sha512", $requestObject->profilePassword, $salt, 262144);
-		$activationTokenOrg = bin2hex(random_bytes(16));
 		//compose the email message to send with activation token
 		$basePath = dirname($_SERVER["SCRIPT_NAME"], 3);
 		//create the path
-		$urlglue = $basePath . "public_html/api/activation/?activation=" . $activationTokenOrg;
+		$urlglue = $basePath . "/api/admin/?activation=" . $activationTokenOrg;
 		//create the redirect link
 		$confirmLink = "https://" . $_SERVER["SERVER_NAME"] . $urlglue;
 		//compose message to send with email
@@ -155,7 +153,7 @@ EOF;
 		<h2>Organization ready for Activation</h2>
 		<p>Please click the following URL to verify this account: </p><p><a href="$confirmLink">$confirmLink<a></p>
 EOF;
-		$response = mailGunslinger("petrescueabq", "petrescueabq@gmail.com", $requestObject->profileName, "petrescueabq@gmail.com", $messageSubject, $message);
+		$response = mailGunslinger("petrescueabq", "petrescueabq@gmail.com", $requestObject->profileName, "jcooper37@cnm.edu", $messageSubject, $message);
 		$reply->message = "Almost there! An email has been sent to activate your account.";
 	} else {
 		throw(new \InvalidArgumentException("Invalid HTTP request.", 405));
