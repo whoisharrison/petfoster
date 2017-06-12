@@ -181,7 +181,6 @@
 			<!-- End of Recaptcha & Form -->
 		</div>
 	</div>
-	</div>
 
 	<?php require_once("lib/footer.php"); ?>
 </body>
