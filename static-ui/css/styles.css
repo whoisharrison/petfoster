@@ -26,7 +26,7 @@ a:active {
 * Home Page - Welcome
 *****************************************/
 body {
-	background: url("../images/bg-cat.jpg") no-repeat center center;
+	background: url("../images/rescueImage.jpg") no-repeat center center;
 	background-attachment: fixed;
 	background-size: cover;
 	padding-bottom: 100px;
@@ -40,18 +40,16 @@ main.bg .jumbotron {
 
 main.bg .jumbotron > h1 {
 	color: mediumblue;
-	font-family: Handlee;
+	font-family: Handlee, Times, serif;
 	text-shadow: 3px 3px 0 black;
 	text-transform: uppercase;
 }
 
 main.bg .jumbotron .lead {
 	background: #ccccd9;
-	font-family: Handlee;
 	color: mediumblue;
 	display: inline-block;
 	font-weight: 800;
-
 	padding: 5px 25px;
 	text-shadow: 1px 1px 0 white;
 }
@@ -126,7 +124,7 @@ nav.navbar {
 * Footer
 *****************************************/
 footer {
-	background: gainsboro;
+	background: #000;
 	background-color: lightgrey;
 	color: darkblue;
 	padding: 2rem 0;
