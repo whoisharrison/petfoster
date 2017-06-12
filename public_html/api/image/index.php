@@ -36,15 +36,15 @@ try {
 	//grab the connection to mySQL
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
 
-
-//	$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo,1);
+//mock an organization being logged in
+//	TODO: Remove this after testing
+	$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo,1);
 
 	/** Cloudinary API  */
 	$config = readConfig("/etc/apache2/capstone-mysql/fosterabq.ini");
 	$cloudinary = json_decode($config["cloudinary"]);
 	\Cloudinary::config(["cloud_name" => $cloudinary->cloudName, "api_key" => $cloudinary->apiKey, "api_secret" => $cloudinary->apiSecret]);
-	// Do not put "post" in the session [JC]
-//	$_SESSION["post"] = Post::getPostByPostId($pdo, 1);
+
 
 	// Determine the HTTP method
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
