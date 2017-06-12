@@ -4,14 +4,25 @@
 
 		<!-- insert header and navbar -->
 		<?php require_once("lib/header.php");?>
-
-		<main class="bg p-t-nav">
+		<main class="bg">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-8 col-md-offset-4">
-						<div class="jumbotron text-right">
-							<h1>Title text.</h1>
-							<p class="lead">Sample text.</p>
+					<div class="col-md-4">
+						<h1>Profile</h1>
+
+					</div>
+
+					<div class="col-md-8">
+						<h1>PetRescueABQ Profile</h1>
+
+						<!-- Begin Post Item -->
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<div class="h4">Welcome <em>User</em> <small></small></div>
+							</div>
+							<div class="panel-body">
+								This is the profile content.
+							</div>
 						</div>
 					</div>
 				</div>
