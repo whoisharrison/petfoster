@@ -16,6 +16,6 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 		<title>Angular example</title>
 	</head>
 	<body>
-		<petrescueabq>Loading&hellip;</petrescueabq>
+		<petrescue-abq>Loading&hellip;</petrescue-abq>
 	</body>
 </html>

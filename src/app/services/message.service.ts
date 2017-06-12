@@ -62,4 +62,3 @@ export class MessageService extends BaseService {
 			.catch(this.handleError));
 	}
 }
-

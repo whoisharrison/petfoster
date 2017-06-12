@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 
 @Component({
-	selector: "petrescueabq",
+	selector: "petrescue-abq",
 	templateUrl: "./templates/petrescueabq-app.php"
 })
 

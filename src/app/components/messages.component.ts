@@ -9,7 +9,7 @@ import {Status} from "../classes/status";
 	templateUrl: "./templates/messages.php"
 })
 
-export class MessagesComponent implements OnInit {
+export class MessagesComponent {
 
 	newMessage : Message = new Message(null, null, null, null, null, null);
 	messages : Message[] = [];
@@ -30,6 +30,5 @@ export class MessagesComponent implements OnInit {
 		this.messageService.getAllMessages()
 			.subscribe(messages => this.messages = messages);
 	}
-
 
 }
