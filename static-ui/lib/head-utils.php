@@ -7,6 +7,7 @@
 
 		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link data-require="bootstrap-css@4.0.0-alpha.4" data-semver="4.0.0-alpha.4" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.4/css/bootstrap.min.css" />
 
 		<!-- Google Fonts -->
 		<link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,700italic,700|Merriweather|Playfair+Display:400,400italic Alegreya+Sans+SC|Handlee|Rancho|Yellowtail' rel='stylesheet' type='text/css'>

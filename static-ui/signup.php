@@ -13,6 +13,7 @@
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<!--Begin of Form-->
+					<form #signupForm="ngForm" name="signupForm" (ngSubmit)="createSignUp();">
 					<!--name-->
 					<div class="container">
 						<div class="form-group">
@@ -166,9 +167,10 @@
 						<!-- reCAPTCHA -->
 						<div class="g-recaptcha" data-sitekey="--YOUR RECAPTCHA SITE KEY--"></div>
 
-						<button class="btn btn-success" type="submit"><i class="fa fa-paper-plane"></i> Send</button>
+						<button class="btn btn-success" type="submit"><i class="fa fa-paper-plane"></i> Submit</button>
 						<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button>
-						</form>
+						<!--<div>{{status.message}}</div>-->
+					</form>
 
 						<!--empty area for form error/success output-->
 						<div class="row">
