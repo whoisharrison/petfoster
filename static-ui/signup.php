@@ -161,12 +161,8 @@
 							</div>
 						</div>
 						<!-- End of Recaptcha & Form -->
-
-					</div>
-
-
-					</div>
 				</div>
+			</div>
 			</div>
 		</main>
 	</div><!--/.sfooter-content-->
