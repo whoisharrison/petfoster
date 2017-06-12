@@ -43,14 +43,16 @@ try {
 	$config = readConfig("/etc/apache2/capstone-mysql/fosterabq.ini");
 	$cloudinary = json_decode($config["cloudinary"]);
 	\Cloudinary::config(["cloud_name" => $cloudinary->cloudName, "api_key" => $cloudinary->apiKey, "api_secret" => $cloudinary->apiSecret]);
+	// Do not put "post" in the session [JC]
 //	$_SESSION["post"] = Post::getPostByPostId($pdo, 1);
 
 	// Determine the HTTP method
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	// sanitize input
-	$id = filter_input(INPUT_GET, "post", FILTER_VALIDATE_INT);
-	$postOrganizationId = filter_input(INPUT_GET, "organization", FILTER_VALIDATE_INT);
+	// make the variable names match the input [JC]
+	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$postOrganizationId = filter_input(INPUT_GET, "postOrganizationId", FILTER_VALIDATE_INT);
 	$postBreed = filter_input(INPUT_GET, "postBreed", FILTER_SANITIZE_STRING);
 	$postDescription = filter_input(INPUT_GET, "postDescription", FILTER_SANITIZE_STRING);
 	$postSex = filter_input(INPUT_GET, "postSex", FILTER_SANITIZE_STRING);
@@ -180,8 +182,8 @@ try {
 			$post->insert($pdo);
 		} else {
 
-
-			if(empty($requestObject->imageId) === true) {
+// comment out the following three "ifs" and test to see if it works without this [JC]
+/*			if(empty($requestObject->imageId) === true) {
 				throw (new\InvalidArgumentException("You must place an image in the Post", 402));
 
 			}
@@ -192,7 +194,7 @@ try {
 			if(empty($requestObject->imageCloudinaryId) === true) {
 				throw (new\InvalidArgumentException("You must be logged in to Post", 402));
 
-			}
+			}*/
 			//Variable assignment for the users image name, MIME type, and image extension
 			//ask about image id below ""
 			$tempUserFileName = $_FILES["dog"]["tmp_name"];
