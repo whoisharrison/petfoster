@@ -124,8 +124,8 @@ nav.navbar {
 * Footer
 *****************************************/
 footer {
-	background: #000;
-	background-color: lightgrey;
+	/*background: #000;*/
+	/*background-color: lightgrey;*/
 	color: darkblue;
 	padding: 2rem 0;
 }
