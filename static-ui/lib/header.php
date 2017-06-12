@@ -4,7 +4,7 @@
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
 				<a class="navbar-brand">
-					<img src="../images/petrescue3-icon-20px-xs.gif" alt="PetRescueABQ logo">
+					<img src="../petrescue3-icon-20px-xs.gif" alt="PetRescueABQ logo">
 				</a>
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
 					<span class="sr-only">Toggle navigation</span>
