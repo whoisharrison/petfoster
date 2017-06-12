@@ -6,22 +6,25 @@
 		<?php require_once("lib/header.php"); ?>
 
 		<!-- Large modal -->
-		<!-- Large modal -->
-		<button class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>
+		<button class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Sign In</button>
 
-		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			  aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<!--Begin of Form-->
 					<!--name-->
 					<div class="container">
+
 						<div class="form-group">
+
+
 							<label for="Email">Email:<span class="text-danger">*</span></label>
 							<div class="input-group">
 								<div class="input-group-addon">
 									<i class="fa fa-paw" aria-hidden="true"></i>
 								</div>
-								<input type="email" class="form-control" id="email" name="email" placeholder="Email">
+								<input type="email" required class="form-control" id="email" name="email" placeholder="Email">
 							</div>
 						</div>
 						<!--User Name-->
@@ -31,14 +34,15 @@
 								<div class="input-group-addon">
 									<i class="fa fa-paw" aria-hidden="true"></i>
 								</div>
-								<input type="password" class="form-control" id="password" name="password"
-										 placeholder="User Name">
+								<input type="password" required class="form-control" id="password" name="password"
+										 placeholder="Password">
 							</div>
 						</div>
 
 						<input type="submit" name="signin" id="signin" value="Sign In" class="btn btn-default" />
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;    </button>
 
-						</form>
+
 
 						<!--empty area for form error/success output-->
 						<div class="row">
@@ -55,7 +59,17 @@
 
 	<?php require_once("lib/footer.php"); ?>
 </body>
-</html>
+
+
+
+
+
+
+
+
+
+
+
 
 <!--<!-- Trigger/Open The Modal -->
 <!--<button id="myBtn">Hey! Sign In!</button>-->
