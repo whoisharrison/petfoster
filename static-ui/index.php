@@ -10,6 +10,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="jumbotron text-left">
+							<img src="images/rescueImage.jpg">
 							<h1>PetRescueABQ.</h1>
 							<p class="lead">Fosters Save Lives.</p>
 							<img src="images/petrescue3-icon-200px-lg.gif">

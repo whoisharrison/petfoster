@@ -10,8 +10,8 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" style="color: mediumblue font-family: 'Merriweather', 'Times New Roman', Times, serif href="">PetRescueABQ</a>
-				<img src="../images/petrescue3-icon-20px-xs.gif"</>
+				<a class="navbar-brand" style="color: mediumblue font-family: 'Handlee' href="">PetRescueABQ</a>
+				<img src="../images/petrescue3-icon-20px-xs.gif" align="left" </>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
@@ -22,7 +22,8 @@
 					<li><a href="../signup.php" style="color: mediumblue">Sign-Up</a></li>
 					<li><a href="../signin.php" style="color: mediumblue">Sign-In</a></li>
 					<li><a href="../signout.php" style="color: mediumblue">Sign-Out</a></li>
-				</ul>
+
+			</ul>
 
 			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
