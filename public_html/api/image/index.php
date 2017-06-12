@@ -162,6 +162,10 @@ try {
 
 			if($requestObject->postFlag === "y") {
 
+
+
+	
+
 			if(empty($requestObject->postBreed) === true) {
 				throw (new\InvalidArgumentException("You must specify breed to Post", 402));
 
