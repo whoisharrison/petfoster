@@ -1,5 +1,5 @@
 html, body {
-	color: #fff;
+	color: #eeeeee;
 }
 
 a,
@@ -38,17 +38,20 @@ main.bg .jumbotron {
 }
 
 main.bg .jumbotron > h1 {
-	color: #fff;
-	font-family: 'Playfair Display', Times, serif;
+	color: mediumblue;
+	font-family: 'Merriweather', Times, serif;
 	text-shadow: 3px 3px 0 black;
 	text-transform: uppercase;
 }
 
 main.bg .jumbotron .lead {
-	background: gold;
-	color: black;
+	background: #ccccd9;
+	font-family: Handlee;
+	color: mediumblue;
 	display: inline-block;
 	font-weight: 800;
+	background: url('../image/intro.jpg') no-repeat center;
+	background-size: cover;
 	padding: 5px 25px;
 	text-shadow: 1px 1px 0 white;
 }
@@ -73,27 +76,27 @@ nav.navbar {
 }
 
 .navbar-brand {
-	font-family: 'Playfair Display', 'Times New Roman', Times, serif;
+	font-family: 'Merriweather', 'Times New Roman', Times, serif;
 }
 
 .navbar-default {
-	background-color: white;
+	background-color: lightgrey;
 }
 
 /* custom navbar-inverse overrides*/
 .navbar-inverse .navbar-brand {
-	color: #fff;
+	color: #cccccc;
 }
 
 .navbar-inverse .navbar-nav>li>a {
-	color: #fff;
+	color: #cccccc;
 }
 
 .navbar-inverse .navbar-brand:focus,
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-nav>li>a:focus,
 .navbar-inverse .navbar-nav>li>a:hover {
-	color: gold;
+	color: darkblue;
 }
 
 /* embiggen nav on md and lg screens only*/
@@ -123,8 +126,9 @@ nav.navbar {
 * Footer
 *****************************************/
 footer {
-	background-color: #111;
-	color: gold;
+	background: gainsboro;
+	background-color: lightgrey;
+	color: darkblue;
 	padding: 2rem 0;
 }
 
@@ -184,7 +188,7 @@ body { width: 100%;}
 	background-color: #fefefe;
 	margin: auto;
 	padding: 0;
-	border: 1px solid #888;
+	border: 1px solid mediumblue;
 	width: 80%;
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
 	-webkit-animation-name: animatetop;

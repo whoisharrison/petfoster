@@ -8,10 +8,11 @@
 		<main class="bg p-t-nav">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-8 col-md-offset-4">
-						<div class="jumbotron text-right">
-							<h1>Title text.</h1>
-							<p class="lead">Sample text.</p>
+					<div class="col-lg-12">
+						<div class="jumbotron text-left">
+							<h1>PetRescueABQ.</h1>
+							<p class="lead">Fosters Save Lives.</p>
+							<img src="images/petrescue3-icon-200px-lg.gif">
 						</div>
 					</div>
 				</div>

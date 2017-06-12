@@ -1,5 +1,5 @@
 <header>
-	<nav class="navbar navbar-inverse">
+	<nav class="navbar navbar">
 		<div class="container">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
@@ -8,18 +8,20 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="">PetRescueABQ</a>
+				<a class="navbar-brand" style="color: mediumblue font-family: 'Merriweather', 'Times New Roman', Times, serif href="">PetRescueABQ</a>
+				<img src="../images/petrescue3-icon-20px-xs.gif"</>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-				<ul class="nav navbar-nav navbar-right">
+				<ul class="nav navbar-nav navbar-right"style="color: mediumblue>
 					<li><a href=""><i class="fa fa-home"></i></a></li>
-					<li><a href="about.php">About</a></li>
-					<li><a href="posts.php">Adoptables</a></li>
-					<li><a href="https://github.com/rlewis2892/ng4-meow-demo" target="_blank">GitHub</a></li>
+					<li><a href="../signup.php" style="color: mediumblue">Sign-Up</a></li>
+					<li><a href="../signin.php" style="color: mediumblue">Sign-In</a></li>
+					<li><a href="../signout.php" style="color: mediumblue">Sign-Out</a></li>
 				</ul>
 
 			</div><!-- /.navbar-collapse -->
