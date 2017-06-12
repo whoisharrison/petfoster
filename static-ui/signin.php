@@ -1,4 +1,62 @@
-<h2>Pet Rescue ABQ Sign In</h2>
+<?php require_once("lib/head-utils.php"); ?>
+<body class="sfooter">
+	<div class="sfooter-content">
+
+		<!-- insert header and navbar -->
+		<?php require_once("lib/header.php"); ?>
+
+		<!-- Large modal -->
+		<button class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>
+
+		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			  aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<!--Begin of Form-->
+					<!--name-->
+					<div class="container">
+						<div class="form-group">
+							<label for="Email">Email:<span class="text-danger">*</span></label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-paw" aria-hidden="true"></i>
+								</div>
+								<input type="email" class="form-control" id="email" name="email" placeholder="Email">
+							</div>
+						</div>
+						<!--User Name-->
+						<div class="form-group">
+							<label for="password">Password:<span class="text-danger">*</span></label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-paw" aria-hidden="true"></i>
+								</div>
+								<input type="password" class="form-control" id="password" name="password"
+										 placeholder="User Name">
+							</div>
+						</div>
+
+
+						<input type="submit" name="signin" id="signin" value="Sign In" class="btn btn-default" />
+
+						</form>
+
+						<!--empty area for form error/success output-->
+						<div class="row">
+							<div class="col-xs-12">
+								<div id="output-area"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- End of Recaptcha & Form -->
+			</div>
+		</div>
+	</div>
+
+	<?php require_once("lib/footer.php"); ?>
+</body>
+</html>
 
 <!--<!-- Trigger/Open The Modal -->
 <!--<button id="myBtn">Hey! Sign In!</button>-->
@@ -49,44 +107,3 @@
 <!--	</div>-->
 <!---->
 <!--</div>-->
-
-<?php require_once("lib/head-utils.php"); ?>
-<body class="sfooter">
-	<div class="sfooter-content">
-
-		<!-- insert header and navbar -->
-		<?php require_once("lib/header.php"); ?>
-
-		<!-- Large modal -->
-		<button class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>
-
-		<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-			  aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-
-					<!-- Modal -->
-					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="modal-body">
-									...
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-									<button type="button" class="btn btn-primary">Save changes</button>
-								</div>
-							</div>
-						</div>
-					</div>
-
-
-				</div>
-			</div>
-		</div>
