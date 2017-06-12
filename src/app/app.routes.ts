@@ -1,6 +1,6 @@
 import {RouterModule, Routes} from "@angular/router";
 import {BaconComponent} from "./components/bacon-component";
-import {HomeComponent} from "./components/home-component";
+import {HomeComponent} from "./components/home.component";
 import {BaconService} from "./services/bacon-service"
 import {SignInComponent} from "./components/sign-in.component";
 import {MessagesComponent} from "./components/messages.component";
