@@ -1,4 +1,3 @@
-<?php require_once("lib/head-utils.php"); ?>
 <main>
 	<form class="form-horizontal" name="imageUpload" id="post" (submit)="uploadImage();">
 		<div class="container">
@@ -66,4 +65,3 @@
 	</form>
 	<p>Cloudinary Public Id: {{ cloudinaryPublicId }}</p>
 </main>
-</html>
