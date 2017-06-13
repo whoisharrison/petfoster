@@ -4,6 +4,19 @@
 			<div class="col-md-4">
 				<h1 id="profilepage">Pet Rescue Abq</h1>
 
+<!--				post results and may be relocated-->
+				<div *ngFor="let post of posts" class="panel panel-default">
+					<div class="panel-heading">
+						<div class="h4">{{ post.postTitle }}
+							<small>{{ post.postDate | date:"medium" }}</small>
+						</div>
+					</div>
+					<div class="panel-body">
+						{{ post.postContent }}
+					</div>
+				</div>
+<!--				end of post results-->
+
 			</div>
 
 			<div class="col-md-8">

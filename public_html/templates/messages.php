@@ -42,16 +42,7 @@
 				<h1 id="profileinfo">Messages</h1>
 
 				<!-- Begin Post Item -->
-				<div *ngFor="let post of posts" class="panel panel-default">
-					<div class="panel-heading">
-						<div class="h4">{{ post.postTitle }}
-							<small>{{ post.postDate | date:"medium" }}</small>
-						</div>
-					</div>
-					<div class="panel-body">
-						{{ post.postContent }}
-					</div>
-				</div>
+
 			</div>
 		</div>
 	</div>
