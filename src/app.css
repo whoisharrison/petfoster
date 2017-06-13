@@ -59,6 +59,9 @@ main.bg .jumbotron .lead {
 	font-family: 'Pacifico', cursive;
 }
 
+#profilebkg {
+	opacity: .5;
+}
 
 
 
