@@ -1,5 +1,5 @@
 html, body {
-	color: #fff;
+	color: #000;
 }
 
 a,
@@ -39,110 +39,112 @@ main.bg .jumbotron {
 
 main.bg .jumbotron > h1 {
 	color: #fff;
-	font-family: 'Playfair Display', Times, serif;
+	font-family: Times, serif;
 	text-shadow: 3px 3px 0 black;
 	text-transform: uppercase;
 }
 
 main.bg .jumbotron .lead {
-	background: gold;
-	color: black;
+	color: White;
 	display: inline-block;
 	font-weight: 800;
 	padding: 5px 25px;
-	text-shadow: 1px 1px 0 white;
 }
 
-/*styles for sm, md, lg screens */
-@media only screen and (min-width: 768px) {
-	main.bg .jumbotron {
-		font-size: 5em;
-	}
+#login {
+	margin: 6px 3px;
 }
 
+/*!*styles for sm, md, lg screens *!*/
+/*@media only screen and (min-width: 768px) {*/
+	/*main.bg .jumbotron {*/
+		/*font-size: 5em;*/
+	/*}*/
+/*}*/
 
-/****************************************
-* Main Navbar
-*****************************************/
-nav.navbar {
-	-webkit-transition: all 500ms ease;
-	-moz-transition: all 500ms ease;
-	-ms-transition: all 500ms ease;
-	-o-transition: all 500ms ease;
-	transition: all 500ms ease;
-}
 
-.navbar-brand {
-	font-family: 'Playfair Display', 'Times New Roman', Times, serif;
-}
+/*!*****************************************/
+/** Main Navbar*/
+/******************************************!*/
+/*nav.navbar {*/
+	/*-webkit-transition: all 500ms ease;*/
+	/*-moz-transition: all 500ms ease;*/
+	/*-ms-transition: all 500ms ease;*/
+	/*-o-transition: all 500ms ease;*/
+	/*transition: all 500ms ease;*/
+/*}*/
 
-.navbar-default {
-	background-color: white;
-}
+/*.navbar-brand {*/
+	/*font-family: 'Times New Roman', Times, serif;*/
+/*}*/
 
-/* custom navbar-inverse overrides*/
-.navbar-inverse .navbar-brand {
-	color: #fff;
-}
+/*.navbar-default {*/
+	/*background-color: white;*/
+/*}*/
 
-.navbar-inverse .navbar-nav>li>a {
-	color: #fff;
-}
+/*!* custom navbar-inverse overrides*!*/
+/*.navbar-inverse .navbar-brand {*/
+	/*color: #fff;*/
+/*}*/
 
-.navbar-inverse .navbar-brand:focus,
-.navbar-inverse .navbar-brand:hover,
-.navbar-inverse .navbar-nav>li>a:focus,
-.navbar-inverse .navbar-nav>li>a:hover {
-	color: gold;
-}
+/*.navbar-inverse .navbar-nav>li>a {*/
+	/*color: #fff;*/
+/*}*/
 
-/* embiggen nav on md and lg screens only*/
-@media only screen and (min-width: 992px) {
-	nav.navbar {
-		padding: 40px 0;
-	}
+/*.navbar-inverse .navbar-brand:focus,*/
+/*.navbar-inverse .navbar-brand:hover,*/
+/*.navbar-inverse .navbar-nav>li>a:focus,*/
+/*.navbar-inverse .navbar-nav>li>a:hover {*/
+	/*color: gold;*/
+/*}*/
 
-	.navbar-inverse {
-		background-color: transparent;
-		border-bottom: 1px solid rgba(255,255,255,0.2);
-	}
+/*!* embiggen nav on md and lg screens only*!*/
+/*@media only screen and (min-width: 992px) {*/
+	/*nav.navbar {*/
+		/*padding: 40px 0;*/
+	/*}*/
 
-	.navbar-brand {
-		font-size: 3rem;
-	}
-}
+	/*.navbar-inverse {*/
+		/*background-color: transparent;*/
+		/*border-bottom: 1px solid rgba(255,255,255,0.2);*/
+	/*}*/
 
-/****************************************
-* Post Content
-*****************************************/
-.panel-body {
-	color: #333;
-}
+	/*.navbar-brand {*/
+		/*font-size: 3rem;*/
+	/*}*/
+/*}*/
 
-/****************************************
-* Footer
-*****************************************/
-footer {
-	background-color: #111;
-	color: gold;
-	padding: 2rem 0;
-}
+/*!*****************************************/
+/** Post Content*/
+/******************************************!*/
+/*.panel-body {*/
+	/*color: #333;*/
+/*}*/
 
-/***
-* Flexbox Sticky Footer
-* http://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/
-***/
+/*!*****************************************/
+/** Footer*/
+/******************************************!*/
+/*footer {*/
+	/*background-color: #111;*/
+	/*color: gold;*/
+	/*padding: 2rem 0;*/
+/*}*/
 
-/*corrects IE min-height bug*/
-html { display: flex;}
-body { width: 100%;}
+/*!****/
+/** Flexbox Sticky Footer*/
+/** http://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/*/
+/****!*/
 
-.sfooter {
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-}
+/*!*corrects IE min-height bug*!*/
+/*html { display: flex;}*/
+/*body { width: 100%;}*/
 
-.sfooter-content {
-	flex: 1 0 auto;
-}
+/*.sfooter {*/
+	/*display: flex;*/
+	/*flex-direction: column;*/
+	/*min-height: 100vh;*/
+/*}*/
+
+/*.sfooter-content {*/
+	/*flex: 1 0 auto;*/
+/*}*/

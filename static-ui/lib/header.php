@@ -19,11 +19,11 @@
 
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href=""><i class="fa fa-home"></i></a></li>
-					<li><a href="about.php">Sign In</a></li>
-					<li><a href="posts.php">Sign Up</a></li>
-					<li><a href="posts.php">About</a></li>
+					<li><a href="about.php">About</a></li>
 					<li><a href="mailto:petrescueabq@gmail.com?Subject=Hello%20again">Contact</a></li>
 					<li><a href="http://www.barkparkz.com" target="_blank">barkparkz</a></li>
+					<li class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg-2" id="login">sign in</li>
+					<li class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg" id="login">sign up</li>
 				</ul>
 
 			</div><!-- /.navbar-collapse -->
