@@ -6,7 +6,7 @@
 	<?php require_once("lib/header.php"); ?>
 
 	<div class="container">
-		<div class="row">
+	<div class="row">
 			<div class="col-md-4">
 				<h1 id="profilepage">Pet Rescue Abq</h1>
 
@@ -52,12 +52,12 @@
 							<button type="submit" class="btn btn-info">Submit</button>
 						</div>
 						<p>Cloudinary Public Id: {{ cloudinaryPublicId }}</p>
+					</div>
 				</form>
 			</div>
 		</div>
 	</div>
-</div>
 
 
-<!-- insert footer -->
-<?php require_once("lib/footer.php"); ?>
+	<!-- insert footer -->
+	<?php require_once("lib/footer.php"); ?>

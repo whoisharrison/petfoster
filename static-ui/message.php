@@ -1,50 +1,68 @@
-<main class="bg">
-	<div class="container">
-		<div class="row">
+<?php require_once("lib/head-utils.php"); ?>
+	<body class="sfooter">
+	<div class="sfooter-content">
 
-			<div class="col-md-4">
-				<h1>Create New Message</h1>
+	<!-- insert header and navbar -->
+	<?php require_once("lib/header.php"); ?>
 
-				<!-- Create New Post Form -->
-				<form id="contact-form">
-					<div class="form-group">
-						<label class="sr-only" for="postTitle">Title <span class="text-danger">*</span></label>
-						<div class="input-group">
-							<div class="input-group-addon">
-								<i class="fa fa-pencil" aria-hidden="true"></i>
+	<main class="bg">
+		<div class="container">
+			<div class="row">
+
+				<div class="col-md-4">
+					<h1 id="profileinfo">Create New Post</h1>
+
+					<!-- Create New Post Form -->
+					<form id="postForm" name="postForm" #postForm="ngForm" (submit)="createPost();">
+						<div class="form-group">
+							<label class="sr-only" for="postTitle">Title <span class="text-danger">*</span></label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-pencil" aria-hidden="true"></i>
+								</div>
+								<input type="text" class="form-control" id="postTitle" name="postTitle" placeholder="Post Title"
+										 [(ngModel)]="newPost.postTitle">
 							</div>
-							<input type="text" class="form-control" id="postTitle" name="postTitle" placeholder="Message Subject">
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="sr-only" for="postContent">Content <span class="text-danger">*</span></label>
-						<div class="input-group">
-							<div class="input-group-addon">
-								<i class="fa fa-envelope" aria-hidden="true"></i>
+						<div class="form-group">
+							<label class="sr-only" for="postContent">Content <span class="text-danger">*</span></label>
+							<div class="input-group">
+								<div class="input-group-addon">
+									<i class="fa fa-envelope" aria-hidden="true"></i>
+								</div>
+								<textarea class="form-control" name="postContent" id="postContent" cols="30" rows="10"
+											 placeholder="1024 characters max." [(ngModel)]="newPost.postContent"></textarea>
 							</div>
-							<textarea class="form-control" name="postContent" id="postContent" cols="30" rows="10" placeholder="1024 characters max."></textarea>
 						</div>
+
+						<button class="btn btn-success" type="submit"><i class="fa fa-paper-plane"></i> Submit</button>
+						<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button>
+					</form>
+					<div *ngIf="status !== null" class="alert alert-dismissible" [ngClass]="status.type" role="alert">
+						<button type="button" class="close" aria-label="Close" (click)="status = null;"><span
+								aria-hidden="true">&times;</span></button>
+						{{ status.message }}
 					</div>
+				</div>
 
-					<button class="btn btn-success" type="submit"><i class="fa fa-paper-plane"></i> Submit</button>
-					<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button>
-				</form>
+				<div class="col-md-8">
+					<h1 id="profileinfo">Messages</h1>
 
-			</div>
-
-			<div class="col-md-8">
-				<h1>Message History</h1>
-
-				<!-- Begin Post Item -->
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<div class="h4">Message Subject <small>// message datetime</small></div>
-					</div>
-					<div class="panel-body">
-						This is the message content
+					<!-- Begin Post Item -->
+					<div *ngFor="let post of posts" class="panel panel-default">
+						<div class="panel-heading">
+							<div class="h4">{{ post.postTitle }}
+								<small>{{ post.postDate | date:"medium" }}</small>
+							</div>
+						</div>
+						<div class="panel-body">
+							{{ post.postContent }}
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</main>
+	</main>
+
+	<!-- insert footer -->
+<?php require_once("lib/footer.php"); ?>
