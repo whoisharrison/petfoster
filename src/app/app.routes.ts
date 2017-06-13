@@ -6,6 +6,8 @@ import {MessagesComponent} from "./components/messages.component";
 import {PostComponent} from "./components/post.component";
 import {OrganizationComponent} from "./components/organization.component";
 import {FileSelectDirective} from "ng2-file-upload";
+import {NavBarComponent} from "./components/navbar.component";
+import {EnderComponent} from "./components/ender.component";
 
 export const allAppComponents = [
 	HomeComponent,
@@ -13,7 +15,9 @@ export const allAppComponents = [
 	SignInComponent,
 	OrganizationComponent,
 	PostComponent,
-	FileSelectDirective
+	FileSelectDirective,
+	NavBarComponent,
+	EnderComponent
 ];
 
 export const routes: Routes = [
@@ -22,7 +26,6 @@ export const routes: Routes = [
 	{path: "messages",component: MessagesComponent},
 	{path: "post", component: PostComponent},
 	{path: "", component: HomeComponent}
-
 ];
 
 export const appRoutingProviders: any[] = [];
