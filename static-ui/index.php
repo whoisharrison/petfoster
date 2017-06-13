@@ -1,9 +1,9 @@
-<?php require_once("lib/head-utils.php");?>
+<?php require_once("lib/head-utils.php"); ?>
 <body class="sfooter">
 	<div class="sfooter-content">
 
 		<!-- insert header and navbar -->
-		<?php require_once("lib/header.php");?>
+		<?php require_once("lib/header.php"); ?>
 
 		<main class="bg p-t-nav">
 			<div class="container">
@@ -23,9 +23,52 @@
 											 placeholder="search">
 								</div>
 							</div>
+							<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Advanced
+							</button>
+							<div id="demo" class="collapse">
+								<form class="form-horizontal" name="imageUpload" id="post" (submit)="uploadImage();">
+									<div class="container">
+										<div class="row">
+											<!-- type -->
+											<br>
+											<h4>Cat or Dog?</h4>
 
-							<input type="submit" name="signin" id="signin" value="Search" class="btn btn-default" />
-							<input type="submit" name="signin" id="signin" value="Advanced" class="btn btn-default" />
+												<fieldset id="type">
+													<label class="radio-inline"><input type="radio" name="type"> Dog</label>
+													<label class="radio-inline"><input type="radio" name="type"> Cat</label>
+												</fieldset>
+
+										</div>
+									</div>
+									<div class="container">
+										<div class="row">
+											<!-- gender -->
+
+												<h4>Choose the gender</h4>
+												<fieldset id=sex">
+													<label class="radio-inline"><input type="radio" name="gender"> Female</label>
+													<label class="radio-inline"><input type="radio" name="gender"> Male</label>
+													<fieldset>
+
+										</div>
+									</div>
+									<div class="container">
+										<div class="row">
+											<!-- breed -->
+												<div class="form-group">
+													<h4> Please enter the breed</h4>
+													<label for="formGroupEnterBreed"></label>
+													<input type="text" class="form-control" id="formGroupExampleInput"
+															 placeholder="Breed Type">
+												</div>
+
+										</div>
+									</div>
+								</form>
+							</div>
+							<!--end of advanced search-->
+							<input type="submit" name="signin" id="signin" value="Search" class="btn btn-default"/>
+
 						</div>
 					</div>
 				</div>
@@ -34,6 +77,6 @@
 	</div><!--/.sfooter-content-->
 
 	<!-- insert footer -->
-	<?php require_once("lib/footer.php");?>
+	<?php require_once("lib/footer.php"); ?>
 </body>
 </html>
