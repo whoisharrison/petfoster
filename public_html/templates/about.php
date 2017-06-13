@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
-				<img src="./images/logo_large.png" alt="PetRescueABQ logo">
+				<img src="../images/logo_large.png" alt="PetRescueABQ logo">
 				<h1>About Pet Rescue ABQ</h1>
 			</div>
 		</div>
