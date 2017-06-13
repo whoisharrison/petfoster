@@ -11,16 +11,17 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="">Pet Rescue ABQ</a>
+				<a class="navbar-brand" href="index.php">Pet Rescue ABQ</a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href=""><i class="fa fa-home"></i></a></li>
+					<li><a href="index.php"><i class="fa fa-home"></i></a></li>
 					<li><a href="about.php">About</a></li>
 					<li><a href="mailto:petrescueabq@gmail.com?Subject=Hello%20again">Contact</a></li>
+					<li><a href="message.php">Messages</a></li>
 					<li><a href="http://www.barkparkz.com" target="_blank">barkparkz</a></li>
 					<li class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg-2" id="login">sign in</li>
 					<li class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg" id="login">sign up</li>
