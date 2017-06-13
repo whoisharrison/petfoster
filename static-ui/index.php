@@ -14,7 +14,7 @@
 							<p class="lead">Fosters Save Lives!</p>
 							<!--User Name-->
 							<div class="form-group">
-								<label for="search">Pet Finder:<span class="text-danger">*</span></label>
+								<label for="search">Pet Finder:<span class="text-danger"></span></label>
 								<div class="input-group">
 									<div class="input-group-addon">
 										<i class="fa fa-paw" aria-hidden="true"></i>
@@ -26,7 +26,7 @@
 							<button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Advanced
 							</button>
 							<div id="demo" class="collapse">
-								<form class="form-horizontal" name="imageUpload" id="post" (submit)="uploadImage();">
+								<form class="form-horizontal" name="search" id="search" (submit)="search();">
 									<div class="container">
 										<div class="row">
 											<!-- type -->

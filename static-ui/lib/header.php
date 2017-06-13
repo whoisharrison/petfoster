@@ -22,7 +22,7 @@
 					<li><a href="about.php">Sign In</a></li>
 					<li><a href="posts.php">Sign Up</a></li>
 					<li><a href="posts.php">About</a></li>
-					<li><a href="posts.php">Contact</a></li>
+					<li><a href="mailto:petrescueabq@gmail.com?Subject=Hello%20again">Contact</a></li>
 					<li><a href="http://www.barkparkz.com" target="_blank">barkparkz</a></li>
 				</ul>
 
