@@ -21,7 +21,7 @@
 					<li><a routerLink=""><i class="fa fa-home"></i></a></li>
 					<li><a routerLink="about">About</a></li>
 					<li><a href="mailto:petrescueabq@gmail.com?Subject=Hello%20again">Contact</a></li>
-					<li><a routerLink="messages">Messages</a></li>
+					<li><a routerLink="message">Messages</a></li>
 					<li><a href="https://bootcamp-coders.cnm.edu/~mjordan30/dog-social/static-ui/" target="_blank">barkparkz</a></li>
 					<li class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg-2" id="login">sign in</li>
 					<li class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg" id="login">sign up</li>

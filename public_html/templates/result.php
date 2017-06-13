@@ -6,6 +6,7 @@
 				<h1 id="profileinfo">Create New Post</h1>
 
 
+			</div>
 		</div>
 	</div>
 </main>

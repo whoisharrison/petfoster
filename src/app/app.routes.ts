@@ -2,7 +2,7 @@ import {RouterModule, Routes} from "@angular/router";
 
 import {HomeComponent} from "./components/home.component";
 import {SignInComponent} from "./components/sign-in.component";
-import {MessagesComponent} from "./components/messages.component";
+import {MessageComponent} from "./components/message.component";
 import {PostComponent} from "./components/post.component";
 import {OrganizationComponent} from "./components/organization.component";
 import {FileSelectDirective} from "ng2-file-upload";
@@ -13,7 +13,7 @@ import {ResultComponent} from "./components/result.component";
 
 export const allAppComponents = [
 	HomeComponent,
-	MessagesComponent,
+	MessageComponent,
 	SignInComponent,
 	OrganizationComponent,
 	PostComponent,
@@ -27,7 +27,7 @@ export const allAppComponents = [
 export const routes: Routes = [
 	{path: "organization", component: OrganizationComponent},
 	{path: "signin", component: SignInComponent},
-	{path: "messages",component: MessagesComponent},
+	{path: "message",component: MessageComponent},
 	{path: "post", component: PostComponent},
 	{path: "about", component: AboutComponent},
 	{path: "result", component: ResultComponent},

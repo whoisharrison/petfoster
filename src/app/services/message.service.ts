@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {BaseService} from "./base.service";
-import {Message} from "../classes/messages";
+import {Message} from "../classes/message";
 import {Status} from "../classes/status";
 
 @Injectable()
@@ -11,7 +11,7 @@ export class MessageService extends BaseService {
 		super(http);
 	}
 
-	private messageUrl = "./apis/message/";
+	private messageUrl = "./api/message/";
 
 
 	getAllMessages() : Observable<Message[]> {

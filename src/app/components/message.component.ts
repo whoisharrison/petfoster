@@ -2,14 +2,14 @@ import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, Params} from "@angular/router";
 import {Observable} from "rxjs";
 import {MessageService} from "../services/message.service";
-import {Message} from "../classes/messages";
+import {Message} from "../classes/message";
 import {Status} from "../classes/status";
 
 @Component({
-	templateUrl: "./templates/messages.php"
+	templateUrl: "./templates/message.php"
 })
 
-export class MessagesComponent {
+export class MessageComponent {
 
 	newMessage : Message = new Message(null, null, null, null, null, null);
 	messages : Message[] = [];

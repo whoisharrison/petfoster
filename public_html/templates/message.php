@@ -3,28 +3,28 @@
 		<div class="row">
 
 			<div class="col-md-4">
-				<h1 id="profileinfo">Create New Post</h1>
+				<h1 id="profileinfo">Create New Message</h1>
 
-				<!-- Create New Post Form -->
-				<form id="postForm" name="postForm" #postForm="ngForm" (submit)="createPost();">
+				<!-- Create New Message Form -->
+				<form id="messageForm" name="messageForm" #messageForm="ngForm" (submit)="createMessage();">
 					<div class="form-group">
-						<label class="sr-only" for="postTitle">Title <span class="text-danger">*</span></label>
+						<label class="sr-only" for="messageSubject">Subject <span class="text-danger">*</span></label>
 						<div class="input-group">
 							<div class="input-group-addon">
-								<i class="fa fa-pencil" aria-hidden="true"></i>
+								<i class="fa fa-paw" aria-hidden="true"></i>
 							</div>
-							<input type="text" class="form-control" id="postTitle" name="postTitle" placeholder="Post Title"
-									 [(ngModel)]="newPost.postTitle">
+							<input type="text" class="form-control" id="messageSubject" name="messageSubject" placeholder="Message Subject"
+									 [(ngModel)]="newMessage.messageSubject">
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="sr-only" for="postContent">Content <span class="text-danger">*</span></label>
+						<label class="sr-only" for="messageContent">Content <span class="text-danger">*</span></label>
 						<div class="input-group">
 							<div class="input-group-addon">
 								<i class="fa fa-envelope" aria-hidden="true"></i>
 							</div>
-							<textarea class="form-control" name="postContent" id="postContent" cols="30" rows="10"
-										 placeholder="1024 characters max." [(ngModel)]="newPost.postContent"></textarea>
+							<textarea class="form-control" name="messageContent" id="messageContent" cols="30" rows="10"
+										 placeholder="1024 characters max." [(ngModel)]="newMessage.messageContent"></textarea>
 						</div>
 					</div>
 
@@ -41,7 +41,7 @@
 			<div class="col-md-8">
 				<h1 id="profileinfo">Messages</h1>
 
-				<!-- Begin Post Item -->
+				<!-- Begin Message Item -->
 
 			</div>
 		</div>
