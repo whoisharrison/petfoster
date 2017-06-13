@@ -9,7 +9,6 @@ import {Observable} from "rxjs";
 import "rxjs/add/observable/from";
 
 @Component({
-	selector: 'post',
 	templateUrl: "./templates/post.php"
 })
 
@@ -36,12 +35,6 @@ export class PostComponent implements OnInit{
 			this.cloudinaryPublicId = reply.data;
 			this.cloudinaryPublicIdObservable = Observable.from(this.cloudinaryPublicId);
 		};
-		this.getAlmostAllPosts();
-	}
-
-	getAlmostAllPosts() : void {
-		this.postService.getPostsByPostId(2)
-			.subscribe(posts=>{this.posts = posts});
 	}
 
 	getPost(): void {

@@ -1,16 +1,16 @@
-<main>
+<main class="container">
 	<form class="form-horizontal" name="imageUpload" id="post" (submit)="uploadImage();">
 		<h1>Post</h1>
+		<div class="form-group">
 		<h4>Choose pet type</h4>
-		<fieldset id="type">
 			<label class="radio-inline"><input type="radio" name="type"> Dog</label>
 			<label class="radio-inline"><input type="radio" name="type"> Cat</label>
-		</fieldset>
+		</div>
+		<div class="form-group">
 		<h4>Choose the gender</h4>
-		<fieldset id=sex">
 			<label class="radio-inline"><input type="radio" name="gender"> Female</label>
 			<label class="radio-inline"><input type="radio" name="gender"> Male</label>
-		</fieldset>
+		</div>
 		<div class="form-group">
 			<h4> Please enter the breed</h4>
 			<label for="formGroupEnterBreed"></label>
