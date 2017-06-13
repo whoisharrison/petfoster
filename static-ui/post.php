@@ -1,7 +1,6 @@
-<?php require_once("lib/head-utils.php");?>
-</head>
-<body>
-	<form id="post">
+<?php require_once("lib/head-utils.php"); ?>
+<main>
+	<form class="form-horizontal" name="imageUpload" id="post" (submit)="uploadImage();">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6">
@@ -50,20 +49,21 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6">
-					<form class="form-horizontal" name="imageUpload" (submit)="uploadImage();">
 					<div class="form-group">
 						<label for="postImage" class="modal-labels">Upload an image</label>
-						<input type="file" name="dog" id="dog" ng2FileSelect [uploader]="uploader" />
+						<input type="file" name="dog" id="dog" ng2FileSelect [uploader]="uploader"/>
 					</div>
 					<div class="container">
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
-									<button type="submit" class="btn-link fa fa-paw fa-2x"><i class="fa fa-file-image-o" aria-hidden="true"></i>Submit</button>
+									<button type="submit" class="btn-link fa fa-paw fa-2x"><i class="fa fa-file-image-o" aria-hidden="true"></i>Submit
+									</button>
 								</div>
 							</div>
 						</div>
 					</div>
-			</form>
-					<p>Cloudinary Public Id: {{ cloudinaryPublicId }}</p>
+	</form>
+	<p>Cloudinary Public Id: {{ cloudinaryPublicId }}</p>
+</main>
 </html>
