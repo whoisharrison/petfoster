@@ -26,7 +26,7 @@ a:active {
 * Home Page - Welcome
 *****************************************/
 body {
-	background: url("../public_html/images/puppyimg.jpg") no-repeat center center;
+	background: url("app/images/puppyimg.jpg") no-repeat center center;
 	background-attachment: fixed;
 	background-size: cover;
 	padding-bottom: 100px;
