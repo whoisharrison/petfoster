@@ -6,7 +6,6 @@ export class SignUp {
 		public profilePassword: string,
 		public profilePasswordConfirm: string,
 		public organizationAddress1: string,
-		public organizationAddress1: string,
 		public organizationAddress2: string,
 		public organizationCity: string,
 		public organizationLicense: string,
