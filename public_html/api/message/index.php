@@ -241,13 +241,24 @@ echo json_encode($reply);
 //		}
 
 
+
+//
+//
 //if(!(empty($messageOrganizationId) === true ^ empty($messageProfileId) === true)) {
 //throw(new InvalidArgumentException("you are not logged in, 401"));
 //}
 //
 //// this is the code we are trying 6.5.15 revision 3.0
 //if(((empty($_SESSION["organization"]) === true) && ($_SESSION["organization"]->getOrganizationId() !== $messageOrganizationId)) || ((empty($_SESSION["profile"]) === true) && ($_SESSION["profile"]->getProfileId() !== $messageProfileId))) {
-//throw(new InvalidArgumentException("org or profile are not ok, 405"));
+//	throw(new InvalidArgumentException("org or profile are not ok, 405"));
+//}
+//
+
+
+
+
+
+
 /*
  *
  * /

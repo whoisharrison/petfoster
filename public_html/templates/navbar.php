@@ -38,35 +38,49 @@
 						<div class="modal-body">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							<!--Begin of Form-->
-							<form id="signupForm" #signupForm="ngForm" name="signupForm" (ngSubmit)="createSignin();">
+							<form id="signInForm" #signInForm="ngForm" name="signInForm" (ngSubmit)="signInData();">
+
+
 
 
 								<!--name-->
-								<div class="form-group">
+								<div class="form-group" [ngClass]="{ 'has-error': profileEmail.touched && profileEmail.invalid }">
 									<h2>Sign In</h2>
 									<label for="Name">E-mail <span class="text-danger">*</span></label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-paw" aria-hidden="true"></i>
 										</div>
-										<input type="name" class="form-control" id="name" name="name" placeholder="E-mail">
+										<input type="email" class="form-control" id="email" required [(ngModel)]="signInData.profileEmail" #profileEmail="ngModel" name="name" placeholder="E-mail">
 									</div>
+
+									<div [hidden]="profileEmail.valid || profileEmail.pristine" class="alert alert-danger" role="alert">
+										<p *ngIf="profileEmail.errors?.maxlength">Please enter a valid email.</p>
+										<p *ngIf="profileEmail.errors?.required">Email is required.</p>
+									</div>
+
 								</div>
 
-								<!--User Name-->
-								<div class="form-group">
+								<!--Password-->
+								<div class="form-group" [ngClass]="{ 'has-error': profilePassword.touched && profilePassword.invalid }">
 									<label for="username">Password <span class="text-danger">*</span></label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-paw" aria-hidden="true"></i>
 										</div>
-										<input type="password" class="form-control" id="password" name="password"
+										<input type="password" class="form-control" id="password" name="password" required [(ngModel)]="signInData.profilePassword" #profilePassword="ngModel"
 												 placeholder="Password">
 									</div>
+
+									<div [hidden]="profilePassword.valid || profilePassword.pristine" class="alert alert-danger" role="alert">
+										<p *ngIf="profilePassword.errors?.maxlength">Please enter a vaild password.</p>
+										<p *ngIf="profilePassword.errors?.required">Password is required.</p>
+									</div>
+
 								</div>
 
 
-								<button class="btn btn-success" type="submit"><i class="fa fa-paper-plane"></i> Sign In</button>
+								<button class="btn btn-success" type="submit" [disabled]="signInForm.invalid"><i class="fa fa-paper-plane"></i> Sign In</button>
 								<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button>
 								<div class="checkbox">
 									<label>
@@ -101,7 +115,7 @@
 										<div class="input-group-addon">
 											<i class="fa fa-paw" aria-hidden="true"></i>
 										</div>
-										<input type="name" class="form-control" id="name" name="name" placeholder="full name">
+										<input type="name" class="form-control" id="name" name="name" placeholder="full name" required [(ngModel)]="signUp.profileName" #signUpName="ngModel">
 									</div>
 								</div>
 
@@ -112,8 +126,8 @@
 										<div class="input-group-addon">
 											<i class="fa fa-paw" aria-hidden="true"></i>
 										</div>
-										<input type="username" class="form-control" id="username" name="username"
-												 placeholder="User Name">
+										<input type="atHandle" class="form-control" id="username" name="username"
+												 placeholder="User Name" required [(ngModel)]="signUp.profileAtHandle" #signUpAtHandle="ngModel">
 									</div>
 								</div>
 
@@ -124,7 +138,7 @@
 										<div class="input-group-addon">
 											<i class="fa fa-paw" aria-hidden="true"></i>
 										</div>
-										<input type="email" class="form-control" id="email" name="email" placeholder="Email">
+										<input type="email" class="form-control" id="email" name="email" placeholder="Email" required [(ngModel)]="signUp.profileEmail" #signUpEmail="ngModel">
 									</div>
 								</div>
 
@@ -136,33 +150,33 @@
 											<i class="fa fa-paw" aria-hidden="true"></i>
 										</div>
 										<input type="password" class="form-control" id="password" name="password"
-												 placeholder="Password">
+												 placeholder="Password" required [(ngModel)]="signUp.profilePassword" #signUpPassword="ngModel">
 									</div>
 								</div>
 
 								<!--Confirm Password-->
 								<div class="form-group">
-									<label for="confirmpassword">Confirm Password <span class="text-danger">*</span></label>
+									<label for="passwordConfirm">Confirm Password <span class="text-danger">*</span></label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-paw" aria-hidden="true"></i>
 										</div>
-										<input type="confirmpassword" class="form-control" id="confirmpassword" name="confirmpassword"
-												 placeholder="Confirm Password">
+										<input type="passwordConfirm" class="form-control" id="passwordConfirm" name="passwordConfirm"
+												 placeholder="Confirm Password" required [(ngModel)]="signUp.profilePasswordConfirm" #signUpPasswordConfirm="ngModel">
 									</div>
 								</div>
 
 								<!--Organization yes or no-->
 								<div class="form-group">
-									<label for="orgcheck">Are you seeking a pet or an organization? <span class="text-danger">*</span></label>
+									<label for="orgcheck">Are you registering an organization? <span class="text-danger">*</span></label>
 									<div class="input-group">
 										<div class="btn-group" data-toggle="buttons-radio">
 											<label class="radio-inline"><input type="radio" data-toggle="collapse in"
 																						  data-target="#orghidden" name="optradio"
-																						  checked="checked">Seeking Pet</label>
+																						  checked="checked" ng-control="options" [(ng-model)]="model.options">Create Profile Only</label>
 											<label class="radio-inline"><input type="radio" data-toggle="collapse"
 																						  data-target="#orghidden"
-																						  name="optradio">Organization</label>
+																						  name="optradio" ng-control="options" [(ng-model)]="model.options">Register an Organization</label>
 										</div>
 									</div>
 								</div>
@@ -177,7 +191,7 @@
 												<i class="fa fa-paw" aria-hidden="true"></i>
 											</div>
 											<input type="orgname" class="form-control" id="orgname" name="orgname"
-													 placeholder="Organization Name">
+													 placeholder="Organization Name" required [(ngModel)]="signUp.organizationName" #signUpOrganizationName="ngModel">
 										</div>
 									</div>
 									<!--Organization License Number-->
@@ -188,7 +202,7 @@
 												<i class="fa fa-paw" aria-hidden="true"></i>
 											</div>
 											<input type="orglicense" class="form-control" id="orglicense" name="orglicense"
-													 placeholder="Organization License">
+													 placeholder="Organization License" required [(ngModel)]="signUp.organizationLicense" #signUpOrganizationLicense="ngModel">
 										</div>
 									</div>
 									<!--Organization Address 1-->
@@ -199,7 +213,7 @@
 												<i class="fa fa-paw" aria-hidden="true"></i>
 											</div>
 											<input type="address1" class="form-control" id="address1" name="address1"
-													 placeholder="Organization Address">
+													 placeholder="Organization Address" required [(ngModel)]="signUp.organizationAddress1" #signUpOrganizationAddress1="ngModel">
 										</div>
 									</div>
 									<!--Organization Address 2-->
@@ -210,7 +224,7 @@
 												<i class="fa fa-paw" aria-hidden="true"></i>
 											</div>
 											<input type="address2" class="form-control" id="address2" name="address2"
-													 placeholder="Organization Address Continued">
+													 placeholder="Organization Address Continued" required [(ngModel)]="signUp.organizationAddress2" #signUpAtHandle="organizationAddress2">
 										</div>
 									</div>
 									<!--Organization City-->
@@ -220,7 +234,8 @@
 											<div class="input-group-addon">
 												<i class="fa fa-paw" aria-hidden="true"></i>
 											</div>
-											<input type="orgcity" class="form-control" id="orgcity" name="orgcity" placeholder="City">
+											<input type="orgcity" class="form-control" id="orgcity" name="orgcity" placeholder="City" required [(ngModel)]="signUp.organizationCity"
+													 #signUpOrganizationCity="ngModel">
 										</div>
 									</div>
 									<!--Organization State-->
@@ -231,7 +246,8 @@
 											<div class="input-group-addon">
 												<i class="fa fa-paw" aria-hidden="true"></i>
 											</div>
-											<input type="orgzip" class="form-control" id="orgzip" name="orgzip" placeholder="City">
+											<input type="orgzip" class="form-control" id="orgzip" name="orgzip" placeholder="City" required [(ngModel)]="signUp.organizationZip"
+													 #signUpOrganizationZip="ngModel">
 										</div>
 									</div>
 									<!--Organization Phone-->
@@ -242,7 +258,7 @@
 												<i class="fa fa-paw" aria-hidden="true"></i>
 											</div>
 											<input type="orgphone" class="form-control" id="orgphone" name="orgphone"
-													 placeholder="Phone Number">
+													 placeholder="Phone Number" required [(ngModel)]="signUp.organizationPhone" #signUpOrganizationPhone="ngModel">
 										</div>
 									</div>
 								</div>
