@@ -12,8 +12,6 @@
 					</fieldset>
 				</div>
 			</div>
-		</div>
-		<div class="container">
 			<div class="row">
 				<div class="col-md-6">
 					<h4>Choose the gender</h4>
@@ -23,8 +21,6 @@
 						<fieldset>
 				</div>
 			</div>
-		</div>
-		<div class="container">
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
@@ -34,8 +30,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="container">
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
@@ -45,25 +39,21 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="container">
 			<div class="row">
 				<div class="col-md-6">
-					<div class="form-group">
-						<label for="postImage" class="modal-labels">Upload an image</label>
+ 						<label for="postImage" class="modal-labels">Upload an image</label>
 						<input type="file" name="dog" id="dog" ng2FileSelect [uploader]="uploader"/>
 					</div>
-					<div class="container">
-						<div class="row">
+				<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
 									<button type="submit" class="btn-link fa fa-paw fa-2x"><i class="fa fa-file-image-o" aria-hidden="true"></i>Submit
 									</button>
 								</div>
 							</div>
-						</div>
-					</div>
+				</div>
+			</div>
+		</div>
 	</form>
 	<p>Cloudinary Public Id: {{ cloudinaryPublicId }}</p>
 </main>
-</html>
