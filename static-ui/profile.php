@@ -4,7 +4,7 @@
 
 		<!-- insert header and navbar -->
 		<?php require_once("lib/header.php"); ?>
-		<main class="bg">
+
 			<div class="container">
 				<div class="row">
 					<div class="col-md-4">
@@ -29,7 +29,8 @@
 									<div class="form-group">
 										<label for="inputEmail3" class="col-sm-2 control-label">Name</label>
 										<div class="col-sm-10">
-											<input type="email" class="form-control" id="inputEmail3" placeholder="{{ profileName }}">
+											<input type="email" class="form-control" id="inputEmail3"
+													 placeholder="{{ profileName }}">
 										</div>
 									</div>
 								</div>
@@ -40,7 +41,8 @@
 									<div class="form-group">
 										<label for="inputEmail3" class="col-sm-2 control-label">Handle</label>
 										<div class="col-sm-10">
-											<input type="email" class="form-control" id="inputEmail3" placeholder="{{ profileAtHandle }}">
+											<input type="email" class="form-control" id="inputEmail3"
+													 placeholder="{{ profileAtHandle }}">
 										</div>
 									</div>
 								</div>
@@ -165,11 +167,7 @@
 				</div>
 			</div>
 	</div>
-	</div>
-	</main>
-	</div><!--/.sfooter-content-->
+
 
 	<!-- insert footer -->
 	<?php require_once("lib/footer.php"); ?>
-</body>
-</html>
