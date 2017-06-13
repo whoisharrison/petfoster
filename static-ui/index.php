@@ -43,6 +43,11 @@
 
 							<button class="btn btn-success" type="submit"><i class="fa fa-paper-plane"></i> Sign In</button>
 							<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox"> Remember me
+								</label>
+							</div>
 						</form>
 
 					</div>
@@ -234,7 +239,7 @@
 					<div class="col-md-8 col-md-offset-4">
 						<div class="jumbotron text-right">
 							<h1>Pet Rescue ABQ</h1>
-							<p class="lead">Fosters Save Lives!</p>
+							<p class="lead" id="tagline">Putting people and pets together at last</p>
 							<!--User Name-->
 							<div class="form-group">
 								<label for="search">Pet Finder:<span class="text-danger"></span></label>

@@ -9,7 +9,8 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-xs-12">
-						<h1>About PetRescueABQ</h1>
+						<img src="./images/logo_large.png" alt="PetRescueABQ logo">
+						<h1>About Pet Rescue ABQ</h1>
 					</div>
 				</div>
 				<div class="row">

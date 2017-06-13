@@ -40,7 +40,7 @@ main.bg .jumbotron {
 main.bg .jumbotron > h1 {
 	color: #fff;
 	font-family: Times, serif;
-	text-shadow: 3px 3px 0 black;
+	text-shadow: 0 0 10px #000000;
 	text-transform: uppercase;
 }
 
@@ -53,6 +53,24 @@ main.bg .jumbotron .lead {
 
 #login {
 	margin: 6px 3px;
+}
+
+#tagline {
+	font-family: 'Pacifico', cursive;
+}
+
+#profilepage {
+	color: #fff;
+	font-family: Times, serif;
+	text-shadow: 0 0 10px #000000;
+	text-transform: uppercase;
+}
+
+#profileinfo {
+	color: #fff;
+	font-family: Times, serif;
+	text-shadow: 0 0 10px #000000;
+	text-transform: uppercase;
 }
 
 /*!*styles for sm, md, lg screens *!*/
