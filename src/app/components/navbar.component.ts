@@ -4,6 +4,8 @@ import {Observable} from "rxjs/Observable"
 import {Status} from "../classes/status";
 import {SignInService} from "../services/sign-in.service";
 import {SignIn} from "../classes/sign-in";
+import {SignUp} from "../classes/sign-up";
+import {SignUpService} from "../services/sign-up.service";
 
 declare var $: any;
 
@@ -16,10 +18,13 @@ export class NavBarComponent {
 
 	@ViewChild("signInForm") signInForm : any;
 
+	@ViewChild("signUpForm") signUpForm : any;
+	signUp: SignUp = new SignUp(null, null, null, null, null, null, null, null, null, null, null, null, null);
+
 	signInData: SignIn = new SignIn("", "");
 	status: Status = null;
 
-	constructor(private SignInService: SignInService, private router: Router){}
+	constructor(private SignInService: SignInService, private signUpService:SignUpService, private router: Router ){}
 	isSignedIn = false;
 
 	ngOnChanges (): void{
@@ -40,5 +45,21 @@ export class NavBarComponent {
 				}
 			});
 	}
+
+	createSignUp() : void {
+		this.signUpService.createSignUp(this.signUp)
+			.subscribe(status => {
+				console.log(this.signUp);
+				this.status = status;
+				console.log(this.status);
+				if(status.status === 200) {
+					alert("Please check your email and click the link to activate your account. Thanks!");
+					this.signUpForm.reset();
+					setTimeout(function(){$("#signup-modal").modal('hide');},500);
+					this.router.navigate([""]);
+				}
+			});
+	}
+
 }
 
