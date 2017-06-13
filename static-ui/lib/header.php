@@ -22,7 +22,7 @@
 					<li><a href="about.php">About</a></li>
 					<li><a href="mailto:petrescueabq@gmail.com?Subject=Hello%20again">Contact</a></li>
 					<li><a href="message.php">Messages</a></li>
-					<li><a href="http://www.barkparkz.com" target="_blank">barkparkz</a></li>
+					<li><a href="https://bootcamp-coders.cnm.edu/~mjordan30/dog-social/static-ui/" target="_blank">barkparkz</a></li>
 					<li class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg-2" id="login">sign in</li>
 					<li class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg" id="login">sign up</li>
 				</ul>
