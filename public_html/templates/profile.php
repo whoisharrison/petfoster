@@ -156,6 +156,7 @@
 								<button type="submit" class="btn btn-info">Update info</button>
 							</div>
 						</div>
+					</div>
 				</form>
 			</div>
 		</div>

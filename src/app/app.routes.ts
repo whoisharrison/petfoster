@@ -10,6 +10,7 @@ import {NavBarComponent} from "./components/navbar.component";
 import {EnderComponent} from "./components/ender.component";
 import {AboutComponent} from "./components/about.component";
 import {ResultComponent} from "./components/result.component";
+import {ProfileComponent} from "./components/profile.component";
 
 export const allAppComponents = [
 	HomeComponent,
@@ -21,16 +22,18 @@ export const allAppComponents = [
 	NavBarComponent,
 	EnderComponent,
 	AboutComponent,
-	ResultComponent
+	ResultComponent,
+	ProfileComponent
 ];
 
 export const routes: Routes = [
-	{path: "organization", component: OrganizationComponent},
-	{path: "signin", component: SignInComponent},
-	{path: "message",component: MessageComponent},
-	{path: "post", component: PostComponent},
 	{path: "about", component: AboutComponent},
+	{path: "message",component: MessageComponent},
+	{path: "organization", component: OrganizationComponent},
+	{path: "post", component: PostComponent},
+	{path: "profile", component: ProfileComponent},
 	{path: "result", component: ResultComponent},
+	{path: "signin", component: SignInComponent},
 	{path: "", component: HomeComponent}
 ];
 

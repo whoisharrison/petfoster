@@ -7,7 +7,7 @@ import {Component, OnInit} from "@angular/core";
 // import {Observable} from "rxjs";
 
 @Component({
-	templateUrl: "./template/profile.php"
+	templateUrl: "./templates/profile.php"
 })
 
 export class ProfileComponent {
