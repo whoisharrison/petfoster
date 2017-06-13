@@ -3,7 +3,7 @@
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
-require_once ("/etc/apache2/capstone-mysql/encrypted-config.php");
+require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 
 //Cloudinary?
 
@@ -38,7 +38,7 @@ try {
 
 //mock an organization being logged in
 //	TODO: Remove this after testing
-	$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo,1);
+	$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo, 1);
 
 	/** Cloudinary API  */
 	$config = readConfig("/etc/apache2/capstone-mysql/fosterabq.ini");
@@ -140,9 +140,9 @@ try {
 
 	} elseif($method === "PUT" || $method === "POST") {
 		verifyXsrf();
-		$requestContent = file_get_contents("php://input");
+//		$requestContent = file_get_contents("php://input");
 		// Retrieves the JSON package that the front end sent, and stores it in $requestContent. Here we are using file_get_contents("php://input") to get the request from the front end. file_get_contents() is a PHP function that reads a file into a string. The argument for the function, here, is "php://input". This is a read only stream that allows raw data to be read from the front end request which is, in this case, a JSON package.
-		$requestObject = json_decode($requestContent);
+//		$requestObject = json_decode($requestContent);
 		// This Line Then decodes the JSON package and stores that result in $requestObject
 
 		//TODO enforce that all the needed variables to create both post and image are present
@@ -160,45 +160,76 @@ try {
 		}
 
 
-			if($requestObject->postFlag === "y") {
+
+//		$postFlag=filter_input(INPUT_POST, "postFlag", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+//		if($postFlag === "y") {
+
+			$postBreed = filter_input(INPUT_POST, "postBreed", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 
-
-	
-
-			if(empty($requestObject->postBreed) === true) {
+			if(empty($postBreed) === true) {
 				throw (new\InvalidArgumentException("You must specify breed to Post", 402));
 
 			}
-			if(empty($requestObject->postDescription) === true) {
-				throw (new\InvalidArgumentException("You must place a description to Post", 402));
+
+			$postDescription = filter_input(INPUT_POST, "postDescription", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+
+			if(empty($postDescription) === true) {
+				throw (new\InvalidArgumentException("You must specify description to Post", 402));
 
 			}
-			if(empty($requestObject->postSex) === true) {
-				throw (new\InvalidArgumentException("You must specify animals sex to Post", 402));
+
+			$postSex = filter_input(INPUT_POST, "postSex", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+
+			if(empty($postSex) === true) {
+				throw (new\InvalidArgumentException("You must specify sex to Post", 402));
 
 			}
-			if(empty($requestObject->postType) === true) {
+
+			$postType = filter_input(INPUT_POST, "postType", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+
+			if(empty($postType) === true) {
 				throw (new\InvalidArgumentException("You must specify type to Post", 402));
+
 			}
 
-			$post = new Post(null, $_SESSION['organization']->getOrganizationId(), $requestObject->postBreed, $requestObject->postDescription, $requestObject->postSex, $requestObject->postType);
+
+//
+//
+//
+//			if(empty($requestObject->postDescription) === true) {
+//				throw (new\InvalidArgumentException("You must place a description to Post", 402));
+//
+//			}
+//			if(empty($requestObject->postSex) === true) {
+//				throw (new\InvalidArgumentException("You must specify animals sex to Post", 402));
+//
+//			}
+//			if(empty($requestObject->postType) === true) {
+//				throw (new\InvalidArgumentException("You must specify type to Post", 402));
+//			}
+
+			$post = new Post(null, $_SESSION['organization']->getOrganizationId(), $postBreed, $postDescription, $postSex, $postType);
 			$post->insert($pdo);
-		} else {
+//		} else {
 
 // comment out the following three "ifs" and test to see if it works without this [JC]
-/*			if(empty($requestObject->imageId) === true) {
-				throw (new\InvalidArgumentException("You must place an image in the Post", 402));
+			/*			if(empty($requestObject->imageId) === true) {
+							throw (new\InvalidArgumentException("You must place an image in the Post", 402));
 
-			}
-			if(empty($requestObject->imagePostId) === true) {
-				throw (new\InvalidArgumentException("You must be logged in to Post", 402));
+						}
+						if(empty($requestObject->imagePostId) === true) {
+							throw (new\InvalidArgumentException("You must be logged in to Post", 402));
 
-			}
-			if(empty($requestObject->imageCloudinaryId) === true) {
-				throw (new\InvalidArgumentException("You must be logged in to Post", 402));
+						}
+						if(empty($requestObject->imageCloudinaryId) === true) {
+							throw (new\InvalidArgumentException("You must be logged in to Post", 402));
 
-			}*/
+						}*/
 			//Variable assignment for the users image name, MIME type, and image extension
 			//ask about image id below ""
 			$tempUserFileName = $_FILES["dog"]["tmp_name"];
@@ -209,9 +240,12 @@ try {
 			$cloudinaryResult = \Cloudinary\Uploader::upload($_FILES["file"]["tmp_name"], array("width" => 500, "crop" => "scale"));
 
 			// Inserting image into database
-			$image = new Image(null, $requestObject->postId, $cloudinaryResult["public_id"]);
+
+			$postId = filter_input(INPUT_POST, "postId", FILTER_VALIDATE_INT);
+
+			$image = new Image(null, $postId, $cloudinaryResult["public_id"]);
 			$image->insert($pdo);
-		}
+//		}
 
 
 //Push the data to the imageId, upload the new image, and notify user.
