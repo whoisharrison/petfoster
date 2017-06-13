@@ -104,7 +104,7 @@
 						<div class="modal-body">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							<!--Begin of Form-->
-							<form id="signupForm" #signupForm="ngForm" name="signupForm" (ngSubmit)="createSignUp();">
+							<form id="signUpForm" #signUpForm="ngForm" name="signUpForm" (ngSubmit)="createSignUp();">
 
 
 								<!--name-->
@@ -173,10 +173,11 @@
 										<div class="btn-group" data-toggle="buttons-radio">
 											<label class="radio-inline"><input type="radio" data-toggle="collapse in"
 																						  data-target="#orghidden" name="optradio"
-																						  checked="checked" ng-control="options" [(ng-model)]="model.options">Create Profile Only</label>
+																						  checked="checked"  [(ngModel)]="signUp.profileFlag">Create Profile Only</label>
+
 											<label class="radio-inline"><input type="radio" data-toggle="collapse"
 																						  data-target="#orghidden"
-																						  name="optradio" ng-control="options" [(ng-model)]="model.options">Register an Organization</label>
+																						  name="optradio"  [(ngModel)]="signUp.profileFlag">Register an Organization</label>
 										</div>
 									</div>
 								</div>
@@ -224,7 +225,7 @@
 												<i class="fa fa-paw" aria-hidden="true"></i>
 											</div>
 											<input type="address2" class="form-control" id="address2" name="address2"
-													 placeholder="Organization Address Continued" required [(ngModel)]="signUp.organizationAddress2" #signUpAtHandle="organizationAddress2">
+													 placeholder="Organization Address Continued" required [(ngModel)]="signUp.organizationAddress2" #signUpOrganizationAddress2="ngModel">
 										</div>
 									</div>
 									<!--Organization City-->

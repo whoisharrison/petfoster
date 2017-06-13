@@ -16,7 +16,7 @@ declare var $: any;
 
 export class SignUpComponent {
 	@ViewChild("signUpForm") signUpForm : any;
-	signUp: SignUp = new SignUp(null, null, null, null, null, null, null, null, null, null, null, null, null);
+	signUp: SignUp = new SignUp(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 	status: Status = null;
 
 	constructor(private signUpService: SignUpService, private router: Router){}

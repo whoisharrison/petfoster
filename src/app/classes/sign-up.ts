@@ -5,6 +5,7 @@ export class SignUp {
 		public profileName: string,
 		public profilePassword: string,
 		public profilePasswordConfirm: string,
+		public profileFlag: string,
 		public organizationAddress1: string,
 		public organizationAddress2: string,
 		public organizationCity: string,

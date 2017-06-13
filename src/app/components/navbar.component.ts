@@ -19,7 +19,7 @@ export class NavBarComponent {
 	@ViewChild("signInForm") signInForm : any;
 
 	@ViewChild("signUpForm") signUpForm : any;
-	signUp: SignUp = new SignUp(null, null, null, null, null, null, null, null, null, null, null, null, null);
+	signUp: SignUp = new SignUp(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
 	signInData: SignIn = new SignIn("", "");
 	status: Status = null;
