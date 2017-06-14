@@ -4,7 +4,6 @@ import {Status} from "../classes/status";
 import {SignInService} from "../services/sign-in.service";
 import {SignIn} from "../classes/sign-in";
 import {SignUpService} from "../services/sign-up.service";
-import {Profile} from "../classes/profile";
 import {SignUp} from "../classes/sign-up";
 declare var $: any;
 @Component({
