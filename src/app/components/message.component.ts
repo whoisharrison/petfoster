@@ -11,7 +11,7 @@ import {Organization} from "../classes/organization";
 	templateUrl: "./templates/message.php"
 })
 
-export class MessageComponent {
+export class MessageComponent implements OnInit {
 
 	newMessage : Message = new Message(null, null, null, null, null, null);
 	messages : Message[] = [];

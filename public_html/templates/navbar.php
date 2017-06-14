@@ -28,6 +28,7 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 					<li><a routerLink="about">About</a></li>
 					<li><a href="mailto:petrescueabq@gmail.com?Subject=Hello%20again">Contact</a></li>
 					<li><a routerLink="message">Messages</a></li>
+					<li><a routerLink="result">Available Pets</a></li>
 					<li><a href="https://bootcamp-coders.cnm.edu/~mjordan30/dog-social/static-ui/"
 							 target="_blank">barkparkz</a></li>
 					<?php
@@ -38,6 +39,7 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 					<?php
 					} else {
 					?>
+						<li><a routerLink="post">List Pet</a></li>
 					<li><a routerLink="sign-out">Sign Out</a></li>
 					<?php
 					}

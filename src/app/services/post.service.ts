@@ -69,4 +69,10 @@ export class PostService extends BaseService {
 			.catch(this.handleError));
 	}
 
+	getAllPosts() : Observable<Post[]> {
+		return(this.http.get(this.postUrl)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
+
 }
