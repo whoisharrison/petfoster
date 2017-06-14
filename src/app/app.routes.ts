@@ -1,6 +1,7 @@
 import {RouterModule, Routes} from "@angular/router";
 
 import {HomeComponent} from "./components/home.component";
+import {SignInComponent} from "./components/sign-in.component";
 import {MessageComponent} from "./components/message.component";
 import {PostComponent} from "./components/post.component";
 import {OrganizationComponent} from "./components/organization.component";
@@ -9,28 +10,26 @@ import {NavBarComponent} from "./components/navbar.component";
 import {EnderComponent} from "./components/ender.component";
 import {AboutComponent} from "./components/about.component";
 import {ResultComponent} from "./components/result.component";
-import {ProfileComponent} from "./components/profile.component";
 
 export const allAppComponents = [
 	HomeComponent,
 	MessageComponent,
-
+	SignInComponent,
 	OrganizationComponent,
 	PostComponent,
 	FileSelectDirective,
 	NavBarComponent,
 	EnderComponent,
 	AboutComponent,
-	ResultComponent,
-	ProfileComponent,
+	ResultComponent
 ];
 
 export const routes: Routes = [
-	{path: "about", component: AboutComponent},
-	{path: "message",component: MessageComponent},
 	{path: "organization", component: OrganizationComponent},
+	{path: "signin", component: SignInComponent},
+	{path: "message",component: MessageComponent},
 	{path: "post", component: PostComponent},
-	{path: "profile", component: ProfileComponent},
+	{path: "about", component: AboutComponent},
 	{path: "result", component: ResultComponent},
 	{path: "", component: HomeComponent}
 ];
