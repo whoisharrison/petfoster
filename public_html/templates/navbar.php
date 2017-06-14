@@ -1,3 +1,8 @@
+<?php
+if(session_status() !== PHP_SESSION_ACTIVE) {
+	session_start();
+}
+?>
 <header>
 	<nav class="navbar navbar-default">
 		<div class="container">
@@ -25,8 +30,18 @@
 					<li><a routerLink="message">Messages</a></li>
 					<li><a href="https://bootcamp-coders.cnm.edu/~mjordan30/dog-social/static-ui/"
 							 target="_blank">barkparkz</a></li>
-					<li class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg-2" id="login">sign in</li>
-					<li class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg" id="login">sign up</li>
+					<?php
+					if(empty($_SESSION["profile"]) === true) {
+					?>
+					<li class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg-2" id="signInButton">sign in</li>
+					<li class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg" id="signUpButton">sign up</li>
+					<?php
+					} else {
+					?>
+					<li><a routerLink="signout">Sign Out</a></li>
+					<?php
+					}
+					?>
 				</ul>
 
 			</div><!-- /.navbar-collapse -->

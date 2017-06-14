@@ -12,6 +12,7 @@ import {AboutComponent} from "./components/about.component";
 import {ResultComponent} from "./components/result.component";
 import {SignUpService} from "./services/sign-up.service";
 import {SignInService} from "./services/sign-in.service";
+import {SignOutService} from "./services/sign-out.service";
 
 export const allAppComponents = [
 	HomeComponent,
@@ -34,6 +35,6 @@ export const routes: Routes = [
 	{path: "", component: HomeComponent}
 ];
 
-export const appRoutingProviders: any[] = [SignUpService, SignInService];
+export const appRoutingProviders: any[] = [SignUpService, SignInService, SignOutService];
 
 export const routing = RouterModule.forRoot(routes);
