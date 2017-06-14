@@ -29,14 +29,7 @@ $reply->data = null;
 
 try {
 	//grab the mySQL connection
-	//do I need this or should it be something else?
 	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
-
-
-	//mock a logged in user by mocking the session and assigning a specific user to it
-	//this is the only for testing purposes and should not be in the live code
-		$_SESSION["profile"] = Profile::getProfileByProfileId($pdo, 1);
-//	$_SESSION["organization"] = Organization::getOrganizationByOrganizationId($pdo, 1);
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];

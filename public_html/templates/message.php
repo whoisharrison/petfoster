@@ -3,7 +3,7 @@
 		<div class="row">
 
 			<div class="col-md-4">
-				<h1 id="profileinfo">Create New Message</h1>
+				<h1 id="profileinfo">Create New</h1>
 
 				<!-- Create New Message Form -->
 				<form id="messageForm" name="messageForm" #messageForm="ngForm" (submit)="createMessage();">
@@ -13,7 +13,8 @@
 							<div class="input-group-addon">
 								<i class="fa fa-paw" aria-hidden="true"></i>
 							</div>
-							<input type="text" class="form-control" id="messageSubject" name="messageSubject" placeholder="Message Subject"
+							<input type="text" class="form-control" id="messageSubject" name="messageSubject"
+									 placeholder="Message Subject"
 									 [(ngModel)]="newMessage.messageSubject">
 						</div>
 					</div>
@@ -42,7 +43,17 @@
 				<h1 id="profileinfo">Messages</h1>
 
 				<!-- Begin Message Item -->
+				<div *ngFor="let message of messages" class="panel panel-default">
+					<div class="panel-heading">
+						<div class="h4">{{ message.messageSubject }}
+							<small>{{ message.messageDateTime | date:"medium" }}</small>
+						</div>
+					</div>
+					<div class="panel-body">
+						{{ message.messageContent }}
+					</div>
 
+				</div>
 			</div>
 		</div>
 	</div>
