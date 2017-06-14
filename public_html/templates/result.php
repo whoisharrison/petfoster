@@ -24,6 +24,9 @@
 			<div class="col-xs-12 col-sm-12 col-md-7 excerpt">
 				<h3><a href="#" title="">Post Title Here... (first 25 chars...)</a></h3>
 				<p>Post Description Here.. (truncate).</p>
+				<div>
+					<a routerLink="/message" class="btn btn-info"><i class="fa fa-envelope"></i></a>
+				</div>
 			</div>
 			<span class="clearfix borda"></span>
 		</article>
