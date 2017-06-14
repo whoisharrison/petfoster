@@ -123,6 +123,10 @@ try {
 
 				}
 
+			} else {
+				$messages = Message::getMessageByMessageProfileId($pdo, $_SESSION["profile"]->getProfileId())->toArray();
+
+				$reply->data = $messages;
 			}
 			} else {
 				throw (new InvalidArgumentException("you must be logged in to view messages", 403));
