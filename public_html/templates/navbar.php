@@ -259,6 +259,19 @@
 										</div>
 									</div>
 									<!--Organization State-->
+									<div class="form-group">
+										<label for="orgState">State<span class="text-danger">*</span></label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-paw" aria-hidden="true"></i>
+											</div>
+											<select class="form-control" id="orgState" name="orgState" placeholder="State"
+													 required [(ngModel)]="signUp.organizationState"
+													  #signUpOrganizationState="ngModel">
+												<option *ngFor="let state of states" [value]="state.stateAbbreviation">{{ state.stateName }}</option>
+											</select>
+										</div>
+									</div>
 									<!--Organization Zip-->
 									<div class="form-group">
 										<label for="orgzip">Zip Code<span class="text-danger">*</span></label>

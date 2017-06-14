@@ -11,7 +11,7 @@ export class SignUpService extends BaseService {
 	constructor(protected http: Http) {
 		super(http);
 	}
-	private signUpUrl = "api/sign-up";
+	private signUpUrl = "api/sign-up/";
 
 	createSignUp(signUp:SignUp) : Observable<Status> {
 		return(this.http.post(this.signUpUrl, signUp)
