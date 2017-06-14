@@ -10,7 +10,6 @@ import {EnderComponent} from "./components/ender.component";
 import {AboutComponent} from "./components/about.component";
 import {ResultComponent} from "./components/result.component";
 import {ProfileComponent} from "./components/profile.component";
-import {ContactComponent} from "./components/contact.component";
 
 export const allAppComponents = [
 	HomeComponent,
@@ -24,12 +23,10 @@ export const allAppComponents = [
 	AboutComponent,
 	ResultComponent,
 	ProfileComponent,
-	ContactComponent
 ];
 
 export const routes: Routes = [
 	{path: "about", component: AboutComponent},
-	{path: "contact", component: ContactComponent},
 	{path: "message",component: MessageComponent},
 	{path: "organization", component: OrganizationComponent},
 	{path: "post", component: PostComponent},
