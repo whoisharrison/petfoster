@@ -233,17 +233,15 @@ try {
 			//Variable assignment for the users image name, MIME type, and image extension
 			//ask about image id below ""
 			$tempUserFileName = $_FILES["dog"]["tmp_name"];
-			$userFileType = $_FILES["file"]["type"];
-			$userFileExtension = strtolower(strrchr($_FILES["file"]["name"], "."));
 
 			//upload the image to Cloudinary and get the public id
-			$cloudinaryResult = \Cloudinary\Uploader::upload($_FILES["file"]["tmp_name"], array("width" => 500, "crop" => "scale"));
+			$cloudinaryResult = \Cloudinary\Uploader::upload($tempUserFileName, array("width" => 500, "crop" => "scale"));
 
 			// Inserting image into database
 
-			$postId = filter_input(INPUT_POST, "postId", FILTER_VALIDATE_INT);
+//			$postId = filter_input(INPUT_POST, "postId", FILTER_VALIDATE_INT);
 
-			$image = new Image(null, $postId, $cloudinaryResult["public_id"]);
+			$image = new Image(null, $post->getPostId(), $cloudinaryResult["public_id"]);
 			$image->insert($pdo);
 //		}
 

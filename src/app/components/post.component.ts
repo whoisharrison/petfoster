@@ -42,4 +42,18 @@ export class PostComponent implements OnInit{
 			.switchMap((params: Params) => this.postService.getPost(+params["id"]))
 			.subscribe(reply => this.post = reply);
 	}
+
+	createPost(): void {
+		let additionalParameter = {
+			postOrganizationId: this.post.postOrganizationId,
+			postBreed: this.post.postBreed,
+			postDescription: this.post.postDescription,
+			postSex: this.post.postSex,
+			postType: this.post.postType
+		};
+
+		this.uploader.options.additionalParameter = additionalParameter;
+		this.uploader.uploadAll();
+
+		}
 }
