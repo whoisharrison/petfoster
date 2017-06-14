@@ -28,7 +28,12 @@ export class MessageComponent {
 
 	createMessage() : void {
 		this.messageService.createMessage(this.newMessage)
-			.subscribe(status => this.status = status);
+			.subscribe(status => {
+				this.status = status;
+				if(status.status === 200) {
+					this.getAllMessages();
+				}
+			});
 	}
 
 	getAllMessages() : void {
