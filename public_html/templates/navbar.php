@@ -40,9 +40,7 @@
 						<div class="modal-body">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							<!--Begin of Form-->
-							<form id="signInForm" #signInForm="ngForm" name="signInForm" (ngSubmit)="signInData();">
-
-
+							<form id="signInForm" #signInForm="ngForm" name="signInForm" (ngSubmit)="createSignIn();">
 								<!--name-->
 								<div class="form-group"
 									  [ngClass]="{ 'has-error': profileEmail.touched && profileEmail.invalid }">

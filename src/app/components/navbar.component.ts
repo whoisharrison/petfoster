@@ -5,6 +5,7 @@ import {SignInService} from "../services/sign-in.service";
 import {SignIn} from "../classes/sign-in";
 import {SignUpService} from "../services/sign-up.service";
 import {Profile} from "../classes/profile";
+import {SignUp} from "../classes/sign-up";
 declare var $: any;
 @Component({
 	selector: "navbar",
@@ -13,11 +14,11 @@ declare var $: any;
 // sign in
 export class NavBarComponent {
 	@ViewChild("signInForm") signInForm : any;
-	signin: SignIn = new SignIn(null, null);
+	signInData: SignIn = new SignIn(null, null);
 	status: Status = null;
 	constructor(private SignInService: SignInService, private SignUpService: SignUpService, private router: Router){}
-	signIn() : void {
-		this.SignInService.postSignIn(this.signin)
+	createSignIn() : void {
+		this.SignInService.postSignIn(this.signInData)
 			.subscribe(status => {
 				this.status = status;
 				if(status.status === 200) {
@@ -30,9 +31,9 @@ export class NavBarComponent {
 	}
 	// sign up
 	@ViewChild("signUpForm") signUpForm : any;
-	profile: Profile = new Profile(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+	signUp: SignUp = new SignUp(null, null, null, null, null, null, null, null, null, null, null, null, null);
 	createSignUp() : void {
-		this.SignUpService.createSignUp(this.profile)
+		this.SignUpService.createSignUp(this.signUp)
 			.subscribe(status => {
 				this.status = status;
 				console.log(this.status);
