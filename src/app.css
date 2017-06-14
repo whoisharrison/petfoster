@@ -51,7 +51,11 @@ main.bg .jumbotron .lead {
 	padding: 5px 25px;
 }
 
-#login {
+#signUpButton {
+	 margin: 6px 3px;
+ }
+
+#signInButton {
 	margin: 6px 3px;
 }
 

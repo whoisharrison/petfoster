@@ -38,7 +38,7 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 					<?php
 					} else {
 					?>
-					<li><a routerLink="signout">Sign Out</a></li>
+					<li><a routerLink="sign-out">Sign Out</a></li>
 					<?php
 					}
 					?>
