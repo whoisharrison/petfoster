@@ -95,7 +95,8 @@ main.bg .jumbotron .lead {
 	color: #fff !important;
 }
 
-.bg .panel-default {
+.bg .panel-default,
+.well {
 	color: #333;
 }
 

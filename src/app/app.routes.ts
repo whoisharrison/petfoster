@@ -3,7 +3,7 @@ import {RouterModule, Routes} from "@angular/router";
 import {HomeComponent} from "./components/home.component";
 import {MessageComponent} from "./components/message.component";
 import {PostComponent} from "./components/post.component";
-import {OrganizationComponent} from "./components/organization.component";
+import {ProfileComponent} from "./components/profile.component";
 import {FileSelectDirective} from "ng2-file-upload";
 import {NavBarComponent} from "./components/navbar.component";
 import {EnderComponent} from "./components/ender.component";
@@ -17,7 +17,7 @@ import {SignOutComponent} from "./components/sign-out.component";
 export const allAppComponents = [
 	HomeComponent,
 	MessageComponent,
-	OrganizationComponent,
+	ProfileComponent,
 	PostComponent,
 	FileSelectDirective,
 	NavBarComponent,
@@ -28,7 +28,7 @@ export const allAppComponents = [
 ];
 
 export const routes: Routes = [
-	{path: "organization", component: OrganizationComponent},
+	{path: "profile", component: ProfileComponent},
 	{path: "message",component: MessageComponent},
 	{path: "post", component: PostComponent},
 	{path: "about", component: AboutComponent},
