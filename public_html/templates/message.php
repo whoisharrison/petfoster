@@ -8,6 +8,19 @@
 				<!-- Create New Message Form -->
 				<form id="messageForm" name="messageForm" #messageForm="ngForm" (submit)="createMessage();">
 					<div class="form-group">
+						<label for="messageOrgId">Organization<span class="text-danger">*</span></label>
+						<div class="input-group">
+							<div class="input-group-addon">
+								<i class="fa fa-paw" aria-hidden="true"></i>
+							</div>
+							<select class="form-control" id="messageOrgId" name="messageOrgId" placeholder="Organization"
+									  required [(ngModel)]="newMessage.messageOrganizationId"
+									  #messageOrgId="ngModel">
+								<option *ngFor="let organization of organizations" [value]="organization.organizationId">{{ organization.organizationName }}</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
 						<label class="sr-only" for="messageSubject">Subject <span class="text-danger">*</span></label>
 						<div class="input-group">
 							<div class="input-group-addon">
