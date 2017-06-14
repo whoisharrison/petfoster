@@ -15,15 +15,15 @@
 
 			<div class="col-xs-12 col-sm-12 col-md-2">
 				<ul class="meta-search">
-					<li><i class="glyphicon glyphicon-calendar"></i> <span>02/15/2014</span></li>
-					<li><i class="glyphicon glyphicon-time"></i> <span>4:28 pm</span></li>
-					<li><i class="glyphicon glyphicon-tags"></i> <span>People</span></li>
+					<li><i class="fa fa-id-card fa-lg" aria-hidden="true"></i> <span>Breed</span></li>
+					<li><i class="fa fa-venus-mars fa-lg" aria-hidden="true"></i> <span>Sex</span></li>
+					<li><i class="fa fa-paw fa-lg" aria-hidden="true"></i> <span>Type</span></li>
 				</ul>
 			</div>
 
-			<div class="col-xs-12 col-sm-12 col-md-7 excerpet">
-				<h3><a href="#" title="">Voluptatem, exercitationem, suscipit, distinctio</a></h3>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, exercitationem, suscipit, distinctio, qui sapiente aspernatur molestiae non corporis magni sit sequi iusto debitis delectus doloremque.</p>
+			<div class="col-xs-12 col-sm-12 col-md-7 excerpt">
+				<h3><a href="#" title="">Post Title Here... (first 25 chars...)</a></h3>
+				<p>Post Description Here...</p>
 				<span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span>
 			</div>
 			<span class="clearfix borda"></span>

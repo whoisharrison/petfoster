@@ -79,8 +79,17 @@ main.bg .jumbotron .lead {
 .search-result span.plus a i { color: #fff !important; }
 .search-result span.border { display: block; width: 97%; margin: 0 15px; border-bottom: 1px dotted #ccc; }
 
+.search-result i {
+	color: #fff !important;
+}
 
-
+.search-result .excerpt a,
+.search-result .excerpt a:link,
+.search-result .excerpt a:visited,
+.search-result .excerpt a:hover,
+.search-result .excerpt a:active {
+	color: #fff !important;
+}
 
 
 
