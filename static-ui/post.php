@@ -6,25 +6,21 @@
 	<?php require_once("lib/header.php"); ?>
 
 	<div class="container">
-	<div class="row">
+		<div class="row">
 			<div class="col-md-4">
 				<h1 id="profilepage">Pet Rescue Abq</h1>
-
 			</div>
 
 			<div class="col-md-8">
 				<h1 id="profileinfo">Post a pet</h1>
 
-				<!-- Begin Post Item -->
-				<form class="form-horizontal" name="imageUpload" id="post" (submit)="uploadImage();">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<div class="h4">Pet details</em>
-								<small></small>
-							</div>
-						</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4>Pet Details</h4>
+					</div>
 
-							<h1>Post</h1>
+					<div class="panel-body">
+						<form name="imageUpload" id="post" (submit)="uploadImage();">
 							<div class="form-group">
 								<h4>Choose pet type</h4>
 								<label class="radio-inline"><input type="radio" name="type"> Dog</label>
@@ -49,17 +45,18 @@
 								<label for="postImage" class="modal-labels">Upload an image</label>
 								<input type="file" name="dog" id="dog" ng2FileSelect [uploader]="uploader"/>
 							</div>
+							<br>
 							<div class="form-group">
-								<button type="submit" class="btn-link fa fa-paw fa-2x"><i class="fa fa-file-image-o" aria-hidden="true"></i>Submit</button>
+								<button type="submit" class="btn btn-default fa fa-paw fa-2x">&nbsp;Submit</button>
 							</div>
+
 						</form>
-						<p>Cloudinary Public Id: {{ cloudinaryPublicId }}</p>
+					</div><!--/.panel-body-->
+				</div><!--/.panel-->
 
 
-					</div>
-				</form>
-			</div>
-		</div>
+			</div><!--/.col-md-8-->
+		</div><!--./row-->
 	</div>
 
 
