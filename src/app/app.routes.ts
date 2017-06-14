@@ -10,11 +10,12 @@ import {NavBarComponent} from "./components/navbar.component";
 import {EnderComponent} from "./components/ender.component";
 import {AboutComponent} from "./components/about.component";
 import {ResultComponent} from "./components/result.component";
+import {SignUpService} from "./services/sign-up.service";
+import {SignInService} from "./services/sign-in.service";
 
 export const allAppComponents = [
 	HomeComponent,
 	MessageComponent,
-	SignInComponent,
 	OrganizationComponent,
 	PostComponent,
 	FileSelectDirective,
@@ -26,7 +27,6 @@ export const allAppComponents = [
 
 export const routes: Routes = [
 	{path: "organization", component: OrganizationComponent},
-	{path: "signin", component: SignInComponent},
 	{path: "message",component: MessageComponent},
 	{path: "post", component: PostComponent},
 	{path: "about", component: AboutComponent},
@@ -34,6 +34,6 @@ export const routes: Routes = [
 	{path: "", component: HomeComponent}
 ];
 
-export const appRoutingProviders: any[] = [];
+export const appRoutingProviders: any[] = [SignUpService, SignInService];
 
 export const routing = RouterModule.forRoot(routes);
