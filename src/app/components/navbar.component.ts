@@ -39,7 +39,6 @@ export class NavBarComponent {
 		this.SignUpService.createSignUp(this.signUp)
 			.subscribe(status => {
 				this.status = status;
-				console.log(this.status);
 				if(status.status === 200) {
 					this.signUpForm.reset();
 					setTimeout(function(){$("signup-modal").modal('hide');},500);
