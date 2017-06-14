@@ -24,7 +24,6 @@
 			<div class="col-xs-12 col-sm-12 col-md-7 excerpt">
 				<h3><a href="#" title="">Post Title Here... (first 25 chars...)</a></h3>
 				<p>Post Description Here.. (truncate).</p>
-				<span class="plus"><a href="#" title="Lorem ipsum"><i class="glyphicon glyphicon-plus"></i></a></span>
 			</div>
 			<span class="clearfix borda"></span>
 		</article>
