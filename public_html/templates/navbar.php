@@ -25,12 +25,12 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 
 				<ul class="nav navbar-nav navbar-right">
 					<li><a routerLink=""><i class="fa fa-home"></i></a></li>
-					<li><a routerLink="about">About</a></li>
 					<li><a href="mailto:petrescueabq@gmail.com?Subject=Hello%20again">Contact</a></li>
 					<li><a routerLink="message">Messages</a></li>
 					<li><a routerLink="result">Available Pets</a></li>
 					<li><a href="https://bootcamp-coders.cnm.edu/~mjordan30/dog-social/static-ui/"
-							 target="_blank">barkparkz</a></li>
+							 target="_blank">Barkparkz</a></li>
+					<li><a routerLink="about">About</a></li>
 					<?php
 					if(empty($_SESSION["profile"]) === true) {
 					?>
@@ -39,7 +39,7 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 					<?php
 					} else {
 					?>
-						<li><a routerLink="post">List Pet</a></li>
+						<li><a routerLink="post">Submit Pet</a></li>
 					<li><a routerLink="sign-out">Sign Out</a></li>
 					<?php
 					}

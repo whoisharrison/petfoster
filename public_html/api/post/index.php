@@ -33,17 +33,25 @@ try {
 	// handle GET request - if id is present, that activation is returned, otherwise all activations are returned
 	if($method === "GET") {
 		setXsrfCookie();
-		$posts = Post::getAllPosts($pdo)->toArray();
-		$result = [];
+		$posts = Post::getAllPosts($pdo);
+		$results = [];
 		foreach($posts as $post) {
 			$image = Image::getImageByImagePostId($pdo, $post->getPostId());
 			if ($image === null) {
 				continue;
 			}
-			$result ["https://res.cloudinary.com/petrescueabq/image/upload/" . $image->getImageCloudinaryId()] = $post;
+			$result = new stdClass();
+			$result->postId = $post->getPostId();
+			$result->postOrganizationId = $post->getPostDescription();
+			$result->postBreed = $post->getPostBreed();
+			$result->postDescription = $post->getPostDescription();
+			$result->postSex = $post->getPostSex();
+			$result->postType = $post->getPostType();
+			$result->imageUrl = "https://res.cloudinary.com/petrescueabq/image/upload/" . $image->getImageCloudinaryId();
+			$results[] = $result;
 		}
 
-		$reply->data = $result;
+		$reply->data = $results;
 
 	}
 	else{
