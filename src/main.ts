@@ -1,7 +1,14 @@
 import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import { AppModule } from "./app/app.module";
-import { enableProdMode } from "@angular/core";
 
-//only use when app is going live effects debugging
-enableProdMode();
-platformBrowserDynamic().bootstrapModule(AppModule);
+// Keep development mode enabled while restoring the project.
+console.log("PetFoster: Angular bootstrap starting");
+
+platformBrowserDynamic()
+	.bootstrapModule(AppModule)
+	.then(() => {
+		console.log("PetFoster: Angular bootstrap completed");
+	})
+	.catch((error: any) => {
+		console.error("PetFoster: Angular bootstrap failed", error);
+	});

@@ -5,10 +5,12 @@ var helpers = require("./helpers");
 
 module.exports = {
 	entry: {
-		"polyfills": helpers.root("src") + "/polyfills.ts",
-		"vendor": helpers.root("src") + "/vendor.ts",
-		"app": helpers.root("src") + "/main.ts",
-		"css": helpers.root("src") + "/app.css"
+		app: [
+			helpers.root("src") + "/polyfills.ts",
+			helpers.root("src") + "/vendor.ts",
+			helpers.root("src") + "/main.ts",
+			helpers.root("src") + "/app.css"
+		]
 	},
 
 	resolve: {
@@ -27,7 +29,10 @@ module.exports = {
 			},
 			{
 				test: /\.css$/,
-				loader: ExtractTextPlugin.extract({ fallbackLoader: "style-loader", loader: "css-loader?minimize=true" })
+				loader: ExtractTextPlugin.extract({
+					fallbackLoader: "style-loader",
+					loader: "css-loader?minimize=true"
+				})
 			},
 			{
 				test: /\.ts$/,
@@ -37,10 +42,6 @@ module.exports = {
 	},
 
 	plugins: [
-		new webpack.optimize.CommonsChunkPlugin({
-			name: ["app", "vendor", "polyfills"]
-		}),
-
 		new webpack.ProvidePlugin({
 			$: "jquery",
 			jQuery: "jquery",
@@ -48,7 +49,8 @@ module.exports = {
 		}),
 
 		new HtmlWebpackPlugin({
-			inject: "head",
+			inject: "body",
+			chunks: ["app"],
 			filename: helpers.root("public_html") + "/index.php",
 			template: helpers.root("webpack") + "/index.php"
 		})
