@@ -28,6 +28,9 @@ RUN docker-php-ext-install pdo_mysql \
 COPY --from=frontend /app/public_html/ /var/www/html/
 COPY --from=frontend /app/php/ /var/www/php/
 
+RUN find /var/www/html /var/www/php -type d -exec chmod 755 {} \; \
+    && find /var/www/html /var/www/php -type f -exec chmod 644 {} \;
+
 WORKDIR /var/www/html
 
 EXPOSE 80
