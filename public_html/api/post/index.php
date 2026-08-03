@@ -1,81 +1,94 @@
 <?php
+
+declare(strict_types=1);
+
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
-require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
-use Edu\Cnm\PetRescueAbq\{Image, Post};
+require_once "/etc/apache2/capstone-mysql/encrypted-config.php";
 
-/**
- * api for the Profile Activation class
- *
- * @author JFarrar<tmafm1@gmail.com>
- **/
+use Edu\Cnm\PetRescueAbq\Image;
+use Edu\Cnm\PetRescueAbq\Post;
 
-//verify the session status. start session if not active
 if(session_status() !== PHP_SESSION_ACTIVE) {
 	session_start();
 }
 
-//prepare an empty reply
+header("Content-Type: application/json; charset=utf-8");
+
 $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
 
 try {
-	//grab the mySQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
+	$pdo = connectToEncryptedMySQL(
+		"/etc/apache2/capstone-mysql/fosterabq.ini"
+	);
 
-	//determine which HTTP method was used
-	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ??
+		$_SERVER["REQUEST_METHOD"];
 
-	//sanitize activation input
-	$activation = filter_input(INPUT_GET, "activation", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	if($method !== "GET") {
+		throw new InvalidArgumentException(
+			"Invalid HTTP request.",
+			405
+		);
+	}
 
-	// handle GET request - if id is present, that activation is returned, otherwise all activations are returned
-	if($method === "GET") {
-		setXsrfCookie();
-		$posts = Post::getAllPosts($pdo);
-		$results = [];
-		foreach($posts as $post) {
-			$image = Image::getImageByImagePostId($pdo, $post->getPostId());
-			if ($image === null) {
-				continue;
-			}
-			$result = new stdClass();
-			$result->postId = $post->getPostId();
-			$result->postOrganizationId = $post->getPostDescription();
-			$result->postBreed = $post->getPostBreed();
-			$result->postDescription = $post->getPostDescription();
-			$result->postSex = $post->getPostSex();
-			$result->postType = $post->getPostType();
-			$result->imageUrl = "https://res.cloudinary.com/petrescueabq/image/upload/" . $image->getImageCloudinaryId();
-			$results[] = $result;
+	setXsrfCookie();
+
+	$posts = Post::getAllPosts($pdo);
+	$results = [];
+
+	foreach($posts as $post) {
+		$image = Image::getImageByImagePostId(
+			$pdo,
+			$post->getPostId()
+		);
+
+		if($image === null) {
+			continue;
 		}
 
-		$reply->data = $results;
+		$result = new stdClass();
 
-	}
-	else{
-		throw (new\Exception("Invalid HTTP method", 405));
+		$result->postId =
+			$post->getPostId();
+
+		$result->postOrganizationId =
+			$post->getPostOrganizationId();
+
+		$result->postBreed =
+			$post->getPostBreed();
+
+		$result->postDescription =
+			$post->getPostDescription();
+
+		$result->postSex =
+			$post->getPostSex();
+
+		$result->postType =
+			$post->getPostType();
+
+		$result->imageUrl =
+			"/uploads/" .
+			rawurlencode(
+				$image->getImageCloudinaryId()
+			);
+
+		$results[] = $result;
 	}
 
-	// update reply with exception information
-} catch(Exception $exception) {
-	$reply->status = $exception->getCode();
+	$reply->data = $results;
+
+} catch(Throwable $exception) {
+	$status = (int) $exception->getCode();
+
+	if($status < 400 || $status > 599) {
+		$status = 500;
+	}
+
+	$reply->status = $status;
 	$reply->message = $exception->getMessage();
-	$reply->trace = $exception->getTraceAsString();
-
-	//header("Content-type: application/json");
-	echo json_encode($reply);
-} catch(TypeError $typeError) {
-	$reply->status = $typeError->getCode();
-	$reply->message = $typeError->getMessage();
-	$reply->trace = $typeError->getTraceAsString();
 }
 
-//header("Content-type: application/json");
-if($reply->data === null) {
-	unset($reply->data);
-}
-
-// encode and return reply to front end caller
 echo json_encode($reply);
