@@ -315,6 +315,10 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 									</div>
 								</div>
 
+								<div class="form-group">
+									<div id="signup-turnstile"></div>
+								</div>
+
 								<button class="btn btn-success" type="submit"><i class="fa fa-paper-plane"></i> Submit</button>
 								<button class="btn btn-warning" type="reset"><i class="fa fa-ban"></i> Reset</button>
 							</form>

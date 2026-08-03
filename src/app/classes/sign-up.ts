@@ -12,6 +12,7 @@ export class SignUp {
 		public organizationName: string,
 		public organizationPhone: string,
 		public organizationState: string,
-		public organizationZip: string
+		public organizationZip: string,
+		public turnstileToken: string
 	) {}
 }

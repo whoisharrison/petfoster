@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
+require_once dirname(__DIR__, 3) . "/php/lib/turnstile.php";
 require_once "/etc/apache2/capstone-mysql/encrypted-config.php";
 
 use Edu\Cnm\PetRescueAbq\Organization;
@@ -41,6 +42,10 @@ try {
 			400
 		);
 	}
+
+	verifyTurnstileToken(
+		(string) ($requestObject->turnstileToken ?? "")
+	);
 
 	if(empty($requestObject->profileAtHandle)) {
 		throw new InvalidArgumentException(
