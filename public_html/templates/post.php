@@ -112,6 +112,15 @@
 								<button type="submit" class="btn btn-default fa fa-paw fa-2x">&nbsp;Submit</button>
 							</div>
 						</form>
+
+						<div
+							*ngIf="status !== null"
+							class="alert"
+							[ngClass]="status.type"
+							role="alert"
+						>
+							{{ status.message }}
+						</div>
 					</div><!--/.panel-body-->
 				</div><!--/.panel-->
 
