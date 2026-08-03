@@ -65,7 +65,7 @@ export class NavBarComponent implements AfterViewInit {
 			"#signup-turnstile",
 			{
 				sitekey:
-					"0x4AAAAAAEE_GUdbasof6eoCm_rsCtGpys8",
+					"0x4AAAAAAEE_Ge9-Q3E4TUgV",
 				action: "signup",
 				theme: "auto"
 			}
