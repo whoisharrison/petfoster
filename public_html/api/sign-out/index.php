@@ -1,60 +1,56 @@
 <?php
 
-require_once dirname(__DIR__, 3) . "/vendor/autoload.php";
-require_once dirname(__DIR__, 3) . "/php/classes/autoload.php";
-require_once dirname(__DIR__, 3) . "/php/lib/xsrf.php";
-require_once ("/etc/apache2/capstone-mysql/encrypted-config.php");
-use Edu\Cnm\PetRescueAbq\{Profile, Organization};
+declare(strict_types=1);
 
-
-/** api for signing out
- *
- * @author Jfarrar
- * @version 1.0
- */
-
-// verify the xsrf challenge
-	if(session_status() !== PHP_SESSION_ACTIVE) {
-			session_start();
-	}
-
-	//prepare default error message
-	$reply = new  stdClass();
-	$reply->status = 200;
-	$reply->data = null;
-
-	try {
-
-	//grap the mySQL connection
-		$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/fosterabq.ini");
-
-		//determine which HTTP methods was used
-		$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] :
-			$_SERVER["REQUEST_METHOD"];
-
-		if($method === "GET") {
-			$_SESSION = [];
-				$reply->message = "You are signed out.";
-
-		}
-
-		else {
-				throw (new \InvalidArgumentException("Invalid HTTP method request"));
-
-		}
-
-	} catch(Exception $exception) {
-		$reply->status = $exception->getCode();
-		$reply->message = $exception->getMessage();
-	} catch(TypeError $typeError) {
-		$reply->status = $exception->getCode();
-		$reply->message = $exception->getMessage();
-	}
-header("Content-type: application/json");
-if($reply->data === null) {
-	unset($reply->data);
+if(session_status() !== PHP_SESSION_ACTIVE) {
+	session_start();
 }
-//encode and return reply to front end caller
+
+header("Content-Type: application/json; charset=utf-8");
+
+$reply = new stdClass();
+$reply->status = 200;
+
+try {
+	$method = $_SERVER["HTTP_X_HTTP_METHOD"] ??
+		$_SERVER["REQUEST_METHOD"];
+
+	if($method !== "GET") {
+		throw new InvalidArgumentException(
+			"Invalid HTTP request.",
+			405
+		);
+	}
+
+	$_SESSION = [];
+
+	if(ini_get("session.use_cookies")) {
+		$params = session_get_cookie_params();
+
+		setcookie(
+			session_name(),
+			"",
+			time() - 42000,
+			$params["path"],
+			$params["domain"],
+			$params["secure"],
+			$params["httponly"]
+		);
+	}
+
+	session_destroy();
+
+	$reply->message = "You are signed out.";
+
+} catch(Throwable $exception) {
+	$status = (int) $exception->getCode();
+
+	if($status < 400 || $status > 599) {
+		$status = 500;
+	}
+
+	$reply->status = $status;
+	$reply->message = $exception->getMessage();
+}
+
 echo json_encode($reply);
-
-

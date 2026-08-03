@@ -6,13 +6,24 @@ import {SignOutService} from "../services/sign-out.service";
 	templateUrl: "./templates/sign-out.php"
 })
 
-export class SignOutComponent implements OnInit{
+export class SignOutComponent implements OnInit {
 	status: Status = null;
 
-	constructor(private signOutService:SignOutService){}
+	constructor(
+		private signOutService: SignOutService
+	) {}
 
 	ngOnInit(): void {
-		this.signOutService.signOut()
-			.subscribe(status => this.status = status);
+		this.signOutService
+			.signOut()
+			.subscribe(
+				status => {
+					this.status = status;
+					window.location.href = "/";
+				},
+				error => {
+					this.status = error;
+				}
+			);
 	}
 }
